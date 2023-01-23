@@ -24,6 +24,28 @@ class TravelGuideManager {
       throw err;
     }
   }
+
+  //get all travel guides
+  static async getAllTravelGuides() {
+    try {
+      const docs = await TravelGuideModel.find();
+      return docs;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  //verify a travel guide
+  static async verifyTravelGuide(option, id) {
+    try {
+      const doc = await TravelGuideModel.findByIdAndUpdate(id, {
+        verified: option,
+      }, {new: true});
+      return doc;
+    } catch (err) {
+      throw err;
+    }
+
 }
 
 module.exports = TravelGuideManager;

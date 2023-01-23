@@ -11,6 +11,7 @@ class TravelGuide {
       const audioLength = build.audioLength;
       const placeId = build.placeId;
       const public = build.public;
+      const verified = build.verified;
 
       Object.defineProperties(this, {
         name: {
@@ -43,6 +44,10 @@ class TravelGuide {
         },
         public: {
           value: public,
+          writable: false,
+        },
+        verified: {
+          value: verified,
           writable: false,
         },
       });
@@ -85,6 +90,16 @@ class TravelGuide {
 
       setPlaceId(placeId) {
         this.placeId = placeId;
+        return this;
+      }
+
+      setPublic(public) {
+        this.public = public;
+        return this;
+      }
+
+      setVerified(verified) {
+        this.verified = verified;
         return this;
       }
 

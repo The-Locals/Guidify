@@ -28,6 +28,7 @@ class GCSManager {
         .end(audio.buffer);
     });
   }
+  
 }
 
 module.exports = GCSManager;
