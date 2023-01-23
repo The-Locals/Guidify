@@ -38,14 +38,18 @@ class TravelGuideManager {
   //verify a travel guide
   static async verifyTravelGuide(option, id) {
     try {
-      const doc = await TravelGuideModel.findByIdAndUpdate(id, {
-        verified: option,
-      }, {new: true});
+      const doc = await TravelGuideModel.findByIdAndUpdate(
+        id,
+        {
+          verified: option,
+        },
+        { new: true }
+      );
       return doc;
     } catch (err) {
       throw err;
     }
-
+  }
 }
 
 module.exports = TravelGuideManager;
