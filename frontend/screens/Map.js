@@ -2,7 +2,7 @@
 // https://aboutreact.com/react-native-map-example/// Import React
 import React, { useState } from 'react';
 // Import required components
-import { Text, SafeAreaView, StyleSheet, TextInput, View, Text, TouchableOpacity,  Image, ScrollView, PermissionsAndroid } from 'react-native';// Import Map and Marker
+import { Text, SafeAreaView, StyleSheet, TextInput, View, TouchableOpacity,  Image, ScrollView, PermissionsAndroid } from 'react-native';// Import Map and Marker
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { StatusBar } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
@@ -107,8 +107,8 @@ const component = (props) =>
 
   }
 
-  getUserLocation();
-  return (
+  getUserLocation()
+
 
   
   const markerClick = (e) =>
@@ -180,7 +180,7 @@ const component = (props) =>
                   console.log('onOpenComplete');
                 },
                 height: 260
-                
+                })
                 
               // get the data from fetch
               locationData = {
