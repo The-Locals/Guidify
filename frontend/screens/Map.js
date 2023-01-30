@@ -2,19 +2,18 @@
 // https://aboutreact.com/react-native-map-example/// Import React
 import React, { useState } from 'react';
 // Import required components
-import { Text, SafeAreaView, StyleSheet, TextInput, View, TouchableOpacity,  Image, ScrollView, PermissionsAndroid } from 'react-native';// Import Map and Marker
+import { Text, Button, SafeAreaView, StyleSheet, TextInput, View, TouchableOpacity,  Image, ScrollView, PermissionsAndroid } from 'react-native';// Import Map and Marker
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { StatusBar } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 //import MainContainer from './containers/tabContainer';
 //import { NavigationContainer } from '@react-navigation/native';
-import Info_card from '../components/Info_card';
 import { Root, SPSheet } from 'react-native-popup-confirm-toast'
 import Submit from '../components/Submit'
 import SoundPlayer from 'react-native-sound-player'
 import Geolocation from '@react-native-community/geolocation';
 
-const Map = () =>
+const Map = props =>
 {
 
   const [modalOpen, setModalOpen] = useState(true);
@@ -22,7 +21,7 @@ const Map = () =>
   const [photo, setPhoto] = useState('')
 
 
-const component = (props) =>
+const component = () =>
   {
     key = 'AIzaSyBdUF2aSzhP3mzuRhFXZwl5lxBTavQnH7M'
     url = 'https://maps.googleapis.com/maps/api/place/photo?photoreference='+photo+'&sensor=false&maxheight=500&maxwidth=500&key='+key
@@ -33,7 +32,10 @@ const component = (props) =>
         <Image style={styles.photo} source={{uri: url,}}></Image>
         <Submit title="Travel Guides" color="#0148a4" handleSubmit={fetchAudio}></Submit>
         <Submit title="Get track info" color="#0148a4" handleSubmit={fetchAudio}></Submit>
-
+        <Button
+                title="Go to Blank Page"
+                onPress={() =>  props.navigation.navigate('DetailedInfoCard', {city:title}) }
+              />
       </ScrollView>);
     // place.photos.forEach(function (placePhoto)
     // {
@@ -162,15 +164,14 @@ const component = (props) =>
             placeholder="Search"
             fetchDetails={true}
             onPress={(data, details = null) => {
-
+              // acquire basic info
               setTitle(data.description)
               setPhoto(details.photos[0].photo_reference)
-              
+
+              // display a little component with the title and photo
               const spSheet = SPSheet;
               spSheet.show({
                 component: () => component({ ...this.props, spSheet }),
-                dragFromTopOnly: true,
-                height: 500,
                 onCloseComplete: () =>
                 {
                   console.log('onCloseComplete');
@@ -179,9 +180,9 @@ const component = (props) =>
                 {
                   console.log('onOpenComplete');
                 },
-                height: 260
+                height: 500
                 })
-                
+
               // get the data from fetch
               locationData = {
                 place_id: details.place_id,
