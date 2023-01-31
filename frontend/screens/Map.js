@@ -2,7 +2,7 @@
 // https://aboutreact.com/react-native-map-example/// Import React
 import React, { useState } from 'react';
 // Import required components
-import { Text, Button, SafeAreaView, StyleSheet, TextInput, View, TouchableOpacity,  Image, ScrollView, PermissionsAndroid } from 'react-native';// Import Map and Marker
+import { Text, Button, SafeAreaView, StyleSheet, TextInput, View, TouchableOpacity, Image, ScrollView, PermissionsAndroid } from 'react-native';// Import Map and Marker
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { StatusBar } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
@@ -20,76 +20,86 @@ const Map = props =>
 {
   const [title, setTitle] = useState('') // used to set the name of location
   const [photo, setPhoto] = useState('') // used to set the photo of location
-const component = () =>
+  const component = () =>
   {
     key = 'AIzaSyBdUF2aSzhP3mzuRhFXZwl5lxBTavQnH7M'
-    url = 'https://maps.googleapis.com/maps/api/place/photo?photoreference='+photo+'&sensor=false&maxheight=500&maxwidth=500&key='+key
+    url = 'https://maps.googleapis.com/maps/api/place/photo?photoreference=' + photo + '&sensor=false&maxheight=500&maxwidth=500&key=' + key
     //hook or class
     return (
 
 
-    //              setTitle(data.description)
-    //              setPhoto(details.photos[0].photo_reference)
-        // These have to be relablled for production
-    <ScrollView>
-    <Text style={styles.title}>{title}</Text>
-    <Image style={styles.photo} source={{uri: url,}}></Image>
-    <Submit title="Play Sample Audio" color="#3cb043" handleSubmit={fetchAudio}></Submit>
-    <Submit title="Get track info (NOT IN PRODUCTION)" color="#0148a4" handleSubmit={fetchAudioInfo}></Submit>
-    <Submit title="Pause track ||" color="#d0312d" handleSubmit={stopAudio}></Submit>
-    <Submit title="Resume track" color="#3cb043" handleSubmit={resumeAudio}></Submit>
-    <Button
-            title="Go to Blank Page"
-            onPress={() =>  props.navigation.navigate('DetailedInfoCard', {city:title}) }
-          />
-    <Text></Text>
-    </ScrollView>
+      //              setTitle(data.description)
+      //              setPhoto(details.photos[0].photo_reference)
+      // These have to be relablled for production
+      <ScrollView>
+        <Text style={styles.title}>{title}</Text>
+        <Image style={styles.photo} source={{ uri: url, }}></Image>
+        <Submit title="Play Sample Audio" color="#3cb043" handleSubmit={fetchAudio}></Submit>
+        <Submit title="Get track info (NOT IN PRODUCTION)" color="#0148a4" handleSubmit={fetchAudioInfo}></Submit>
+        <Submit title="Pause track ||" color="#d0312d" handleSubmit={stopAudio}></Submit>
+        <Submit title="Resume track" color="#3cb043" handleSubmit={resumeAudio}></Submit>
+        <Button
+          title="Go to Blank Page"
+          onPress={() => props.navigation.navigate('DetailedInfoCard', { city: title })}
+        />
+        <Text></Text>
+      </ScrollView>
     );
 
-     place.photos.forEach(function (placePhoto)
-     {
-       var url = placePhoto.getUrl({
-         maxWidth: 600,
-         maxHeight: 400
-       });
-     });
+    place.photos.forEach(function (placePhoto)
+    {
+      var url = placePhoto.getUrl({
+        maxWidth: 600,
+        maxHeight: 400
+      });
+    });
   };
 
-  const resumeAudio = () =>{
+  const resumeAudio = () =>
+  {
     SoundPlayer.play();
   }
 
-  const stopAudio = () =>{
+  const stopAudio = () =>
+  {
     SoundPlayer.pause();
   }
 
-  const fetchAudioInfo = async () =>{
-  try {
-              const info = await SoundPlayer.getInfo() // Also, you need to await this because it is async
-              console.log('getInfo', info) // {duration: 12.416, currentTime: 7.691}
-            } catch (e) {
-              console.log('There is no song playing', e)
-            }
+  const fetchAudioInfo = async () =>
+  {
+    try
+    {
+      const info = await SoundPlayer.getInfo() // Also, you need to await this because it is async
+      console.log('getInfo', info) // {duration: 12.416, currentTime: 7.691}
+    } catch (e)
+    {
+      console.log('There is no song playing', e)
+    }
   }
 
 
-  const fetchAudio = async () =>{
-    try {
+  const fetchAudio = async () =>
+  {
+    try
+    {
       console.log("Trying to play audio");
       // play the file tone.mp3
       SoundPlayer.playSoundFile('dkit', 'mp3');
       console.log("Playing");
-//       or play from url
-//      SoundPlayer.playUrl('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')
-      try {
-            const info = await SoundPlayer.getInfo() // Also, you need to await this because it is async
-            console.log('getInfo', info) // {duration: 12.416, currentTime: 7.691}
-          } catch (e) {
-            console.log('There is no song playing', e)
-          }
-  } catch (e) {
+      //       or play from url
+      //      SoundPlayer.playUrl('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')
+      try
+      {
+        const info = await SoundPlayer.getInfo() // Also, you need to await this because it is async
+        console.log('getInfo', info) // {duration: 12.416, currentTime: 7.691}
+      } catch (e)
+      {
+        console.log('There is no song playing', e)
+      }
+    } catch (e)
+    {
       console.log(`cannot play the sound file`, e);
-  }
+    }
   }
 
   // users current geo location
@@ -111,14 +121,16 @@ const component = () =>
   });
 
   // Get current user location
-  function getUserLocation() {
+  function getUserLocation()
+  {
     Geolocation.getCurrentPosition(
       onSuccess,
       error => console.log("ERROR", error),
       options
     );
   }
-  function onSuccess(position) {
+  function onSuccess(position)
+  {
 
     const coordinates = position.coords;
     currentLatidude = coordinates.latitude;
@@ -130,7 +142,7 @@ const component = () =>
   getUserLocation()
 
 
-  
+
   const markerClick = (e) =>
   {
 
@@ -181,7 +193,8 @@ const component = () =>
             styles={{ textInput: styles.input }}
             placeholder="Search"
             fetchDetails={true}
-            onPress={(data, details = null) => {
+            onPress={(data, details = null) =>
+            {
               // acquire basic info
               setTitle(data.description)
               setPhoto(details.photos[0].photo_reference)
@@ -199,7 +212,7 @@ const component = () =>
                   console.log('onOpenComplete');
                 },
                 height: 400
-                })
+              })
 
               // get the data from fetch
               locationData = {
@@ -212,7 +225,8 @@ const component = () =>
 
               // Get picture URL's
               let picURLs = [];
-              for (let key in locationData.photos) {
+              for (let key in locationData.photos)
+              {
 
                 let googleURL = "https://maps.googleapis.com/maps/api/place/photo?maxwidth="
                 let height = locationData.photos[key]["height"];
@@ -230,7 +244,7 @@ const component = () =>
                 longitude: locationData.longitude,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
-                
+
               });
 
             }}
@@ -249,11 +263,11 @@ const component = () =>
 export default Map;
 
 const styles = StyleSheet.create({
-  
+
   title: {
     color: '#0779e4',
-        fontWeight: 'bold',
-        marginLeft: 5
+    fontWeight: 'bold',
+    marginLeft: 5
   },
 
   photo: {
