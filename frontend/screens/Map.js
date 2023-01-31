@@ -15,35 +15,41 @@ import Geolocation from '@react-native-community/geolocation';
 
 const Map = props =>
 {
-
-  const [modalOpen, setModalOpen] = useState(true);
-  const [title, setTitle] = useState('')
-  const [photo, setPhoto] = useState('')
-
-
+  const [title, setTitle] = useState('') // used to set the name of location
+  const [photo, setPhoto] = useState('') // used to set the photo of location
+  let placeTitle = "";
+  let placePhoto = "";
 const component = () =>
   {
     key = 'AIzaSyBdUF2aSzhP3mzuRhFXZwl5lxBTavQnH7M'
     url = 'https://maps.googleapis.com/maps/api/place/photo?photoreference='+photo+'&sensor=false&maxheight=500&maxwidth=500&key='+key
-    
-    //hook or class 
-    return (<ScrollView>
-        <Text style={styles.title}>{title}</Text>
-        <Image style={styles.photo} source={{uri: url,}}></Image>
-        <Submit title="Travel Guides" color="#0148a4" handleSubmit={fetchAudio}></Submit>
-        <Submit title="Get track info" color="#0148a4" handleSubmit={fetchAudio}></Submit>
-        <Button
-                title="Go to Blank Page"
-                onPress={() =>  props.navigation.navigate('DetailedInfoCard', {city:title}) }
-              />
-      </ScrollView>);
-    // place.photos.forEach(function (placePhoto)
-    // {
-    //   var url = placePhoto.getUrl({
-    //     maxWidth: 600,
-    //     maxHeight: 400
-    //   });
-    // });
+    console.log("Place TITle: " +placeTitle)
+    console.log("State title:" + title)
+    //hook or class
+    return (
+
+
+    //              setTitle(data.description)
+    //              setPhoto(details.photos[0].photo_reference)
+    <ScrollView>
+    <Text style={styles.title}>{title}</Text>
+    <Image style={styles.photo} source={{uri: url,}}></Image>
+    <Submit title="Travel Guides" color="#0148a4" handleSubmit={fetchAudio}></Submit>
+    <Submit title="Get track info" color="#0148a4" handleSubmit={fetchAudioInfo}></Submit>
+    <Button
+            title="Go to Blank Page"
+            onPress={() =>  props.navigation.navigate('DetailedInfoCard', {city:title}) }
+          />
+    </ScrollView>
+    );
+
+     place.photos.forEach(function (placePhoto)
+     {
+       var url = placePhoto.getUrl({
+         maxWidth: 600,
+         maxHeight: 400
+       });
+     });
   };
 
   const fetchAudioInfo = async () =>{
@@ -55,14 +61,15 @@ const component = () =>
             }
   }
 
+
   const fetchAudio = async () =>{
     try {
       console.log("Trying to play audio");
       // play the file tone.mp3
-      SoundPlayer.playSoundFile('tune', 'mp3');
+      SoundPlayer.playSoundFile('sound', 'mp3');
       console.log("Playing");
-      // or play from url
-      //SoundPlayer.playUrl('https://storage.googleapis.com/guidify_bucket/12345.mpeg')
+//       or play from url
+//      SoundPlayer.playUrl('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')
       try {
             const info = await SoundPlayer.getInfo() // Also, you need to await this because it is async
             console.log('getInfo', info) // {duration: 12.416, currentTime: 7.691}
@@ -165,8 +172,10 @@ const component = () =>
             fetchDetails={true}
             onPress={(data, details = null) => {
               // acquire basic info
-              setTitle(data.description)
-              setPhoto(details.photos[0].photo_reference)
+              placeTitle = data.description;
+              placePhoto = details.photo[0].photo_reference
+//              setTitle(data.description)
+//              setPhoto(details.photos[0].photo_reference)
 
               // display a little component with the title and photo
               const spSheet = SPSheet;
