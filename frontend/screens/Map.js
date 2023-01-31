@@ -13,33 +13,36 @@ import Submit from '../components/Submit'
 import SoundPlayer from 'react-native-sound-player'
 import Geolocation from '@react-native-community/geolocation';
 
+// Below is a link to SoundPlayer controls
+//https://www.npmjs.com/package/react-native-sound-player#functions
+
 const Map = props =>
 {
   const [title, setTitle] = useState('') // used to set the name of location
   const [photo, setPhoto] = useState('') // used to set the photo of location
-  let placeTitle = "";
-  let placePhoto = "";
 const component = () =>
   {
     key = 'AIzaSyBdUF2aSzhP3mzuRhFXZwl5lxBTavQnH7M'
     url = 'https://maps.googleapis.com/maps/api/place/photo?photoreference='+photo+'&sensor=false&maxheight=500&maxwidth=500&key='+key
-    console.log("Place TITle: " +placeTitle)
-    console.log("State title:" + title)
     //hook or class
     return (
 
 
     //              setTitle(data.description)
     //              setPhoto(details.photos[0].photo_reference)
+        // These have to be relablled for production
     <ScrollView>
     <Text style={styles.title}>{title}</Text>
     <Image style={styles.photo} source={{uri: url,}}></Image>
-    <Submit title="Travel Guides" color="#0148a4" handleSubmit={fetchAudio}></Submit>
-    <Submit title="Get track info" color="#0148a4" handleSubmit={fetchAudioInfo}></Submit>
+    <Submit title="Play Sample Audio" color="#3cb043" handleSubmit={fetchAudio}></Submit>
+    <Submit title="Get track info (NOT IN PRODUCTION)" color="#0148a4" handleSubmit={fetchAudioInfo}></Submit>
+    <Submit title="Pause track ||" color="#d0312d" handleSubmit={stopAudio}></Submit>
+    <Submit title="Resume track" color="#3cb043" handleSubmit={resumeAudio}></Submit>
     <Button
             title="Go to Blank Page"
             onPress={() =>  props.navigation.navigate('DetailedInfoCard', {city:title}) }
           />
+    <Text></Text>
     </ScrollView>
     );
 
@@ -51,6 +54,14 @@ const component = () =>
        });
      });
   };
+
+  const resumeAudio = () =>{
+    SoundPlayer.play();
+  }
+
+  const stopAudio = () =>{
+    SoundPlayer.pause();
+  }
 
   const fetchAudioInfo = async () =>{
   try {
@@ -66,7 +77,7 @@ const component = () =>
     try {
       console.log("Trying to play audio");
       // play the file tone.mp3
-      SoundPlayer.playSoundFile('sound', 'mp3');
+      SoundPlayer.playSoundFile('dkit', 'mp3');
       console.log("Playing");
 //       or play from url
 //      SoundPlayer.playUrl('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')
@@ -172,10 +183,8 @@ const component = () =>
             fetchDetails={true}
             onPress={(data, details = null) => {
               // acquire basic info
-              placeTitle = data.description;
-              placePhoto = details.photo[0].photo_reference
-//              setTitle(data.description)
-//              setPhoto(details.photos[0].photo_reference)
+              setTitle(data.description)
+              setPhoto(details.photos[0].photo_reference)
 
               // display a little component with the title and photo
               const spSheet = SPSheet;
@@ -189,7 +198,7 @@ const component = () =>
                 {
                   console.log('onOpenComplete');
                 },
-                height: 500
+                height: 400
                 })
 
               // get the data from fetch
