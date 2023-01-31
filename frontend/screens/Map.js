@@ -1,6 +1,6 @@
 // Integration of Google map in React Native using react-native-maps
 // https://aboutreact.com/react-native-map-example/// Import React
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // Import required components
 import { Text, Button, SafeAreaView, StyleSheet, TextInput, View, TouchableOpacity, Image, ScrollView, PermissionsAndroid } from 'react-native';// Import Map and Marker
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -18,21 +18,16 @@ import Geolocation from '@react-native-community/geolocation';
 
 const Map = props =>
 {
-  const [title, setTitle] = useState('') // used to set the name of location
-  const [photo, setPhoto] = useState('') // used to set the photo of location
-  const component = () =>
+  
+  const component = (tit,photo) =>
   {
     key = 'AIzaSyBdUF2aSzhP3mzuRhFXZwl5lxBTavQnH7M'
     url = 'https://maps.googleapis.com/maps/api/place/photo?photoreference=' + photo + '&sensor=false&maxheight=500&maxwidth=500&key=' + key
     //hook or class
     return (
-
-
-      //              setTitle(data.description)
-      //              setPhoto(details.photos[0].photo_reference)
       // These have to be relablled for production
       <ScrollView>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>{tit}</Text>
         <Image style={styles.photo} source={{ uri: url, }}></Image>
         <Submit title="Play Sample Audio" color="#3cb043" handleSubmit={fetchAudio}></Submit>
         <Submit title="Get track info (NOT IN PRODUCTION)" color="#0148a4" handleSubmit={fetchAudioInfo}></Submit>
@@ -45,14 +40,6 @@ const Map = props =>
         <Text></Text>
       </ScrollView>
     );
-
-    place.photos.forEach(function (placePhoto)
-    {
-      var url = placePhoto.getUrl({
-        maxWidth: 600,
-        maxHeight: 400
-      });
-    });
   };
 
   const resumeAudio = () =>
@@ -195,14 +182,14 @@ const Map = props =>
             fetchDetails={true}
             onPress={(data, details = null) =>
             {
+            console.log(data.terms)
               // acquire basic info
-              setTitle(data.description)
-              setPhoto(details.photos[0].photo_reference)
-
+              let title = data.structured_formatting.main_text + data.terms
+              let photo = details.photos[0].photo_reference
               // display a little component with the title and photo
               const spSheet = SPSheet;
               spSheet.show({
-                component: () => component({ ...this.props, spSheet }),
+                component: () => component(title,photo,{ ...this.props, spSheet }),
                 onCloseComplete: () =>
                 {
                   console.log('onCloseComplete');
