@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import { 
-  Dimensions, 
-  StyleSheet, 
-  Text, 
-  View, 
-  Image, 
-  Button, 
-  Alert, 
-  Pressable, 
+import React, { useEffect, useState } from 'react';
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Button,
+  Alert,
+  Pressable,
   FlatList,
   StatusBar,
   ActivityIndicator,
@@ -27,11 +27,11 @@ const Map = () => {
 
   Geolocation.requestAuthorization();
 
-  const [ pin, setPin ] = React.useState({
+  const [pin, setPin] = React.useState({
     latitude: 53.350140,
     longitude: -6.266155,
   })
-  const [ region, setRegion ] = React.useState({
+  const [region, setRegion] = React.useState({
     latitude: 53.350140,
     longitude: -6.266155,
     latitudeDelta: 0.0922,
@@ -43,9 +43,9 @@ const Map = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [photo, setPhoto] = useState('ARywPAI4CheuR7nthP4lUNuQw09LqBIfNHSNdfgmBuUA7SdwUjkkiWwEJGcbueamM-zxmpJ7HC8yvx-w3GUczlThnPkC6-llma_MPNGPQbGo1R0SGGaUIUUiruARLrwesAJYrbxiADZib5tT1o-k_JvNdQyx91hxav_VDmaaNfshPjvQygi7');
   key = 'AIzaSyCsdtGfQpfZc7tbypPioacMv2y7eMoaW6g';
-  const url = 'https://maps.googleapis.com/maps/api/place/photo?photoreference='+photo+'&sensor=false&maxheight=500&maxwidth=500&key='+key;
+  const url = 'https://maps.googleapis.com/maps/api/place/photo?photoreference=' + photo + '&sensor=false&maxheight=500&maxwidth=500&key=' + key;
   const [description, setDescription] = useState('OConnell Bridge, North City, Dublin 1, Ireland');
-  
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -114,15 +114,15 @@ const Map = () => {
           <Text style={styles.txtNameStyle}>{`${item.name.title} ${item.name.first} ${item.name.last}`}</Text>
           <Text style={styles.txtEmailStyle}>{item.email}</Text>
         </View>
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <Pressable onPress={() => playOrPause()}>
             <Image
-                source={isPlaying ? PauseIcon : PlayIcon}
-                style={{height: 30, tintColor: '#000', width: 30, marginRight: 10, }}
-              />
+              source={isPlaying ? PauseIcon : PlayIcon}
+              style={{ height: 30, tintColor: '#000', width: 30, marginRight: 10, }}
+            />
           </Pressable>
         </View>
-        
+
       </View>
     );
   };
@@ -150,9 +150,9 @@ const Map = () => {
 
 
   return (
-      <View style={{marginTop: 0, flex: 1}}>
-      <View style={{alignItems: "center"}}>
-      <GooglePlacesAutocomplete
+    <View style={{ marginTop: 0, flex: 1 }}>
+      <View style={{ alignItems: "center" }}>
+        <GooglePlacesAutocomplete
           placeholder='Find a place or an Itinerary'
           minLength={2} // minimum length of text to search
           autoFocus={false}
@@ -163,7 +163,7 @@ const Map = () => {
             rankby: "distance"
           }}
           renderDescription={row => row.description} // custom description render
-          
+
           onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
             console.log(data, details);
             setRegion({
@@ -172,13 +172,13 @@ const Map = () => {
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421
             })
-            console.log("photo reference: "+ details.photos[0].photo_reference);
+            console.log("photo reference: " + details.photos[0].photo_reference);
             setPhoto(details.photos[0].photo_reference);
             setDescription(data.description);
-           }}
-          
+          }}
+
           //getDefaultValue={() => ''}
-          
+
           query={{
             // available options: https://developers.google.com/places/web-service/autocomplete
             key: 'AIzaSyCsdtGfQpfZc7tbypPioacMv2y7eMoaW6g',
@@ -187,7 +187,7 @@ const Map = () => {
             location: `${region.latitude}, ${region.longitude}`,
             radius: 30000
           }}
-          
+
           styles={{
             textInputContainer: {
               width: '98%',
@@ -198,24 +198,24 @@ const Map = () => {
             predefinedPlacesDescription: {
               color: '#1faadb'
             },
-            container: { 
-              flex: 0, 
+            container: {
+              flex: 0,
               position: "absolute",
-              width: "98%", 
-              zIndex: 1, 
-              marginTop: 15, 
+              width: "98%",
+              zIndex: 1,
+              marginTop: 15,
               alignItems: "center",
               justifyContent: "center",
             },
-            listView: { 
+            listView: {
               backgroundColor: "white",
               width: "98%",
             }
           }}
-          
+
           currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
           currentLocationLabel="Current location"
-          
+
           nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
           GoogleReverseGeocodingQuery={{
             // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
@@ -225,50 +225,50 @@ const Map = () => {
           debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
           //renderLeftButton={()  => <Image source={require('path/custom/left-icon')} />}
           renderRightButton={() => <Text></Text>}
-        />   
+        />
       </View>
-        <MapView
-          style={styles.mapStyle}
-          initialRegion={{
-            latitude: 53.350140,
-            longitude: -6.266155,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          provider="google"
-          //region={region}
-          customMapStyle={mapStyle}
-          region={region}
-          onPress={(e) => {setMarkers(e.nativeEvent.coordinate)}}
+      <MapView
+        style={styles.mapStyle}
+        initialRegion={{
+          latitude: 53.350140,
+          longitude: -6.266155,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+        provider="google"
+        //region={region}
+        customMapStyle={mapStyle}
+        region={region}
+        onPress={(e) => { setMarkers(e.nativeEvent.coordinate) }}
+      >
+        {markers &&
+          <Marker
+            draggable={true}
+            coordinate={
+              {
+                latitude: region.latitude,
+                longitude: region.longitude
+              }
+              //markers
+            }
+            pinColor="white"
+            onDragStart={(e) => {
+              console.log("Drag start", e.nativeEvent.coordinates)
+            }}
+            onDragEnd={(e) => {
+              setPin({
+                latitude: e.nativeEvent.coordinate.latitude,
+                longitude: e.nativeEvent.coordinate.longitude
+              })
+            }}
+            onPress={toggleModal}
           >
-        { markers && 
-        <Marker 
-          draggable={true}
-          coordinate={
-            {
-            latitude: region.latitude,
-            longitude:  region.longitude
-          }
-          //markers
+            <Callout>
+              <Text>I'm here</Text>
+            </Callout>
+          </Marker>
         }
-          pinColor="white"  
-          onDragStart={(e) => {
-            console.log("Drag start", e.nativeEvent.coordinates)
-          }}
-          onDragEnd={(e) => {
-            setPin({
-              latitude: e.nativeEvent.coordinate.latitude,
-              longitude: e.nativeEvent.coordinate.longitude
-            })
-          }}
-          onPress={toggleModal}      
-        >
-          <Callout>
-                <Text>I'm here</Text>
-          </Callout>
-        </Marker>
-        }
-        <Circle center={region} radius={1000} />        
+        <Circle center={region} radius={1000} />
         <Marker
           coordinate={region}
           pinColor="white"
@@ -288,18 +288,18 @@ const Map = () => {
             <Text>I'm here</Text>
           </Callout>
         </Marker>
-        </MapView>
-        <FloatingAction
-          actions={actions}
-          onPressItem={name => {
-            console.log(`selected button: ${name}`);
-            console.log("curr: " + getCurrentPosition());
-          }}
-          color="orange"
-          position='right'
-          distanceToEdge={{horizontal: 20, vertical: 40}}
-        />
-        <Modal
+      </MapView>
+      <FloatingAction
+        actions={actions}
+        onPressItem={name => {
+          console.log(`selected button: ${name}`);
+          console.log("curr: " + getCurrentPosition());
+        }}
+        color="orange"
+        position='right'
+        distanceToEdge={{ horizontal: 20, vertical: 40 }}
+      />
+      <Modal
         onBackdropPress={() => setModalVisible(false)}
         onBackButtonPress={() => setModalVisible(false)}
         isVisible={isModalVisible}
@@ -317,78 +317,77 @@ const Map = () => {
         <View style={styles.modalContent}>
           <View style={styles.center}>
             <View style={styles.barIcon} />
-            
-            <Text 
+
+            <Text
               style={{
-                fontWeight: '400', 
-                color: "#000", 
-                fontSize: 15, 
-                marginTop: 5,}} >
+                fontWeight: '400',
+                color: "#000",
+                fontSize: 15,
+                marginTop: 5,
+              }} >
               {description}
             </Text>
-            <Image 
-            source={{uri: url}} 
-            style={{
-              height: 100, 
-              width: 370, 
-              marginTop: 10,
-              borderRadius: 10
-            }}/>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop:10}}>
-              <View style={{width: 150}}>
-                <Button title='Travel guides' color="#000"/>
+            <Image
+              source={{ uri: url }}
+              style={{
+                height: 100,
+                width: 370,
+                marginTop: 10,
+                borderRadius: 10
+              }} />
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
+              <View style={{ width: 150 }}>
+                <Button title='Travel guides' color="#000" />
               </View>
-              <View style={{marginLeft: 70, width: 150}}>
-                <Button title='Itineraries' color="#000"/>
+              <View style={{ marginLeft: 70, width: 150 }}>
+                <Button title='Itineraries' color="#000" />
               </View>
             </View>
           </View>
           <StatusBar backgroundColor="#000" />
-          <View style={{height: 450}}>
-          <ScrollView style={{height: 0, marginTop: 10}}>
-            
-          <FlatList
-            data={users}
-            keyExtractor={item => item.email}
-            renderItem={renderItem}
-            ListFooterComponent={renderLoader}
-            onEndReached={loadMoreItem}
-            onEndReachedThreshold={0}
-            showsVerticalScrollIndicator={true}
-            contentContainerStyle={{flexGrow: 1}}
-          />
-          </ScrollView>
-           </View>
-           <Pressable>
-          <View style={[styles.widgetContainer, {}]}>
-            <View style={{flexDirection: 'row'}}>
-              <Image
-                resizeMode="cover"
-                source={{uri: 'https://www.bensound.com/bensound-img/happyrock.jpg'}}
-                style={styles.widgetImageStyle}
-              />
-              <View>
-                <Text style={styles.widgetMusicTitle}>
-                 {MPtitle}
-                </Text>
-                <Text style={styles.widgetArtisteTitle}>
-                {MPdesc}
-                </Text>
-              </View>
-            </View>
-            <Pressable onPress={() => playOrPause()}>
-              <Image
-                source={isPlaying ? PauseIcon : PlayIcon}
-                style={{height: 30, tintColor: '#fff', width: 30, marginRight: 10}}
-              />
-            </Pressable>
-          </View>
-        </Pressable>
+          <View style={{ height: 450 }}>
+            <ScrollView style={{ height: 0, marginTop: 10 }}>
 
-          
+              <FlatList
+                data={users}
+                keyExtractor={item => item.email}
+                renderItem={renderItem}
+                ListFooterComponent={renderLoader}
+                onEndReached={loadMoreItem}
+                onEndReachedThreshold={0}
+                showsVerticalScrollIndicator={true}
+                contentContainerStyle={{ flexGrow: 1 }}
+              />
+            </ScrollView>
+          </View>
+          <Pressable>
+            <View style={[styles.widgetContainer, {}]}>
+              <View style={{ flexDirection: 'row' }}>
+                <Image
+                  resizeMode="cover"
+                  source={{ uri: 'https://www.bensound.com/bensound-img/happyrock.jpg' }}
+                  style={styles.widgetImageStyle}
+                />
+                <View>
+                  <Text style={styles.widgetMusicTitle}>
+                    {MPtitle}
+                  </Text>
+                  <Text style={styles.widgetArtisteTitle}>
+                    {MPdesc}
+                  </Text>
+                </View>
+              </View>
+              <Pressable onPress={() => playOrPause()}>
+                <Image
+                  source={isPlaying ? PauseIcon : PlayIcon}
+                  style={{ height: 30, tintColor: '#fff', width: 30, marginRight: 10 }}
+                />
+              </Pressable>
+            </View>
+          </Pressable>
         </View>
       </Modal>
-      </View>
+    </View>
 
   );
 };
