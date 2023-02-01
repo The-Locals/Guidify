@@ -23,7 +23,9 @@ const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   return (
-    <Tab.Navigator screenOptions={{tabBarItemStyle:{
+    <Tab.Navigator   
+    initialRouteName='Login'  
+    screenOptions={{tabBarItemStyle:{
       backgroundColor:'#000',
       margin:0,
       borderRadius:0,
@@ -71,6 +73,7 @@ const LStackNav = () => {
 const SearchStack = () => {
   return(
     <Stack.Navigator>
+      <Stack.Screen name='Login' component={Login} options={{ headerShown: false }}/>
       <Stack.Screen name='SearchPlaces' component={PlacesAutoComplete} options={{ headerShown: false }} />
       <Stack.Screen name='CItinerary' component={CreateItinerary} />
     </Stack.Navigator>
@@ -89,6 +92,7 @@ const App = () => {
       </Stack.Navigator>
        */}
        <MyTabs />
+       
 
 
     </NavigationContainer>
