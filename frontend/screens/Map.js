@@ -524,12 +524,18 @@ const Map = () => {
         {touristLocations.map(location => (
           <Marker
             coordinate={{
-              latitude: location.geometry.location.lat,
-              longitude: location.geometry.location.lng,
+              latitude: region.latitude,
+              longitude: region.longitude,
             }}
-            title={location.name}
-            key={location.id}
-          />
+            //title={location.name}
+            //key={location.id}
+            onPress={toggleModal}
+            draggable={true}
+          >
+            <Callout>
+              <Text>I'm here</Text>
+            </Callout>
+            </Marker>
         ))}
       </MapView>
       <FloatingAction
