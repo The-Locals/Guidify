@@ -15,8 +15,8 @@ router.use((err, req, res, next) => {
 
 router.get("/username", async (req, res) => {
     try {
-        const creatorId = req.query.creatorId;
-        const username = await UserManager.getUsernameById(creatorId);
+        const id = req.query.id;
+        const username = await UserManager.getUsernameById(id);
         res.send({
             statusCode: 200,
             username: username,
