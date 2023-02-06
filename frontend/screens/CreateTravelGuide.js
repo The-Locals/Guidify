@@ -38,13 +38,28 @@ const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818
     }
 
     const createTravelGuide = () => {
+<<<<<<< HEAD
+=======
+      console.log(location);
+>>>>>>> main
       const formData = new FormData();
       formData.append('placeId', location.placeId);
       formData.append('name', location.name);
       formData.append('description', location.description);
+<<<<<<< HEAD
       formData.append('audio[]', location.audio);
 
       fetch('http://192.168.0.94:8000/travelGuide', {
+=======
+      formData.append('audio', {
+        uri: location.audio.uri,
+        type: location.audio.type,
+        name: location.audio.name,
+      });
+      console.log(formData);
+
+      fetch('http://192.168.176.219:8000/travelGuide', {
+>>>>>>> main
         credentials: 'include',
         method: 'POST',
         headers: {
@@ -54,8 +69,15 @@ const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818
       })
         .then(res => res.json())
         .then(resBody => {
+<<<<<<< HEAD
           if (resBody.statusCode == 200) {
             console.log("success");
+=======
+          console.log(resBody);
+          if (resBody.statusCode == 200) {
+            console.log("success");
+            navigation.goBack();
+>>>>>>> main
           } else if (resBody.statusCode == 403) {
             // TODO user entered the wrong credentials. add a UI for this.
             console.log("failed");
@@ -72,10 +94,17 @@ const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818
         placeholder='Type Travel title here..'
         placeholderTextColor = "#9a73ef" 
         style={styles.input}
+<<<<<<< HEAD
         onChange={(e) => {
           setLocation({
             ...location,
             name: e.target.value,
+=======
+        onChangeText={(e) => {
+          setLocation({
+            ...location,
+            name: e,
+>>>>>>> main
           })
         }}
         value={location.name}
@@ -177,10 +206,17 @@ const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818
         placeholder='Description...'
         placeholderTextColor = "#9a73ef" 
         style={styles.description}
+<<<<<<< HEAD
         onChange={(e) => {
           setLocation({
             ...location,
             description: e.target.value
+=======
+        onChangeText={(e) => {
+          setLocation({
+            ...location,
+            description: e
+>>>>>>> main
           })
         }}
         value={location.description}
@@ -193,9 +229,16 @@ const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818
               const result = await DocumentPicker.pick({
                 type: [DocumentPicker.types.allFiles],
               });
+<<<<<<< HEAD
               setLocation({
                 ...location,
                 audio: result.readDocument(),
+=======
+              console.log(result[0].uri);
+              setLocation({
+                ...location,
+                audio: result[0],
+>>>>>>> main
               })
             } catch (error) {
               console.log(error);
