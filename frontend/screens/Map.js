@@ -32,6 +32,7 @@ const Map = () => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+  const [touristLocations, setTouristLocations] = useState([]);
 
   const [showMarker, setShowMarker] = React.useState(false);
 
@@ -250,6 +251,32 @@ const Map = () => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     LogBox.ignoreLogs(['Encountered two children with the same key']);
     LogBox.ignoreLogs(['Possible Unhandled Promise Rejection']);
+
+    Geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        setRegion({
+          latitude,
+          longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        });
+      },
+      error => console.log(error),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+
+    axios
+      .get(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${region.latitude},${region.longitude}&radius=5000&type=tourist_attraction&key=AIzaSyCsdtGfQpfZc7tbypPioacMv2y7eMoaW6g`
+      )
+      .then(response => {
+        setTouristLocations(response.data.results);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
   }, [currentPage]);
 
 
@@ -290,7 +317,7 @@ const Map = () => {
             // available options: https://developers.google.com/places/web-service/autocomplete
             key: 'AIzaSyCsdtGfQpfZc7tbypPioacMv2y7eMoaW6g',
             language: 'en', // language of the results
-            types: 'establishment', // default: 'geocode',
+            types: 'tourist_attraction', // default: 'geocode',
             location: `${region.latitude}, ${region.longitude}`,
             radius: 30000,
           }}
@@ -379,7 +406,7 @@ const Map = () => {
             }
             setUsers(travelGuidesWithUsernames);
         }}>
-        {showMarker && (
+        {/* {showMarker && (
           <Marker
             draggable={true}
             coordinate={
@@ -395,7 +422,17 @@ const Map = () => {
             </Callout>
           </Marker>
         )}
-        <Circle center={region} radius={1000} />
+        <Circle center={region} radius={1000} /> */}
+        {touristLocations.map(location => (
+          <Marker
+            coordinate={{
+              latitude: location.geometry.location.lat,
+              longitude: location.geometry.location.lng,
+            }}
+            title={location.name}
+            key={location.id}
+          />
+        ))}
       </MapView>
       <FloatingAction
         actions={actions}
