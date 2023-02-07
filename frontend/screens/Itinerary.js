@@ -5,9 +5,8 @@ import Geolocation from '@react-native-community/geolocation';
 import { FloatingAction } from "react-native-floating-action";
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import * as Animatable from 'react-native-animatable'
-import { Header } from 'react-native-elements';
-//import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Icon } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/FontAwesome';
+import PlayIcon from "../assets/play.png";
 
 const Map = () => {
 
@@ -28,6 +27,14 @@ const Map = () => {
         {
             title: "Best Hotel in Town",
             description: 'Imperial Hotel'
+        },
+        {
+            title: "Best pub in town",
+            description: 'Mo chara'
+        },
+        {
+            title: "Best restaurant in town",
+            description: 'McDonalds'
         },
         {
             title: "Best pub in town",
@@ -69,25 +76,28 @@ const Map = () => {
         }
     ]
 
-    // ref
-    const bottomSheetRef = useRef(null);
+    useEffect(() => {
+        fetch('http://193.1.45.253:8000/travelGuide/byUser', {
+            credentials: 'include',
+            method: 'GET'
+        })
+            .then(res => res.json())
+            .then(resBody => {
 
+                console.log("this is itenary" + resBody);
+                parseTravelGuide(resBody);
+            })
+    }, []);
+
+    const bottomSheetRef = useRef(null);
     // variables
     const snapPoints = useMemo(() => ['40%', '80%'], []);
 
-    // callbacks
-    const handleSheetChange = useCallback((index) => {
-        console.log("handleSheetChange", index);
-    }, []);
-    const handleSnapPress = useCallback((index) => {
-        sheetRef.current?.snapToIndex(index);
-    }, []);
-    const handleClosePress = useCallback(() => {
-        sheetRef.current?.close();
-    }, []);
+    const parseTravelGuide = (travelGuide) => {
 
-
-    Geolocation.requestAuthorization();
+        const placeID = travelGuide._parts.find(part => part[0] === 'placeId')[1];
+        console.log(placeID)
+    }
 
     const toggleModal = () => {
 
@@ -108,13 +118,12 @@ const Map = () => {
     const renderItem = useCallback(
         ({ item }) => (
             <View style={styles.itemContainer}>
-                <Text >{item.title}</Text>
-                <Text >{item.description}</Text>
+                <Text style={styles.itemTItle} >{item.title}</Text>
+                <Text style={styles.itemDescription}>{item.description}</Text>
             </View>
         ),
         []
     );
-
     const actions = [
         {
             text: "Current Location",
@@ -123,8 +132,6 @@ const Map = () => {
             position: 1,
         },
     ];
-
-
     const renderMarkers = (markers) => {
 
         return markers.map(marker => (
@@ -163,7 +170,7 @@ const Map = () => {
             { enableHighAccuracy: true }
         );
     };
-
+    Geolocation.requestAuthorization();
 
     useEffect(() => {
 
@@ -213,7 +220,7 @@ const Map = () => {
                     onPress={toggleModal}
                 >
                     <Callout>
-                        <Text>I'm here</Text>
+                        <Text style={styles.callout} t>Best Pub in Town</Text>
                     </Callout>
                 </Marker>
 
@@ -235,20 +242,21 @@ const Map = () => {
                 snapPoints={snapPoints}
                 style={styles.bottomSheetStyle}
             >
-                <Header containerStyle={styles.header}>
-                    <View style={styles.innerHeader}>
+
+                <View style={styles.innerHeader}>
+                    <View>
                         <Text style={styles.headerText}>
                             Strolling around Dundalk
                         </Text>
-                        <Text>
+                        <Text style={styles.subHeader}>
                             A nice tour that will guide through town
                         </Text>
                         <Text>
                             ⭐⭐⭐⭐⭐
                         </Text>
-
                     </View>
-                </Header>
+                    <Icon name={"play-circle"} color={"black"} style={styles.playIcon}></Icon>
+                </View>
                 <Animatable.View style={styles.contentContainer}
                     animation="fadeInUp"
                     delay={500}
@@ -260,8 +268,7 @@ const Map = () => {
                     data={Itineraries}
                     keyExtractor={(item, index) => item.title}
                     renderItem={renderItem}
-                    contentContainerStyle={styles.contentContainer}
-                    style={styles.bottomSheetStyle}
+                    style={styles.FlatListStyle}
                 />
             </BottomSheet>
         </View >
@@ -290,11 +297,21 @@ const styles = StyleSheet.create({
         width: Dimensions.get("window").width,
         height: Dimensions.get("window").height
     },
-
+    subHeader: {
+        color: "white"
+    },
+    playIcon:
+    {
+        color: 'white',
+        fontSize: 45,
+        fontWeight: 'bold',
+        paddingTop: 10,
+        paddingLeft: 50,
+    },
     itemContainer: {
 
-        height: 35,
-        padding: 6,
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
         margin: 6,
         width: "100%",
         color: "black",
@@ -307,46 +324,59 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    barIcon: {
-        width: 60,
-        height: 5,
-        backgroundColor: "#bbb",
-        borderRadius: 3,
-    },
-    text: {
-        color: "#bbb",
-        fontSize: 20,
-        marginTop: 100,
-    },
+
+
     contentContainer: {
         alignItems: 'center',
     },
-
+    callout:
+    {
+        minWidth: 55
+    },
     header: {
         flex: 0.10,
+        margin: 0,
+        padding: 0,
         flexWrap: 'wrap',
         flexDirection: 'row',
         backgroundColor: "#a490dc",
-        color: "white",
-
+        width: "100%"
     },
     bottomSheetStyle:
     {
+        flex: 3,
+        flexWrap: 'wrap',
+        flexDirection: 'row',
         backgroundColor: "#e4fff4",
+    },
+    FlatListStyle:
+    {
+        paddingLeft: 10,
+        height: 100,
+        backgroundColor: "#e4fff4",
+
     },
     innerHeader:
     {
-        width: "100%",
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        minHeight: 25,
+        backgroundColor: "#a490dc",
         paddingHorizontal: 20,
-        marginTop: -50,
-        minWidth: 300,
-        color: "white"
+        marginTop: 0,
+        padding: 10,
+        minWidth: "100%",
+        justifyContent: "flex-start"
     },
     headerText:
     {
         fontSize: 20,
         fontWeight: 'bold',
         color: "white"
+    },
+    itemTItle:
+    {
+        fontSize: 20,
     }
 });
 

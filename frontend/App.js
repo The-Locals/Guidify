@@ -5,6 +5,7 @@ import SignUp from './screens/SignUp';
 import Login from './screens/Login';
 import Map from './screens/Map';
 import Itinerary from './screens/Itinerary'
+import CreateTravelGuide from './screens/CreateTravelGuide'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator();
@@ -19,6 +20,7 @@ const App = () => {
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
           <Stack.Screen name="Map" component={Map} options={{ headerShown: false }} />
           <Stack.Screen name="Itinerary" component={Itinerary} options={{ headerShown: false }} />
+          <Stack.Screen name="CreateTravelGuide" component={CreateTravelGuide} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </GestureHandlerRootView>
