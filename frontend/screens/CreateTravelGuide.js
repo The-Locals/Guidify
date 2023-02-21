@@ -260,8 +260,7 @@ const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818
           style={styles.buttonDONEStyle}
           activeOpacity={0.5}
           onPress={() => {
-
-//            createTravelGuide();
+            createTravelGuide();
           }}
           >
           <Image
