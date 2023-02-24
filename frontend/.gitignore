@@ -64,4 +64,4 @@ buck-out/
 /vendor/bundle/
 
 #Custom
-ip.json/
+ip.json
