@@ -43,7 +43,7 @@ const SignUp = props => {
     return (
         <ScrollView style={{backgroundColor: 'white'}}>
         <View style={styles.container}>
-            <Image source={require('../assets/guidify_logo.jpg')}
+            <Image source={require('../assets/guidify_logo.png')}
             resizeMode="center" style={styles.image} />
         <Text style={styles.textTile}>Let's Get Started</Text>
         <Text style={styles.textbody}>Create an account to access all features</Text>
