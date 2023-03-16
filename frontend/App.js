@@ -115,14 +115,14 @@ const HomeScreen = passedProps => {
     <Stack.Navigator>
       <Stack.Screen name="Map" options={{headerShown: false}}>
         {props => {
-          return <NewMap {...props} {...passedProps} />;
+          return <NewMap {...passedProps} {...props} />;
         }}
       </Stack.Screen>
       <Stack.Screen name="UserProfileFromHome" options={{headerShown: false}}>
         {(props) => {
-          return <User 
+          return <User
+            {...passedProps} 
             {...props}
-            {...passedProps}
             origin='Home'
             ownerId={props.route.params.ownerId}
           />
@@ -135,6 +135,11 @@ const HomeScreen = passedProps => {
 const UStackNav = passedProps => {
   return (
     <Stack.Navigator initialRouteName="User">
+      <Stack.Screen name="Map" options={{headerShown: false}}>
+        {props => {
+          return <NewMap {...passedProps} {...props}/>;
+        }}
+      </Stack.Screen>
       <Stack.Screen name="User" options={{headerShown: false}}>
         {props => {
           console.log(props);
