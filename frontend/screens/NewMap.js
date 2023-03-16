@@ -312,12 +312,19 @@ export default function NewMap({navigation, userId, route}) {
   useEffect(() => {
     if (route.params && sheetRef.current) {
       if (route.params.type == BOTTOM_SHEET_TYPE.CONTENTS_FOR_ITINERARY) {
+        sheetRef.current.snapTo(1);
+      }
+    }
+  }, [sheetRef.current])
+
+  useEffect(() => {
+    if (route.params) {
+      if (route.params.type == BOTTOM_SHEET_TYPE.CONTENTS_FOR_ITINERARY) {
         const {itinerary, type, showIti, showDir} = route.params;
         setSelectedItinerary(itinerary);
         setCurrentBottomSheetType(type);
         setShowDetailIti(showIti);
         setShowDirection(showDir);
-        sheetRef.current.snapTo(1);
         return;
       }
 
@@ -326,7 +333,7 @@ export default function NewMap({navigation, userId, route}) {
         activateTravelGuideNav(travelGuide);
       }
     }
-  }, [isFocused, sheetRef.current]);
+  }, [isFocused]);
 
   useEffect(() => {
     // get user position and set region to focus on user's position.
