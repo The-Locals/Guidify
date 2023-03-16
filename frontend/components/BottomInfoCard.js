@@ -27,7 +27,8 @@ export default function BottomInfoCard(props) {
     setCurrentBottomSheetType,
     currentSpecialScreen,
     setCurrentSpecialScreen,
-    deactivateTravelGuideNav
+    deactivateTravelGuideNav,
+    currentlyPlaying,
   } = props;
 
   const [isPaused, setPaused] = useState(true);
