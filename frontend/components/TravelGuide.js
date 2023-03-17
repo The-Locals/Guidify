@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import SoundPlayer from 'react-native-sound-player';
 import {Avatar, Title, Caption, TouchableRipple} from 'react-native-paper';
 import ip from '../ip.json';
-import SeekBar from '../components/SeekBar'
 
 export default function TravelGuide({
     currentPlayingTG,
@@ -153,7 +152,6 @@ export default function TravelGuide({
                     fontSize: 16,
                     color: 'black',
                   }}> {formattedAudioLength}</Text>
-                  <SeekBar></SeekBar>
             </View>
           </View>
           {enableTravelGuideNav && <TouchableOpacity style={{flex: 1, marginTop: 3, marginLeft: 'auto'}} onPress={handleNavigateTravelGuide}>

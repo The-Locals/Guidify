@@ -149,7 +149,6 @@ export default function BottomInfoCard(props) {
             {tg[tgNumber].locationName}
           </Text>
           <View style={styles.bottomCardPlayerHolder}>
-            <SeekBar></SeekBar>
             {showDirection ? (
               <View style={{flexDirection: 'row', marginTop: 20}}>
                 <Text

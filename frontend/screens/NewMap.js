@@ -21,6 +21,7 @@ import ip from '../ip';
 import Searchbar from '../components/home/Searchbar';
 import BottomInfoCard from '../components/BottomInfoCard';
 import TopInfoCard from '../components/TopInfoCard';
+import SeekBar from '../components/SeekBar'
 
 //bottom sheet header
 import ContentsWithinAreaHeader from '../components/home/bottomSheetHeader/ContentsWithinArea';
@@ -615,6 +616,7 @@ export default function NewMap({navigation, userId, route}) {
               deactivateTravelGuideNav={deactivateTravelGuideNav}
             />
           )}
+          <SeekBar></SeekBar>
           {runningRoute && (
             <TopInfoCard
               tg={itiTg}
