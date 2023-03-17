@@ -11,6 +11,7 @@ import playIcon from '../assets/play_1.png';
 import pauseIcon from '../assets/pause_1.png';
 import {WebView} from 'react-native-webview';
 import SoundPlayer from 'react-native-sound-player';
+import SeekBar from '../components/SeekBar'
 
 export default function BottomInfoCard(props) {
   const {
@@ -148,6 +149,7 @@ export default function BottomInfoCard(props) {
             {tg[tgNumber].locationName}
           </Text>
           <View style={styles.bottomCardPlayerHolder}>
+            <SeekBar></SeekBar>
             {showDirection ? (
               <View style={{flexDirection: 'row', marginTop: 20}}>
                 <Text
