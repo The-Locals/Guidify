@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import nextIcon from '../assets/next.png';
 import cancelIcon from '../assets/close.png';
+import SoundPlayer from 'react-native-sound-player';
 
 export default function TopInfoCard(props) {
   const {
@@ -108,7 +109,8 @@ export default function TopInfoCard(props) {
                 setTgNumber(tgNumber - 1);
                 setShowDirection(true);
                 destinationCoord.current = null;
-                setAudioTime(0)
+                setAudioTime(0);
+                SoundPlayer.pause();
               }}>
               <Image
                 source={nextIcon}
@@ -123,14 +125,16 @@ export default function TopInfoCard(props) {
                 setTgNumber(tgNumber + 1);
                 setShowDirection(true);
                 destinationCoord.current = null;
-                setAudioTime(0)
+                setAudioTime(0);
+                SoundPlayer.pause();
               }}>
               <Image source={nextIcon} style={{width: 25, height: 25}} />
             </TouchableOpacity>
           )}
           <TouchableOpacity
             onPress={() => {
-              setAudioTime(0)
+              SoundPlayer.pause();
+              setAudioTime(0);
               setRunningIti(false);
               setShowDirection(currentSpecialScreen == "travelGuideNavigation" ? false : true);
               if (currentSpecialScreen == "travelGuideNavigation") {

@@ -27,18 +27,6 @@ const {
   const currentTimeSeconds = ('0'+Math.floor(currentAudioTime % 3600 % 60)).slice(-2);
   const minutesDuration = itiTg.length > 0 && Math.floor(itiTg[tgNumber].audioLength % 3600 / 60);
   const secondsDuration = itiTg.length > 0 &&('0'+Math.floor(itiTg[tgNumber].audioLength % 3600 % 60)).slice(-2);
-    
-  // useEffect( async ()  => {
-
-  //   if ((await SoundPlayer.getInfo()).duration!=null){
-  //     setAudioTime(await SoundPlayer.getInfo().duration);
-  //     console.log("Use efefect audio time text: ",audioTime);
-  //   }
-  //   else {
-  //     setAudioTime(0);
-  //     console.log("use effect el;se: ",audioTime)
-  //   }
-  //   }, [SoundPlayer]);
 
     const seekForward = async (time) => {
       
@@ -70,6 +58,16 @@ const {
       }
     }
 
+    const handleSeekBar = (value) =>{
+      seekToTime = value * (itiTg.length > 0 && itiTg[tgNumber].audioLength)
+      console.log(seekToTime)
+      SoundPlayer.seek(seekToTime)
+    }
+
+    calculateSeekBar = (currentAudioTime) =>{
+      return currentAudioTime / (itiTg.length > 0 && itiTg[tgNumber].audioLength)
+    }
+
     return(
         <View style={styles.sliderCardHolder}>
             <View style={styles.sliderCardContentHolder}>
@@ -95,8 +93,9 @@ const {
                 maximumValue={1} 
                 minimumTrackTintColor="#b4eb34"
                 maximumTrackTintColor="#eb344c"
+                value={calculateSeekBar(currentAudioTime)}
                 onSlidingComplete={(value) => {
-                  console.log(value * (itiTg.length > 0 && itiTg[tgNumber].audioLength))
+                  handleSeekBar(value)
                 }}
                 />
               </View>
