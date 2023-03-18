@@ -28,11 +28,11 @@ const {
   const minutesDuration = itiTg.length > 0 && Math.floor(itiTg[tgNumber].audioLength % 3600 / 60);
   const secondsDuration = itiTg.length > 0 &&('0'+Math.floor(itiTg[tgNumber].audioLength % 3600 % 60)).slice(-2);
 
-    const seekForward = async (time) => {
+    const seekForward = (time) => {
       
-      if ((await SoundPlayer.getInfo()).duration!=null){
+      if (currentAudioTime != 0){
         console.log("Seek forward")
-        setAudioTime(await SoundPlayer.getInfo().currentTime)
+        setAudioTime(currentAudioTime+time)
         SoundPlayer.seek(currentAudioTime+time);
         //TODO check if currentaudio time is less than 10 and set to 0 if it is
         setAudioTime(currentAudioTime+time);
@@ -42,11 +42,11 @@ const {
       }
     }
 
-    const seekBackward = async (time) => {
+    const seekBackward = (time) => {
       
-      if ((await SoundPlayer.getInfo()).duration!=null){
+      if (currentAudioTime != 0){
         console.log("Seek backward")
-        setAudioTime(await SoundPlayer.getInfo().currentTime)
+        setAudioTime(currentAudioTime-time)
         SoundPlayer.seek(currentAudioTime-time);
         if (currentAudioTime-time < 0){
           setAudioTime(0);
@@ -66,7 +66,7 @@ const {
 
     calculateSeekBar = () =>{
       if (minutesDuration != 0 && secondsDuration != 0)
-        return currentAudioTime * (itiTg.length > 0 && itiTg[tgNumber].audioLength)
+        return currentAudioTime / (itiTg.length > 0 && itiTg[tgNumber].audioLength)
       return 0
     }
 
