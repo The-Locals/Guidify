@@ -21,7 +21,8 @@ export default function TopInfoCard(props) {
     destinationCoord,
     currentSpecialScreen,
     setCurrentBottomSheetType,
-    deactivateTravelGuideNav
+    deactivateTravelGuideNav,
+    setAudioTime
   } = props;
 
   const styles = StyleSheet.create({
@@ -107,6 +108,7 @@ export default function TopInfoCard(props) {
                 setTgNumber(tgNumber - 1);
                 setShowDirection(true);
                 destinationCoord.current = null;
+                setAudioTime(0)
               }}>
               <Image
                 source={nextIcon}
@@ -121,12 +123,14 @@ export default function TopInfoCard(props) {
                 setTgNumber(tgNumber + 1);
                 setShowDirection(true);
                 destinationCoord.current = null;
+                setAudioTime(0)
               }}>
               <Image source={nextIcon} style={{width: 25, height: 25}} />
             </TouchableOpacity>
           )}
           <TouchableOpacity
             onPress={() => {
+              setAudioTime(0)
               setRunningIti(false);
               setShowDirection(currentSpecialScreen == "travelGuideNavigation" ? false : true);
               if (currentSpecialScreen == "travelGuideNavigation") {

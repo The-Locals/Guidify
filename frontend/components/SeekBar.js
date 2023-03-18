@@ -17,12 +17,17 @@ import {
 
 export default function SeekBar(props) {
 const {
-  seekBarAudioTime
+  currentAudioTime,
+  setAudioTime,
+  itiTg,
+  tgNumber
 }=props;
 
+  const currentTimeMinutes = Math.floor(currentAudioTime % 3600 / 60);
+  const currentTimeSeconds = ('0'+Math.floor(currentAudioTime % 3600 % 60)).slice(-2);
+  const minutesDuration = itiTg.length > 0 && Math.floor(itiTg[tgNumber].audioLength % 3600 / 60);
+  const secondsDuration = itiTg.length > 0 &&('0'+Math.floor(itiTg[tgNumber].audioLength % 3600 % 60)).slice(-2);
     
-  const [audioTime, setAudioTime] = useState(0);
-
   // useEffect( async ()  => {
 
   //   if ((await SoundPlayer.getInfo()).duration!=null){
@@ -40,8 +45,9 @@ const {
       if ((await SoundPlayer.getInfo()).duration!=null){
         console.log("Seek forward")
         setAudioTime(await SoundPlayer.getInfo().currentTime)
-        SoundPlayer.seek(audioTime+time);
-        setAudioTime(audioTime+time);
+        SoundPlayer.seek(currentAudioTime+time);
+        //TODO check if currentaudio time is less than 10 and set to 0 if it is
+        setAudioTime(currentAudioTime+time);
       }
       else{
         console.log("Failked seek")
@@ -53,8 +59,11 @@ const {
       if ((await SoundPlayer.getInfo()).duration!=null){
         console.log("Seek backward")
         setAudioTime(await SoundPlayer.getInfo().currentTime)
-        SoundPlayer.seek(audioTime-time);
-        setAudioTime(audioTime-time);
+        SoundPlayer.seek(currentAudioTime-time);
+        if (currentAudioTime-time < 0){
+          setAudioTime(0);
+        }
+        else setAudioTime(currentAudioTime-time);
       }
       else{
         console.log("Failked backward")
@@ -64,25 +73,34 @@ const {
     return(
         <View style={styles.sliderCardHolder}>
             <View style={styles.sliderCardContentHolder}>
+
+              <View style={styles.audioTimer}>
+                <Text style={{color:`#fffaf0`, fontWeight:'600'}}>{currentTimeMinutes}:{currentTimeSeconds}</Text>
+                <Text style={{color:`#fffaf0`, fontWeight:'600'}}>
+                  {minutesDuration}:{secondsDuration}
+                </Text>
+              </View>
+            
             <TouchableOpacity onPress={() => { 
                     seekBackward(10);
                   }}>
               <Image source={backbutton} style={{width: 30, height: 30, resizeMode: 'cover'}}/>
             </TouchableOpacity>
-            <Text style={{color:`#fffaf0`, fontWeight:'600'}}>{audioTime}</Text>
-
-            {/* <View>
-              </View> */}
+            
+{/*TODO Slider use onSlideCOmplete to change currentaduio time and do soundplayer.seek */}
               <View style={styles.sliderCardSliderHolder}>
-            <Slider
-                style={{width: 330, height: 20, opacity: 50}}
+                <Slider
+                style={{width: 250, height: 20, opacity: 50}}
                 minimumValue={0}
                 maximumValue={1} 
                 minimumTrackTintColor="#b4eb34"
                 maximumTrackTintColor="#eb344c"
+                onSlidingComplete={(value) => {
+                  console.log(value * (itiTg.length > 0 && itiTg[tgNumber].audioLength))
+                }}
                 />
-                
-                </View>
+              </View>
+
                 <TouchableOpacity onPress={() => {
                     seekForward(10);
                   }}>
@@ -95,6 +113,11 @@ const {
     }
 
     const styles = StyleSheet.create({
+      audioTimer:{
+        justifyContent:'center',
+        alignItems: 'center',
+        paddingHorizontal: 5,
+      },
       sliderCardSliderHolder:
       {
         justifyContent: 'center',
@@ -105,7 +128,7 @@ const {
           position: 'absolute',
           zIndex: 2,
           width: Dimensions.get('window').width,
-          height: 180,
+          height: 100,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

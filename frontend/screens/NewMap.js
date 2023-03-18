@@ -615,11 +615,15 @@ export default function NewMap({navigation, userId, route}) {
               currentSpecialScreen={currentSpecialScreen}
               setCurrentSpecialScreen={setCurrentSpecialScreen}
               deactivateTravelGuideNav={deactivateTravelGuideNav}
-              currentAudioTime={audioTime}
               setAudioTime={setAudioTime}
             />
           )}
-          <SeekBar></SeekBar>
+          <SeekBar
+            currentAudioTime={audioTime}
+            setAudioTime={setAudioTime}
+            itiTg={itiTg}
+            tgNumber={tgNumber}
+          />
           {runningRoute && (
             <TopInfoCard
               tg={itiTg}
@@ -633,6 +637,7 @@ export default function NewMap({navigation, userId, route}) {
               setCurrentSpecialScreen={setCurrentSpecialScreen}
               setCurrentBottomSheetType={setCurrentBottomSheetType}
               deactivateTravelGuideNav={deactivateTravelGuideNav}
+              setAudioTime={setAudioTime}
             />
           )}
           {!showDirection && !runningRoute && (
