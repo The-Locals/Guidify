@@ -10,7 +10,7 @@ import {
 import playIcon from '../assets/play_1.png';
 import pauseIcon from '../assets/pause_1.png';
 import {WebView} from 'react-native-webview';
-import SoundPlayer from 'react-native-sound-player';
+// import SoundPlayer from 'react-native-sound-player';
 import SeekBar from '../components/SeekBar'
 
 export default function BottomInfoCard(props) {
@@ -29,8 +29,13 @@ export default function BottomInfoCard(props) {
     currentSpecialScreen,
     setCurrentSpecialScreen,
     deactivateTravelGuideNav,
-    currentlyPlaying,
+    currentAudioTime,
+    setAudioTime
   } = props;
+
+  useEffect( async () => {
+
+  },[])
 
   const [isPaused, setPaused] = useState(true);
   const [currentPlayingTG, setCurrentPlayingTG] = useState(null);

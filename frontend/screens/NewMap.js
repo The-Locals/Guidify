@@ -41,6 +41,7 @@ export default function NewMap({navigation, userId, route}) {
   const [userLocation, setUserLocation] = useState(null);
   const userLocationRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [audioTime, setAudioTime] = useState(0);
 
   //for detail itinerary screen
   const [showDetailIti, setShowDetailIti] = useState(false);
@@ -614,6 +615,8 @@ export default function NewMap({navigation, userId, route}) {
               currentSpecialScreen={currentSpecialScreen}
               setCurrentSpecialScreen={setCurrentSpecialScreen}
               deactivateTravelGuideNav={deactivateTravelGuideNav}
+              currentAudioTime={audioTime}
+              setAudioTime={setAudioTime}
             />
           )}
           <SeekBar></SeekBar>

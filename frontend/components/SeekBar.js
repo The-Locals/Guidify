@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     StyleSheet,
     FlatList,
@@ -16,11 +16,63 @@ import {
   import SoundPlayer from 'react-native-sound-player';
 
 export default function SeekBar(props) {
+const {
+  seekBarAudioTime
+}=props;
+
     
+  const [audioTime, setAudioTime] = useState(0);
+
+  // useEffect( async ()  => {
+
+  //   if ((await SoundPlayer.getInfo()).duration!=null){
+  //     setAudioTime(await SoundPlayer.getInfo().duration);
+  //     console.log("Use efefect audio time text: ",audioTime);
+  //   }
+  //   else {
+  //     setAudioTime(0);
+  //     console.log("use effect el;se: ",audioTime)
+  //   }
+  //   }, [SoundPlayer]);
+
+    const seekForward = async (time) => {
+      
+      if ((await SoundPlayer.getInfo()).duration!=null){
+        console.log("Seek forward")
+        setAudioTime(await SoundPlayer.getInfo().currentTime)
+        SoundPlayer.seek(audioTime+time);
+        setAudioTime(audioTime+time);
+      }
+      else{
+        console.log("Failked seek")
+      }
+    }
+
+    const seekBackward = async (time) => {
+      
+      if ((await SoundPlayer.getInfo()).duration!=null){
+        console.log("Seek backward")
+        setAudioTime(await SoundPlayer.getInfo().currentTime)
+        SoundPlayer.seek(audioTime-time);
+        setAudioTime(audioTime-time);
+      }
+      else{
+        console.log("Failked backward")
+      }
+    }
+
     return(
         <View style={styles.sliderCardHolder}>
             <View style={styles.sliderCardContentHolder}>
-            <TouchableOpacity onPress={SoundPlayer.playUrl()}><Image source={backbutton} style={{width: 30, height: 30, resizeMode: 'cover'}}/></TouchableOpacity>
+            <TouchableOpacity onPress={() => { 
+                    seekBackward(10);
+                  }}>
+              <Image source={backbutton} style={{width: 30, height: 30, resizeMode: 'cover'}}/>
+            </TouchableOpacity>
+            <Text style={{color:`#fffaf0`, fontWeight:'600'}}>{audioTime}</Text>
+
+            {/* <View>
+              </View> */}
               <View style={styles.sliderCardSliderHolder}>
             <Slider
                 style={{width: 330, height: 20, opacity: 50}}
@@ -31,7 +83,11 @@ export default function SeekBar(props) {
                 />
                 
                 </View>
-                <TouchableOpacity onPress={SoundPlayer.pause()}><Image source={forwardbutton} style={{width: 30, height: 30, resizeMode: 'cover'}}/></TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    seekForward(10);
+                  }}>
+                    <Image source={forwardbutton} style={{width: 30, height: 30, resizeMode: 'cover'}}/>
+                </TouchableOpacity>
                 </View>
         </View>
         )
@@ -49,7 +105,7 @@ export default function SeekBar(props) {
           position: 'absolute',
           zIndex: 2,
           width: Dimensions.get('window').width,
-          height: 80,
+          height: 180,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
