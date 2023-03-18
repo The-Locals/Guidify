@@ -29,16 +29,15 @@ const {
   const secondsDuration = itiTg.length > 0 &&('0'+Math.floor(itiTg[tgNumber].audioLength % 3600 % 60)).slice(-2);
 
     const seekForward = (time) => {
-      
       if (currentAudioTime != 0){
         console.log("Seek forward")
-        setAudioTime(currentAudioTime+time)
+        if (currentAudioTime+time < (itiTg.length > 0 && itiTg[tgNumber].audioLength) )
+          setAudioTime(currentAudioTime+time);
+
         SoundPlayer.seek(currentAudioTime+time);
-        //TODO check if currentaudio time is less than 10 and set to 0 if it is
-        setAudioTime(currentAudioTime+time);
       }
       else{
-        console.log("Failked seek")
+        console.log("No Travel Guide present")
       }
     }
 
@@ -46,7 +45,6 @@ const {
       
       if (currentAudioTime != 0){
         console.log("Seek backward")
-        setAudioTime(currentAudioTime-time)
         SoundPlayer.seek(currentAudioTime-time);
         if (currentAudioTime-time < 0){
           setAudioTime(0);
@@ -54,11 +52,11 @@ const {
         else setAudioTime(currentAudioTime-time);
       }
       else{
-        console.log("Failked backward")
+        console.log("No Travel Guide present")
       }
     }
 
-    const handleSeekBar = (value) =>{
+    const handleSeekBarChange = (value) =>{
       seekToTime = value * (itiTg.length > 0 && itiTg[tgNumber].audioLength)
       console.log(seekToTime)
       SoundPlayer.seek(seekToTime)
@@ -86,8 +84,7 @@ const {
                   }}>
               <Image source={backbutton} style={{width: 30, height: 30, resizeMode: 'cover'}}/>
             </TouchableOpacity>
-            
-{/*TODO Slider use onSlideCOmplete to change currentaduio time and do soundplayer.seek */}
+
               <View style={styles.sliderCardSliderHolder}>
                 <Slider
                 style={{width: 250, height: 20, opacity: 50}}
@@ -97,7 +94,7 @@ const {
                 maximumTrackTintColor="#eb344c"
                 value={calculateSeekBar()}
                 onSlidingComplete={(value) => {
-                  handleSeekBar(value)
+                  handleSeekBarChange(value)
                 }}
                 />
               </View>
@@ -107,7 +104,7 @@ const {
                   }}>
                     <Image source={forwardbutton} style={{width: 30, height: 30, resizeMode: 'cover'}}/>
                 </TouchableOpacity>
-                </View>
+              </View>
         </View>
         )
 
