@@ -64,8 +64,10 @@ const {
       SoundPlayer.seek(seekToTime)
     }
 
-    calculateSeekBar = (currentAudioTime) =>{
-      return currentAudioTime / (itiTg.length > 0 && itiTg[tgNumber].audioLength)
+    calculateSeekBar = () =>{
+      if (minutesDuration != 0 && secondsDuration != 0)
+        return currentAudioTime * (itiTg.length > 0 && itiTg[tgNumber].audioLength)
+      return 0
     }
 
     return(
@@ -93,7 +95,7 @@ const {
                 maximumValue={1} 
                 minimumTrackTintColor="#b4eb34"
                 maximumTrackTintColor="#eb344c"
-                value={calculateSeekBar(currentAudioTime)}
+                value={calculateSeekBar()}
                 onSlidingComplete={(value) => {
                   handleSeekBar(value)
                 }}
