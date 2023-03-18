@@ -11,26 +11,27 @@ import {
     Dimensions,
 } from 'react-native';
   import Slider from '@react-native-community/slider';
-  import backbutton from '../assets/backward-seek.png'
-  import forwardbutton from '../assets/forward-seek.png'
-  
+  import backbutton from '../assets/backward-seek.png';
+  import forwardbutton from '../assets/forward-seek.png';
+  import SoundPlayer from 'react-native-sound-player';
+
 export default function SeekBar(props) {
     
     return(
         <View style={styles.sliderCardHolder}>
             <View style={styles.sliderCardContentHolder}>
-            <TouchableOpacity><Image source={backbutton} style={{width: 30, height: 30, resizeMode: 'cover'}}/></TouchableOpacity>
+            <TouchableOpacity onPress={SoundPlayer.playUrl()}><Image source={backbutton} style={{width: 30, height: 30, resizeMode: 'cover'}}/></TouchableOpacity>
               <View style={styles.sliderCardSliderHolder}>
             <Slider
-                style={{width: 330, height: 20}}
+                style={{width: 330, height: 20, opacity: 50}}
                 minimumValue={0}
-                maximumValue={1}
+                maximumValue={1} 
                 minimumTrackTintColor="#b4eb34"
                 maximumTrackTintColor="#eb344c"
                 />
                 
                 </View>
-                <TouchableOpacity><Image source={forwardbutton} style={{width: 30, height: 30, resizeMode: 'cover'}}/></TouchableOpacity>
+                <TouchableOpacity onPress={SoundPlayer.pause()}><Image source={forwardbutton} style={{width: 30, height: 30, resizeMode: 'cover'}}/></TouchableOpacity>
                 </View>
         </View>
         )
