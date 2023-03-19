@@ -13,35 +13,18 @@ import {
 import Slider from '@react-native-community/slider';
 import backbutton from '../assets/backward-seek.png';
 import forwardbutton from '../assets/forward-seek.png';
-import playIcon from '../assets/play_1.png';
-import pauseIcon from '../assets/pause_1.png';
 import SoundPlayer from 'react-native-sound-player';
 
 export default function SeekBar(props) {
   const {currentAudioTime, setAudioTime, itiTg, tgNumber} = props;
 
-  const [isPaused, setPaused] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-
   const currentTimeMinutes = Math.floor((currentAudioTime % 3600) / 60);
-  const currentTimeSeconds = (
-    '0' + Math.floor((currentAudioTime % 3600) % 60)
-  ).slice(-2);
-  const minutesDuration =
-    itiTg.length > 0 && Math.floor((itiTg[tgNumber].audioLength % 3600) / 60);
-  const secondsDuration =
-    itiTg.length > 0 &&
+  const currentTimeSeconds = ('0' + Math.floor((currentAudioTime % 3600) % 60)).slice(-2);
+  const minutesDuration = itiTg.length > 0 &&
+    Math.floor((itiTg[tgNumber].audioLength % 3600) / 60);
+  const secondsDuration = itiTg.length > 0 &&
     ('0' + Math.floor((itiTg[tgNumber].audioLength % 3600) % 60)).slice(-2);
 
-  function handleAudioButtonPress() {
-    if (isPaused) {
-      SoundPlayer.play();
-      setPaused(false);
-    } else {
-      SoundPlayer.pause();
-      setPaused(true);
-    }
-  }
   const seekForward = time => {
     if (currentAudioTime != 0) {
       if (
@@ -59,41 +42,26 @@ export default function SeekBar(props) {
   const seekBackward = time => {
     if (currentAudioTime != 0) {
       SoundPlayer.seek(currentAudioTime - time);
-      if (currentAudioTime - time < 0) setAudioTime(0);
-      else setAudioTime(currentAudioTime - time);
-    } else {
+      if (currentAudioTime - time < 0) 
+        setAudioTime(0);
+      else 
+        setAudioTime(currentAudioTime - time);
+    } 
+    else
       console.log('No Travel Guide present');
-    }
   };
 
-  //TODO is there a way to make this check not happen with a flag?
-  //TODO potential performance enhancement because this check fires off constantly while TG is playing
-  const checkIfDisabled = () => {
-    console.log('Check');
-    if (currentAudioTime == 0) return true;
-    return false;
-  };
-
+  //Calcualte where to jump in the audio when the user uses the SeekBar
   const handleSeekBarChange = value => {
     seekToTime = value * (itiTg.length > 0 && itiTg[tgNumber].audioLength);
+    setAudioTime(seekToTime)
     SoundPlayer.seek(seekToTime);
-    return 0;
   };
 
   //TODO Is there a way to interval this check? happens too frequently imo
+  // Calculate the audio time to move the SeekBar accordingly
   calculateSeekBar = () => {
-    if (
-      currentTimeMinutes != 0 &&
-      secondsDuration != 0 &&
-      currentAudioTime != 0
-    ) {
-      console.log(currentAudioTime);
-      return (
-        currentAudioTime / (itiTg.length > 0 && itiTg[tgNumber].audioLength)
-      );
-    }
-    console.log('Failed if check');
-    return 0;
+      return (currentAudioTime / (itiTg.length > 0 && itiTg[tgNumber].audioLength))
   };
 
   return (
@@ -101,24 +69,6 @@ export default function SeekBar(props) {
       {/* Everything inside this view is inside the black box
               Anything place outside of it will go outside the box */}
       <View style={styles.sliderCardContentHolder}>
-        {/* <TouchableOpacity
-          // TODO Figure out a way to disable or hide the button when there is no Travel guide playing
-          // For now this button is placeholder
-          disabled={true}
-          style={{
-            flex: 0.3,
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-          onPress={() => {
-            handleAudioButtonPress();
-          }}>
-          <Image
-            source={isPaused ? playIcon : pauseIcon}
-            style={{width: 30, height: 30, resizeMode: 'cover'}}
-          />
-        </TouchableOpacity> */}
-
         <View style={styles.audioTimer}>
           <Text style={styles.textStyles}>
             {currentTimeMinutes}:{currentTimeSeconds} | {' '}
@@ -135,7 +85,7 @@ export default function SeekBar(props) {
           }}>
           <Image
             source={backbutton}
-            style={{width: 30, height: 30, resizeMode: 'cover'}}
+            style={styles.seekButtons}
           />
         </TouchableOpacity>
 
@@ -146,7 +96,6 @@ export default function SeekBar(props) {
             maximumValue={1}
             minimumTrackTintColor="#b4eb34"
             maximumTrackTintColor="#eb344c"
-            disabled={checkIfDisabled()}
             value={calculateSeekBar()}
             onSlidingComplete={value => {
               handleSeekBarChange(value);
@@ -160,7 +109,7 @@ export default function SeekBar(props) {
           }}>
           <Image
             source={forwardbutton}
-            style={{width: 30, height: 30, resizeMode: 'cover'}}
+            style={styles.seekButtons}
           />
         </TouchableOpacity>
       </View>
@@ -169,9 +118,14 @@ export default function SeekBar(props) {
 }
 
 const styles = StyleSheet.create({
+  seekButtons: {
+   width: 27,
+   height: 27,
+   resizeMode: 'cover',
+},
   textStyles: {
     color: 'white',
-    fontSize: 10,
+    fontSize: 16,
     fontFamily: 'Lexend-Regular',
   },
   audioTimer: {
@@ -191,7 +145,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    bottom: 170,
+    bottom: 155,
     padding: 10,
     width: Dimensions.get('window').width,
   },
