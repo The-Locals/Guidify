@@ -22,6 +22,7 @@ import Searchbar from '../components/home/Searchbar';
 import BottomInfoCard from '../components/BottomInfoCard';
 import TopInfoCard from '../components/TopInfoCard';
 import {useIsFocused} from '@react-navigation/native';
+import SeekBar from '../components/SeekBar';
 
 //bottom sheet header
 import ContentsWithinAreaHeader from '../components/home/bottomSheetHeader/ContentsWithinArea';
@@ -42,6 +43,7 @@ export default function NewMap({navigation, userId, route}) {
   const userLocationRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const isFocused = useIsFocused();
+  const [audioTime, setAudioTime] = useState(0);
 
   //for detail itinerary screen
   const [showDetailIti, setShowDetailIti] = useState(false);
@@ -78,7 +80,7 @@ export default function NewMap({navigation, userId, route}) {
   }
 
   const SPECIAL_SCREEN_TYPE = {
-    TRAVEL_GUIDE_NAVIGATION: 'travelGuideNavigation'
+    TRAVEL_GUIDE_NAVIGATION: 'travelGuideNavigation',
   };
 
   const [currentSpecialScreen, setCurrentSpecialScreen] = useState(null);
@@ -267,15 +269,17 @@ export default function NewMap({navigation, userId, route}) {
     handleExitContentsForLocation();
   };
 
-  const activateTravelGuideNav = (travelGuide) => {
+  const activateTravelGuideNav = travelGuide => {
     setCurrentSpecialScreen(SPECIAL_SCREEN_TYPE.TRAVEL_GUIDE_NAVIGATION);
     setShowDirection(true);
     setItiTg([travelGuide]);
-    setTgMarkers([{
-      id: travelGuide._id,
-      latitude: travelGuide.coordinates.lat,
-      longitude: travelGuide.coordinates.lng
-    }]);
+    setTgMarkers([
+      {
+        id: travelGuide._id,
+        latitude: travelGuide.coordinates.lat,
+        longitude: travelGuide.coordinates.lng,
+      },
+    ]);
     setRunningIds([`place_id:${travelGuide.placeId}`]);
     setRunningRoute(true);
   };
@@ -285,7 +289,7 @@ export default function NewMap({navigation, userId, route}) {
     setCurrentBottomSheetType(BOTTOM_SHEET_TYPE.CONTENTS_WITHIN_AREA);
     setShowDetailIti(false);
     setShowDirection(false);
-  }
+  };
 
   //get route params
   // useEffect(() => {
@@ -472,7 +476,11 @@ export default function NewMap({navigation, userId, route}) {
     }
 
     let response = await fetch(
-      `http://${ip.ip}:8000/travelGuide/byCoordinates?maxLat=${region.latitude + radius}&maxLng=${region.longitude + radius}&minLat=${region.latitude - radius}&minLng=${region.longitude - radius}`,
+      `http://${ip.ip}:8000/travelGuide/byCoordinates?maxLat=${
+        region.latitude + radius
+      }&maxLng=${region.longitude + radius}&minLat=${
+        region.latitude - radius
+      }&minLng=${region.longitude - radius}`,
       {
         credentials: 'include',
         method: 'GET',
@@ -641,6 +649,15 @@ export default function NewMap({navigation, userId, route}) {
               currentSpecialScreen={currentSpecialScreen}
               setCurrentSpecialScreen={setCurrentSpecialScreen}
               deactivateTravelGuideNav={deactivateTravelGuideNav}
+              setAudioTime={setAudioTime}
+            />
+          )}
+          {runningRoute && !showDirection && (
+            <SeekBar
+              currentAudioTime={audioTime}
+              setAudioTime={setAudioTime}
+              itiTg={itiTg}
+              tgNumber={tgNumber}
             />
           )}
           {runningRoute && (
@@ -656,6 +673,7 @@ export default function NewMap({navigation, userId, route}) {
               setCurrentSpecialScreen={setCurrentSpecialScreen}
               setCurrentBottomSheetType={setCurrentBottomSheetType}
               deactivateTravelGuideNav={deactivateTravelGuideNav}
+              setAudioTime={setAudioTime}
             />
           )}
           {!showDirection && !runningRoute && (
@@ -762,7 +780,9 @@ export default function NewMap({navigation, userId, route}) {
             provider="google"
             onRegionChangeComplete={handleRegionChange}
             style={styles.map}>
-            {(showDetailIti || currentSpecialScreen == SPECIAL_SCREEN_TYPE.TRAVEL_GUIDE_NAVIGATION) &&
+            {(showDetailIti ||
+              currentSpecialScreen ==
+                SPECIAL_SCREEN_TYPE.TRAVEL_GUIDE_NAVIGATION) &&
               runningIds.length > 0 &&
               runningIds.map((id, index) => {
                 return (
@@ -818,7 +838,8 @@ export default function NewMap({navigation, userId, route}) {
                   </Marker>
                 );
               })}
-            {!showDetailIti && !currentSpecialScreen &&
+            {!showDetailIti &&
+            !currentSpecialScreen &&
             currentBottomSheetType == BOTTOM_SHEET_TYPE.CONTENTS_WITHIN_AREA
               ? Object.keys(locationsWithinFrame).map(place_id => {
                   const location = locationsWithinFrame[place_id];
@@ -865,8 +886,7 @@ export default function NewMap({navigation, userId, route}) {
                         coordinate={{
                           latitude: location.latitude,
                           longitude: location.longitude,
-                        }}
-                      >
+                        }}>
                         <Image
                           source={require('../assets/map-marker-black.png')}
                           style={{width: 45, height: 50}}
