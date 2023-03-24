@@ -41,7 +41,7 @@ export default function TravelGuide({
     function handleNavigateTravelGuide() {
       if (closeCurrentModal) closeCurrentModal();
       if (!activateTravelGuideNav) {
-        navigation.navigate('Home', {
+        navigation.navigate('Map', {
           travelGuide: travelGuide,
           type: "travelGuideNavigation",
         });

@@ -163,7 +163,7 @@ export default function Itinerary({
             style={{flex: 1, marginTop: 3, marginLeft: 'auto'}}
             onPress={() => {
               if (isUserProfilePage) {
-                navigation.navigate('Home', {
+                navigation.navigate('Map', {
                   itinerary: item,
                   type: 'contentsForItinerary',
                   showIti: true,

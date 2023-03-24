@@ -21,6 +21,7 @@ import ip from '../ip';
 import Searchbar from '../components/home/Searchbar';
 import BottomInfoCard from '../components/BottomInfoCard';
 import TopInfoCard from '../components/TopInfoCard';
+import {useIsFocused} from '@react-navigation/native';
 import SeekBar from '../components/SeekBar';
 
 //bottom sheet header
@@ -41,6 +42,7 @@ export default function NewMap({navigation, userId, route}) {
   const [userLocation, setUserLocation] = useState(null);
   const userLocationRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
+  const isFocused = useIsFocused();
   const [audioTime, setAudioTime] = useState(0);
 
   //for detail itinerary screen
@@ -290,26 +292,52 @@ export default function NewMap({navigation, userId, route}) {
   };
 
   //get route params
-  useEffect(() => {
-    navigation.addListener('focus', () => {
-      if (route.params) {
-        if (route.params.type == BOTTOM_SHEET_TYPE.CONTENTS_FOR_ITINERARY) {
-          const {itinerary, type, showIti, showDir} = route.params;
-          setSelectedItinerary(itinerary);
-          setCurrentBottomSheetType(type);
-          setShowDetailIti(showIti);
-          setShowDirection(showDir);
-          sheetRef.current.snapTo(1);
-          return;
-        }
+  // useEffect(() => {
+  //   navigation.addListener('focus', () => {
+  //     if (route.params) {
+  //       if (route.params.type == BOTTOM_SHEET_TYPE.CONTENTS_FOR_ITINERARY) {
+  //         const {itinerary, type, showIti, showDir} = route.params;
+  //         setSelectedItinerary(itinerary);
+  //         setCurrentBottomSheetType(type);
+  //         setShowDetailIti(showIti);
+  //         setShowDirection(showDir);
+  //         sheetRef.current.snapTo(1);
+  //         return;
+  //       }
 
-        if (route.params.type == SPECIAL_SCREEN_TYPE.TRAVEL_GUIDE_NAVIGATION) {
-          const {travelGuide, type} = route.params;
-          activateTravelGuideNav(travelGuide);
-        }
+  //       if (route.params.type == SPECIAL_SCREEN_TYPE.TRAVEL_GUIDE_NAVIGATION) {
+  //         const {travelGuide, type} = route.params;
+  //         activateTravelGuideNav(travelGuide);
+  //       }
+  //     }
+  //   });
+  // }, [route.params]);
+
+  useEffect(() => {
+    if (route.params && sheetRef.current) {
+      if (route.params.type == BOTTOM_SHEET_TYPE.CONTENTS_FOR_ITINERARY) {
+        sheetRef.current.snapTo(1);
       }
-    });
-  }, [route.params]);
+    }
+  }, [sheetRef.current])
+
+  useEffect(() => {
+    if (route.params) {
+      if (route.params.type == BOTTOM_SHEET_TYPE.CONTENTS_FOR_ITINERARY) {
+        const {itinerary, type, showIti, showDir} = route.params;
+        setSelectedItinerary(itinerary);
+        setCurrentBottomSheetType(type);
+        setShowDetailIti(showIti);
+        setShowDirection(showDir);
+        return;
+      }
+
+      if (route.params.type == SPECIAL_SCREEN_TYPE.TRAVEL_GUIDE_NAVIGATION) {
+        const {travelGuide, type} = route.params;
+        activateTravelGuideNav(travelGuide);
+      }
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     // get user position and set region to focus on user's position.
