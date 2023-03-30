@@ -1,6 +1,6 @@
-# Release1
+# Guidify
 
-This is The repository for Release 1 for the application Guidify being developed for the module *Collaborative Project* by The Locals
+This is The repository for the application Guidify being developed for the module *Collaborative Project* by The Locals
 
 ###### Prototype Design: https://www.figma.com/file/JcJeYDHMMXVelcdbKIeU9w/Guidify-Prototype?node-id=0%3A1&t=UqWPkVShNYlVzUr2-0
 
