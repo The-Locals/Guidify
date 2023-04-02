@@ -24,7 +24,7 @@ export default function CreateTravelGuide({navigation, route}) {
     geometry: {location: {lat: 48.8496818, lng: 2.2940881}},
   };
   const [defaultPhotoUrl, setDefaultPhotoUrl] = useState('');
-  const key = 'AIzaSyCsdtGfQpfZc7tbypPioacMv2y7eMoaW6g';
+  const key = 'AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU';
   const [location, setLocation] = React.useState({
     placeId: '',
     name: '',
