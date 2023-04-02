@@ -788,7 +788,7 @@ export default function NewMap({navigation, userId, route}) {
                 return (
                   <MapViewDirections
                     key={id}
-                    apikey="AIzaSyBTu-eAg_Ou65Nzk3-2tvGjbg9rcC2_M3I"
+                    apikey="AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU"
                     strokeWidth={3}
                     strokeColor="black"
                     origin={
