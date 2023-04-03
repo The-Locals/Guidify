@@ -1,4 +1,11 @@
-import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import ArrowIcon from '../../../assets/arrow.png';
 import Itinerary from '../../Itinerary';
 
@@ -10,7 +17,7 @@ export default function ContentsForDetailedIti(props) {
     setRunningRoute,
     setShowDetailIti,
     setShowDirection,
-    sheetRef
+    sheetRef,
   } = props;
 
   const styles = StyleSheet.create({
@@ -48,8 +55,6 @@ export default function ContentsForDetailedIti(props) {
       style={{
         width: '100%',
         padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#f0f2f5',
       }}>
       <View
         style={{
@@ -91,7 +96,7 @@ export default function ContentsForDetailedIti(props) {
           </Text>
         </TouchableOpacity>
       </View>
-      <Itinerary item={selectedItinerary} isDetail={true}/>
+      <Itinerary item={selectedItinerary} isDetail={true} />
     </View>
   );
 }

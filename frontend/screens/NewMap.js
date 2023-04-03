@@ -23,7 +23,7 @@ import BottomInfoCard from '../components/BottomInfoCard';
 import TopInfoCard from '../components/TopInfoCard';
 import {useIsFocused} from '@react-navigation/native';
 import SeekBar from '../components/SeekBar';
-import mapAPIKey from '../mapAPIKey.json'
+import {mapAPIKey} from '../mapAPIKey.json';
 
 //bottom sheet header
 import ContentsWithinAreaHeader from '../components/home/bottomSheetHeader/ContentsWithinArea';
@@ -258,6 +258,22 @@ export default function NewMap({navigation, userId, route}) {
         zIndex: 1,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
+        shadowOffset: {
+          width: 0,
+          height: currentBottomSheetType == BOTTOM_SHEET_TYPE.CONTENTS_FOR_ITINERARY ?2:0,
+        },
+        shadowOpacity:
+          currentBottomSheetType == BOTTOM_SHEET_TYPE.CONTENTS_FOR_ITINERARY
+            ? 0.25
+            : 0,
+        shadowRadius:
+          currentBottomSheetType == BOTTOM_SHEET_TYPE.CONTENTS_FOR_ITINERARY
+            ? 3.84
+            : 0,
+        elevation:
+          currentBottomSheetType == BOTTOM_SHEET_TYPE.CONTENTS_FOR_ITINERARY
+            ? 10
+            : 0,
       }}>
       <View style={styles.stripIcon} />
       {getHeaderBasedOnBottomSheetType()}
@@ -319,7 +335,7 @@ export default function NewMap({navigation, userId, route}) {
         sheetRef.current.snapTo(1);
       }
     }
-  }, [sheetRef.current])
+  }, [sheetRef.current]);
 
   useEffect(() => {
     if (route.params) {
@@ -790,7 +806,7 @@ export default function NewMap({navigation, userId, route}) {
                 return (
                   <MapViewDirections
                     key={id}
-                    apikey={mapAPIKey.mapAPIKey}
+                    apikey={mapAPIKey}
                     strokeWidth={3}
                     strokeColor="black"
                     origin={
