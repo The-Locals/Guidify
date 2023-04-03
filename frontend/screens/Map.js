@@ -95,7 +95,7 @@ const Map = () => {
   const [photo, setPhoto] = useState(
     'ARywPAI4CheuR7nthP4lUNuQw09LqBIfNHSNdfgmBuUA7SdwUjkkiWwEJGcbueamM-zxmpJ7HC8yvx-w3GUczlThnPkC6-llma_MPNGPQbGo1R0SGGaUIUUiruARLrwesAJYrbxiADZib5tT1o-k_JvNdQyx91hxav_VDmaaNfshPjvQygi7',
   );
-  const key = 'AIzaSyCsdtGfQpfZc7tbypPioacMv2y7eMoaW6g';
+  const key = 'AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU';
   const url =
     'https://maps.googleapis.com/maps/api/place/photo?photoreference=' +
     photo +
@@ -369,7 +369,7 @@ const Map = () => {
         coordinates.push(userLocation);
         for (let i = 0; i < modifiedTg.length; i++) {
           let res = await axios.get(
-            `https://maps.googleapis.com/maps/api/place/details/json?place_id=${modifiedTg[i].placeId}&key=AIzaSyCsdtGfQpfZc7tbypPioacMv2y7eMoaW6g`,
+            `https://maps.googleapis.com/maps/api/place/details/json?place_id=${modifiedTg[i].placeId}&key=AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU`,
           );
           let data = res.data.result;
           setDestinationInfo(prev => {
@@ -380,7 +380,7 @@ const Map = () => {
                 imageUrl:
                   'https://maps.googleapis.com/maps/api/place/photo?photoreference=' +
                   data.photos[0].photo_reference +
-                  '&sensor=false&maxheight=500&maxwidth=500&key=AIzaSyBTu-eAg_Ou65Nzk3-2tvGjbg9rcC2_M3I',
+                  '&sensor=false&maxheight=500&maxwidth=500&key=AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU',
               },
             ];
           });
@@ -555,8 +555,8 @@ const Map = () => {
     setRunningIti(true);
     mapRef.current.animateToRegion({
       ...userLocation,
-      latitudeDelta: 0.005,
-      longitudeDelta: 0.005,
+      latitudeDelta: 0.115,
+      longitudeDelta: 0.115,
     });
   }
   function resetRouteVariables() {
@@ -1007,7 +1007,7 @@ const Map = () => {
 
             query={{
               // available options: https://developers.google.com/places/web-service/autocomplete
-              key: 'AIzaSyCsdtGfQpfZc7tbypPioacMv2y7eMoaW6g',
+              key: 'AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU',
               language: 'en', // language of the results
               types: 'establishment', // default: 'geocode',
               location: `${region.latitude}, ${region.longitude}`,
@@ -1103,7 +1103,7 @@ const Map = () => {
         onPoiClick={async e => {
           let placeIds = '';
           let res = await axios.get(
-            `https://maps.googleapis.com/maps/api/place/details/json?place_id=${e.nativeEvent.placeId}&key=AIzaSyCsdtGfQpfZc7tbypPioacMv2y7eMoaW6g`,
+            `https://maps.googleapis.com/maps/api/place/details/json?place_id=${e.nativeEvent.placeId}&key=AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU`,
           );
           let data = res.data.result;
           console.log('Before place ids setting: ', placeIds);

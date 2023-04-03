@@ -73,7 +73,7 @@ export default function NewMap({navigation, userId, route}) {
 
   const [locationsWithinFrame, setLocationsWithinFrame] = useState([]);
   const locationNumber = useRef([]);
-  const mapKey = 'AIzaSyCsdtGfQpfZc7tbypPioacMv2y7eMoaW6g';
+  const mapKey = 'AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU';
 
   function handleRegionChange(val) {
     setRegion(val);
@@ -769,11 +769,13 @@ export default function NewMap({navigation, userId, route}) {
             </View>
           )}
           <MapView
+            maxZoomLevel={18.3}
             initialRegion={region}
             // region={region}
             ref={mapRef}
             customMapStyle={mapStyle}
             showsUserLocation
+            loadingEnabled={true}
             mapPadding={{
               bottom: 80,
             }}
@@ -788,7 +790,7 @@ export default function NewMap({navigation, userId, route}) {
                 return (
                   <MapViewDirections
                     key={id}
-                    apikey="AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU"
+                    apikey={mapKey}
                     strokeWidth={3}
                     strokeColor="black"
                     origin={
