@@ -1165,7 +1165,7 @@ const Map = () => {
             return (
               <MapViewDirections
                 key={id}
-                apikey={mapAPIKey}
+                apikey={mapAPIKey.mapAPIKey}
                 strokeWidth={3}
                 strokeColor="hotpink"
                 origin={

@@ -3,6 +3,7 @@ import {View, Image, Text, FlatList, ActivityIndicator, StatusBar, Pressable, St
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import PlayIcon from "../assets/play.png";
 import axios from "axios";
+import mapAPIKey from '../mapAPIKey.json'
 
 const homePlace = { description: 'Home', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
 const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }};
