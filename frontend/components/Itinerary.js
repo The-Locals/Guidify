@@ -74,10 +74,18 @@ export default function Itinerary({
         paddingHorizontal: 15,
         paddingBottom: 15,
       }}>
+      {isDetail&&<View
+        style={{justifyContent: 'center', alignItems: 'center', padding: 5}}>
+        <Text
+          style={{fontFamily: 'Lexend-SemiBold', fontSize: 25, color: 'black'}}>
+          {item.name}
+        </Text>
+      </View>}
       {!isUserProfilePage && creatorInfo && (
         <View
           style={{
             flexDirection: 'row',
+            justifyContent: isDetail ? 'center' : 'flex-start',
           }}>
           <TouchableOpacity
             onPress={() => {
@@ -100,7 +108,7 @@ export default function Itinerary({
                 marginTop: 'auto',
                 marginBottom: 'auto',
                 marginLeft: 10,
-                fontFamily: 'Lexend-SemiBold',
+                fontFamily: isDetail ? 'Lexend-Light' : 'Lexend-SemiBold',
                 color: 'black',
                 fontSize: 17,
               }}>
@@ -109,35 +117,44 @@ export default function Itinerary({
           </TouchableOpacity>
         </View>
       )}
-      <Image
-        source={{uri: item.imageUrl}}
-        style={{
-          flex: 1,
-          width: '100%',
-          height: 200,
-          resizeMode: 'cover',
-          borderRadius: 10,
-          marginTop: isUserProfilePage ? 0 : 10,
-        }}
-      />
+      {!isDetail && (
+        <Image
+          source={{uri: item.imageUrl}}
+          style={{
+            flex: 1,
+            width: '100%',
+            height: 200,
+            resizeMode: 'cover',
+            borderRadius: 10,
+            marginTop: isUserProfilePage ? 0 : 10,
+          }}
+        />
+      )}
       <View style={{flexDirection: 'row'}}>
         <View style={{flex: 6, marginTop: 5, marginBottom: 5}}>
-          <Text
-            style={{
-              fontFamily: 'Lexend-SemiBold',
-              fontSize: 18,
-              color: 'black',
-            }}>
-            {item.name}
-          </Text>
+          {!isDetail && (
+            <Text
+              style={{
+                fontFamily: 'Lexend-SemiBold',
+                fontSize: 18,
+                color: 'black',
+              }}>
+              {item.name}
+            </Text>
+          )}
           {totalTime && (
-            <View style={{flexDirection: 'row', marginTop: 5}}>
-              <Icon name="clock-time-eight" color="black" size={25} />
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: 5,
+                justifyContent: isDetail ? 'center' : 'flex-start',
+              }}>
+              <Icon name="clock-time-eight" color="black" size={23} />
               <Text
                 style={{
                   marginBottom: 1,
-                  fontFamily: 'Lexend-SemiBold',
-                  fontSize: 16,
+                  fontFamily: isDetail ? 'Lexend-Regular' : 'Lexend-SemiBold',
+                  fontSize: isDetail ? 14 : 16,
                   color: 'black',
                 }}>
                 {' '}
@@ -147,8 +164,8 @@ export default function Itinerary({
               <Text
                 style={{
                   color: 'black',
-                  fontSize: 16,
-                  fontFamily: 'Lexend-SemiBold',
+                  fontSize: isDetail ? 14 : 16,
+                  fontFamily: isDetail ? 'Lexend-Regular' : 'Lexend-SemiBold',
                 }}>
                 {item.rating
                   ? ratingMap[Math.floor(item.rating)]

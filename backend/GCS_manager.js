@@ -3,7 +3,7 @@ const path = require("path");
 const gc = new Storage({
   keyFilename: path.join(
     __dirname,
-    "../loyal-venture-368318-8a7920f2df96.json"
+    "../loyal-venture-368318-2c04f87ac1f0.json"
   ),
   projectId: "loyal-venture-368318",
 });
