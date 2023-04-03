@@ -13,6 +13,7 @@ import upArrow from '../assets/uparrow.png';
 import camera from '../assets/camera.png';
 import headphones from '../assets/headphones.png';
 import ip from '../ip';
+import mapAPIKey from '../mapAPIKey.json'
 
 export default function CreateTravelGuide({navigation, route}) {
   const homePlace = {
@@ -24,7 +25,6 @@ export default function CreateTravelGuide({navigation, route}) {
     geometry: {location: {lat: 48.8496818, lng: 2.2940881}},
   };
   const [defaultPhotoUrl, setDefaultPhotoUrl] = useState('');
-  const key = 'AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU';
   const [location, setLocation] = React.useState({
     placeId: '',
     name: '',
@@ -182,13 +182,13 @@ export default function CreateTravelGuide({navigation, route}) {
               'https://maps.googleapis.com/maps/api/place/photo?photoreference=' +
               photoRef +
               '&sensor=false&maxheight=500&maxwidth=500&key=' +
-              key;
+              mapAPIKey;
             setDefaultPhotoUrl(url);
           }}
           getDefaultValue={() => ''}
           query={{
             // available options: https://developers.google.com/places/web-service/autocomplete
-            key: key,
+            key: mapAPIKey,
             language: 'en', // language of the results
             types: 'establishment', // default: 'geocode',
             location: `${region.latitude}, ${region.longitude}`,
