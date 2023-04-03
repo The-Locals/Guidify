@@ -30,6 +30,8 @@ import Arrow from '../assets/arrow.png';
 import axios from 'axios';
 import SoundPlayer from 'react-native-sound-player';
 import ip from '../ip';
+import mapAPIKey from '../mapAPIKey.json'
+
 const Map = () => {
   Geolocation.requestAuthorization();
   const modalAni = useRef(
@@ -95,12 +97,11 @@ const Map = () => {
   const [photo, setPhoto] = useState(
     'ARywPAI4CheuR7nthP4lUNuQw09LqBIfNHSNdfgmBuUA7SdwUjkkiWwEJGcbueamM-zxmpJ7HC8yvx-w3GUczlThnPkC6-llma_MPNGPQbGo1R0SGGaUIUUiruARLrwesAJYrbxiADZib5tT1o-k_JvNdQyx91hxav_VDmaaNfshPjvQygi7',
   );
-  const key = 'AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU';
   const url =
     'https://maps.googleapis.com/maps/api/place/photo?photoreference=' +
     photo +
     '&sensor=false&maxheight=500&maxwidth=500&key=' +
-    key;
+    mapAPIKey;
   const [description, setDescription] = useState('');
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -369,7 +370,8 @@ const Map = () => {
         coordinates.push(userLocation);
         for (let i = 0; i < modifiedTg.length; i++) {
           let res = await axios.get(
-            `https://maps.googleapis.com/maps/api/place/details/json?place_id=${modifiedTg[i].placeId}&key=AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU`,
+            `https://maps.googleapis.com/maps/api/place/details/json?place_id=${modifiedTg[i].placeId}&key=` +
+            mapAPIKey,
           );
           let data = res.data.result;
           setDestinationInfo(prev => {
@@ -380,7 +382,8 @@ const Map = () => {
                 imageUrl:
                   'https://maps.googleapis.com/maps/api/place/photo?photoreference=' +
                   data.photos[0].photo_reference +
-                  '&sensor=false&maxheight=500&maxwidth=500&key=AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU',
+                  '&sensor=false&maxheight=500&maxwidth=500&key=' +
+                  mapAPIKey,
               },
             ];
           });
@@ -1007,7 +1010,7 @@ const Map = () => {
 
             query={{
               // available options: https://developers.google.com/places/web-service/autocomplete
-              key: 'AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU',
+              key: mapAPIKey,
               language: 'en', // language of the results
               types: 'establishment', // default: 'geocode',
               location: `${region.latitude}, ${region.longitude}`,
@@ -1103,7 +1106,8 @@ const Map = () => {
         onPoiClick={async e => {
           let placeIds = '';
           let res = await axios.get(
-            `https://maps.googleapis.com/maps/api/place/details/json?place_id=${e.nativeEvent.placeId}&key=AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU`,
+            `https://maps.googleapis.com/maps/api/place/details/json?place_id=${e.nativeEvent.placeId}&key=` +
+            mapAPIKey,
           );
           let data = res.data.result;
           console.log('Before place ids setting: ', placeIds);
@@ -1161,7 +1165,7 @@ const Map = () => {
             return (
               <MapViewDirections
                 key={id}
-                apikey="AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU"
+                apikey={mapAPIKey}
                 strokeWidth={3}
                 strokeColor="hotpink"
                 origin={

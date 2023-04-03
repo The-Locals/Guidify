@@ -23,6 +23,7 @@ import BottomInfoCard from '../components/BottomInfoCard';
 import TopInfoCard from '../components/TopInfoCard';
 import {useIsFocused} from '@react-navigation/native';
 import SeekBar from '../components/SeekBar';
+import mapAPIKey from '../mapAPIKey.json'
 
 //bottom sheet header
 import ContentsWithinAreaHeader from '../components/home/bottomSheetHeader/ContentsWithinArea';
@@ -73,7 +74,6 @@ export default function NewMap({navigation, userId, route}) {
 
   const [locationsWithinFrame, setLocationsWithinFrame] = useState([]);
   const locationNumber = useRef([]);
-  const mapKey = 'AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU';
 
   function handleRegionChange(val) {
     setRegion(val);
@@ -491,7 +491,7 @@ export default function NewMap({navigation, userId, route}) {
   };
 
   const getImageUrlFromPhotoReference = photoRef => {
-    return `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photoRef}&sensor=false&maxheight=500&maxwidth=500&key=${mapKey}`;
+    return `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photoRef}&sensor=false&maxheight=500&maxwidth=500&key=${mapAPIKey}`;
   };
 
   const handleExitContentsForLocation = () => {
@@ -698,7 +698,7 @@ export default function NewMap({navigation, userId, route}) {
                     getImageUrlFromPhotoReference={
                       getImageUrlFromPhotoReference
                     }
-                    mapKey={mapKey}
+                    mapKey={mapAPIKey}
                     region={region}
                     setSelectedLocation={setSelectedLocation}
                     setCurrentBottomSheetType={setCurrentBottomSheetType}
@@ -790,7 +790,7 @@ export default function NewMap({navigation, userId, route}) {
                 return (
                   <MapViewDirections
                     key={id}
-                    apikey={mapKey}
+                    apikey={mapAPIKey}
                     strokeWidth={3}
                     strokeColor="black"
                     origin={
@@ -858,7 +858,7 @@ export default function NewMap({navigation, userId, route}) {
                         onPress={async () => {
                           // Get image info.
                           const response = await fetch(
-                            `https://maps.googleapis.com/maps/api/place/details/json?placeid=${place_id}&key=${mapKey}`,
+                            `https://maps.googleapis.com/maps/api/place/details/json?placeid=${place_id}&key=${mapAPIKey}`,
                           );
                           const placeInfo = await response.json();
                           let imageUrl =
