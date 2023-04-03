@@ -790,7 +790,7 @@ export default function NewMap({navigation, userId, route}) {
                 return (
                   <MapViewDirections
                     key={id}
-                    apikey={mapAPIKey}
+                    apikey={mapAPIKey.mapAPIKey}
                     strokeWidth={3}
                     strokeColor="black"
                     origin={
