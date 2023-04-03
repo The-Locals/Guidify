@@ -260,7 +260,10 @@ export default function NewMap({navigation, userId, route}) {
         borderTopRightRadius: 30,
         shadowOffset: {
           width: 0,
-          height: currentBottomSheetType == BOTTOM_SHEET_TYPE.CONTENTS_FOR_ITINERARY ?2:0,
+          height:
+            currentBottomSheetType == BOTTOM_SHEET_TYPE.CONTENTS_FOR_ITINERARY
+              ? 2
+              : 0,
         },
         shadowOpacity:
           currentBottomSheetType == BOTTOM_SHEET_TYPE.CONTENTS_FOR_ITINERARY
@@ -612,20 +615,28 @@ export default function NewMap({navigation, userId, route}) {
       (selectedItinerary.rating * selectedItinerary.ratingCount + ratingValue) /
       (selectedItinerary.ratingCount + 1);
     const stringify = JSON.stringify(selectedItinerary.travelGuideId);
-    await axios
-      .post(`http://${ip.ip}:8000/itinerary/`, {
-        name: selectedItinerary.name,
-        itineraryId: selectedItinerary._id,
-        rating: avgRating,
-        ratingCount: selectedItinerary.ratingCount + 1,
-        travelGuideId: stringify,
-        creatorId: selectedItinerary.creatorId,
-        description: selectedItinerary.description,
-        imageUrl: selectedItinerary.imageUrl,
-      })
-      .then(res => {
-        if (res.data.success) {
-          const updated = res.data.result;
+    const formdata = new FormData();
+    formdata.append('name', selectedItinerary.name);
+    formdata.append('itineraryId', selectedItinerary._id);
+    formdata.append('rating', avgRating);
+    formdata.append('ratingCount', selectedItinerary.ratingCount + 1);
+    formdata.append('travelGuideId', stringify);
+    formdata.append('creatorId', selectedItinerary.creatorId);
+    formdata.append('description', selectedItinerary.description);
+    formdata.append('imageUrl', selectedItinerary.imageUrl);
+    formdata.append('imageFile',JSON.stringify([]));
+    await fetch(`http://${ip.ip}:8000/itinerary/`, {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      body: formdata,
+    })
+    .then(res=>res.json())
+      .then(resBody => {
+        if (resBody.success) {
+          const updated = resBody.result;
           setSubmitting(false);
           setShowRating(false);
           setRatingValue(0);

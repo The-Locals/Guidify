@@ -87,6 +87,7 @@ class ItineraryManager {
       creatorId: new ObjectID(itinerary.creatorId),
       travelGuideId: travelGuideIds,
       public: itinerary.isPublic,
+      rating: itinerary.rating,
       ratingCount: itinerary.ratingCount,
       imageUrl: itinerary.imageUrl,
     };
