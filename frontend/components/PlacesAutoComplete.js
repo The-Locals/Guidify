@@ -102,7 +102,7 @@ const PlacesAutoComplete = ({navigation}) => {
       
       query={{
         // available options: https://developers.google.com/places/web-service/autocomplete
-        key: 'AIzaSyAaQBSvEIHMfaynt8VLL4swzFqiW7N-DxU',
+        key: mapAPIKey,
         language: 'en', // language of the results
         types: "establishment", // default: 'geocode',
         location: `${region.latitude}, ${region.longitude}`,
