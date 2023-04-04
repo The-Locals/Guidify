@@ -18,8 +18,15 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const PlacesAutoComplete = ({navigation}) => {
 
+  const PAGE_TYPE = {
+    GUIDES: 'guides',
+    ITINERARIES: 'itineraries',
+    USERS: 'users',
+  };
+
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(PAGE_TYPE.GUIDES);
 
   async function handleSearch(name) {
     // if (name.trim().length == 0) {
@@ -72,11 +79,44 @@ const PlacesAutoComplete = ({navigation}) => {
               }} />
           </TouchableOpacity>
         <View style={styles.buttonListContainer}>
-          <TouchableOpacity activeOpacity={0.6} style={styles.categoryButton}>
-            <Text style={styles.categoryButtonText}>Guides</Text>
+          <TouchableOpacity 
+          style={[styles.categoryButton, {borderBottomColor: currentPage == PAGE_TYPE.GUIDES ? 'black' : '#878686'}]}
+          onPress={() => {
+            setCurrentPage(PAGE_TYPE.GUIDES)
+          }} 
+          activeOpacity={0.7}
+          >
+            <Text 
+            style={[styles.categoryButtonText, {color: currentPage == PAGE_TYPE.GUIDES ? 'black' : '#878686'}]}>
+              Guides
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.6} style={styles.categoryButton}><Text style={styles.categoryButtonText}>Itineraries</Text></TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.6} style={styles.categoryButton}><Text style={styles.categoryButtonText}>Users</Text></TouchableOpacity>
+
+          <TouchableOpacity 
+          style={[styles.categoryButton, {borderBottomColor: currentPage == PAGE_TYPE.ITINERARIES ? 'black' : '#878686'}]}
+          onPress={() => {
+            setCurrentPage(PAGE_TYPE.ITINERARIES)
+          }} 
+          activeOpacity={0.7}
+          >
+            <Text 
+            style={[styles.categoryButtonText, {color: currentPage == PAGE_TYPE.ITINERARIES ? 'black' : '#878686'}]}>
+              Itineraries
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+          style={[styles.categoryButton, {borderBottomColor: currentPage == PAGE_TYPE.USERS ? 'black' : '#878686'}]}
+          onPress={() => {
+            setCurrentPage(PAGE_TYPE.USERS)
+          }} 
+          activeOpacity={0.7}
+          >
+            <Text 
+            style={[styles.categoryButtonText, {color: currentPage == PAGE_TYPE.USERS ? 'black' : '#878686'}]}>
+              Users
+            </Text>
+          </TouchableOpacity>
         </View>
 
       </View>
@@ -85,7 +125,7 @@ const PlacesAutoComplete = ({navigation}) => {
 }
 
 export default PlacesAutoComplete;
-
+// return <View style={[styles.container, {backgroundColor: this.state.bg}]}/>
 const styles = StyleSheet.create({ 
   categoryButtonText:{
     marginTop: 'auto',
@@ -98,22 +138,21 @@ const styles = StyleSheet.create({
   },
   categoryButton:{
     flex:1,
-    backgroundColor:'cyan',
+    backgroundColor:'white',
     padding:10,
-
+    borderStyle: 'solid',
+    borderColor:'white',
+    borderBottomColor: 'red',
+    borderBottomWidth: 3,
   },
   buttonListContainer:{
     position:'absolute',
-    backgroundColor:'white',
     width: '100%',
     marginTop: '15%',
     flexDirection: 'row',
     justifyContent:'space-evenly',
     flexWrap:'wrap',
-    borderStyle: 'solid',
-    borderColor:'white',
-    borderBottomColor: 'red',
-    borderBottomWidth: 2,
+    
   },
   topView:{
     position:"absolute",
@@ -140,7 +179,7 @@ const styles = StyleSheet.create({
     position:'absolute',
     flexDirection: 'row',
     paddingHorizontal: 50,
-    marginTop:16,
+    paddingVertical:8,
   },
   textInput: {
     backgroundColor: 'transparent',
