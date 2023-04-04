@@ -23,7 +23,7 @@ import BottomInfoCard from '../components/BottomInfoCard';
 import TopInfoCard from '../components/TopInfoCard';
 import {useIsFocused} from '@react-navigation/native';
 import SeekBar from '../components/SeekBar';
-import mapAPIKey from '../mapAPIKey.json'
+import {mapAPIKey} from '../mapAPIKey.json';
 
 //bottom sheet header
 import ContentsWithinAreaHeader from '../components/home/bottomSheetHeader/ContentsWithinArea';
@@ -790,7 +790,7 @@ export default function NewMap({navigation, userId, route}) {
                 return (
                   <MapViewDirections
                     key={id}
-                    apikey={mapAPIKey.mapAPIKey}
+                    apikey={mapAPIKey}
                     strokeWidth={3}
                     strokeColor="black"
                     origin={

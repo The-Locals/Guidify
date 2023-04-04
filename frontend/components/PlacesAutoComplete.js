@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
-import {View, Image, Text, FlatList, ActivityIndicator, StatusBar, Pressable, StyleSheet} from 'react-native';
+import {View, Image, Text, FlatList, ActivityIndicator, StatusBar, Pressable, StyleSheet, TouchableOpacity} from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import PlayIcon from "../assets/play.png";
 import axios from "axios";
 import mapAPIKey from '../mapAPIKey.json'
 
@@ -22,22 +21,8 @@ const PlacesAutoComplete = ({navigation}) => {
 		longitudeDelta: 0.0421
 	})
 
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const [users, setUsers] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState('dublin');
-
-  const getUsers = () => {
-    setIsLoading(true);
-    axios.get(`https://randomuser.me/api/?page=${currentPage}&results=10`)
-      .then(res => {
-        //setUsers(res.data.results);
-        setUsers([...users, ...res.data.results]);
-        setIsLoading(false);
-      });
-  };
 
   const renderItem = ({ item }) => {
     return (
@@ -60,23 +45,12 @@ const PlacesAutoComplete = ({navigation}) => {
     );
   };
 
-  const loadMoreItem = () => {
-    setCurrentPage(currentPage + 1);
-  };
-
-  useEffect(() => {
-    getUsers();
-  }, [currentPage]);
-
-
-
-
   return (
-    <View style={{
-      flex: 1,
-      backgroundColor: '#C5FAD5'
-    }}>
+    <View>
+    <View style={styles.topView}>
+      
     <GooglePlacesAutocomplete
+      disabled={true}
       placeholder='Search'
       minLength={2} // minimum length of text to search
       autoFocus={false}
@@ -147,34 +121,20 @@ const PlacesAutoComplete = ({navigation}) => {
       //renderLeftButton={()  => <Image source={require('path/custom/left-icon')} />}
       renderRightButton={() => <Text></Text>}
     />
-    <Pressable >
-          <View style={[styles.widgetContainer, {}]}>
-            <View style={{flexDirection: 'row'}}>
-              <Image
-                resizeMode="cover"
-                source={{uri: 'https://www.bensound.com/bensound-img/happyrock.jpg'}}
-                style={styles.widgetImageStyle}
-              />
-              <View>
-                <Text style={styles.widgetMusicTitle}>
-                Punky
-                </Text>
-                <Text style={styles.widgetArtisteTitle}>
-                  Benjamin Tissot
-                </Text>
-              </View>
-            </View>
-            <Pressable onPress={() => playOrPause()}>
-              <Image
-                source={isPlaying ? PauseIcon : PlayIcon}
-                style={{height: 30, tintColor: '#000', width: 30, marginRight: 10}}
-              />
-            </Pressable>
-          </View>
-        </Pressable>
+    
+      <View style={styles.buttonListContainer}>
+        <TouchableOpacity 
+        style={styles.categoryButton}>
+          <Text 
+          style={styles.categoryButtonText}>
+          Hello
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.categoryButton}><Text style={styles.categoryButtonText}>Hello</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.categoryButton}><Text style={styles.categoryButtonText}>Hello</Text></TouchableOpacity>
+      </View>
 
-      
-  
+    </View>
     </View>
   );
 }
@@ -182,64 +142,32 @@ const PlacesAutoComplete = ({navigation}) => {
 export default PlacesAutoComplete;
 
 const styles = StyleSheet.create({ 
-  widgetContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 0,
-    height: 60,
+  categoryButtonText:{
+    fontSize:18,
+    textAlign:'center',
+    fontFamily: 'Lexend-SemiBold',
+  },
+  categoryButton:{
+    flex:1,
+    backgroundColor:'cyan',
+  },
+  buttonListContainer:{
+    backgroundColor:'white',
     width: '100%',
-    backgroundColor: '#fff',
-    marginTop: 650,
-    borderWidth: 2,
-    borderColor: 'black'
+    marginTop: '15%',
+    flexDirection: 'row',
+    justifyContent:'space-evenly',
+    flexWrap:'wrap',
+    borderStyle: 'solid',
+    borderColor:'white',
+    borderBottomColor: 'red',
+    borderBottomWidth: 2,
   },
-  widgetMusicTitle: {
-    fontSize: 18,
-    color: '#000',
-    fontWeight: '500',
-    marginTop: 12,
-    marginHorizontal: 10,
-    marginBottom: 1,
-  },
-  widgetArtisteTitle: {
-    fontSize: 14,
-    color: '#000',
-    opacity: 0.8,
-    marginHorizontal: 10,
-    marginBottom: 12,
-    marginTop: 1,
-  },
-  widgetImageStyle: {
-    width: 55,
-    height: 55,
-    marginTop: 7,
-    marginLeft: 5,
-    borderRadius: 10
-  },
-  itemWrapperStyle: {
-    flexDirection: "row",
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderColor: "#ddd",
-  },
-  itemImageStyle: {
-    width: 50,
-    height: 50,
-    marginRight: 16,
-  },
-  contentWrapperStyle: {
-    justifyContent: "space-around",
-  },
-  txtNameStyle: {
-    fontSize: 16,
-  },
-  txtEmailStyle: {
-    color: "#777",
-  },
-  loaderStyle: {
-    marginVertical: 16,
-    alignItems: "center",
+  topView:{
+    backgroundColor:'gray',
+    height: '36%',
+    width: '100%',
+    flexDirection: 'column',
+    zIndex: 1000,
   },
 })

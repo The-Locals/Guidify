@@ -40,7 +40,7 @@ function MyTabs() {
   }, []);
   return (
     <Tab.Navigator
-      initialRouteName=""
+      initialRouteName="Search"
       screenOptions={{
         tabBarItemStyle: {
           backgroundColor: '#000',
@@ -204,7 +204,7 @@ const SearchStack = () => {
 const App = props => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="MyTabs">
         <Stack.Screen
           name="Home"
           component={Login}
