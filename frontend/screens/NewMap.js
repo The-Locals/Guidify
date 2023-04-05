@@ -56,13 +56,13 @@ export default function NewMap({navigation, userId, route}) {
   const [runningIds, setRunningIds] = useState([]);
   const [tgNumber, setTgNumber] = useState(0);
   const [nextRouteInfo, setNextRouteInfo] = useState(null);
-  const [directionIdx, setDirectionIdx] = useState(0);
+  const [directionIdx, setDirectionIdx] = useState(1);
   const [destinationDistance, setDestinationDistance] = useState(null);
   const [dirDistance, setDirDistance] = useState(null);
   const [itiTg, setItiTg] = useState([]);
   const [showRating, setShowRating] = useState(false);
   const isOnTrack = useRef(false);
-  const directionIdxRef = useRef(0);
+  const directionIdxRef = useRef(1);
   const expectedIdxRef = useRef(0);
   const expectedCoordRef = useRef(null);
   const distanceRef = useRef(null);
@@ -167,6 +167,7 @@ export default function NewMap({navigation, userId, route}) {
           navigation={navigation}
           setTgMarkers={setTgMarkers}
           mapRef={mapRef}
+          userLocation={userLocation}
           setRunningIds={setRunningIds}
           setItiTg={setItiTg}
           handleUpOverScrollModal={handleUpOverScrollModal}
@@ -402,8 +403,8 @@ export default function NewMap({navigation, userId, route}) {
             setDestinationDistance(0);
             isOnTrack.current = false;
             expectedIdxRef.current = 0;
-            directionIdxRef.current = 0;
-            setDirectionIdx(0);
+            directionIdxRef.current = 1;
+            setDirectionIdx(1);
             distanceRef.current = null;
             return;
           }
@@ -416,32 +417,7 @@ export default function NewMap({navigation, userId, route}) {
               expectedCoordRef.current[expectedIdxRef.current].longitude,
             ),
           );
-          if (distanceRef.current == null || distanceRef.current >= testD)
-            distanceRef.current = testD;
-          else if (distanceRef.current < testD) {
-            isOnTrack.current = false;
-            distanceRef.current = null;
-            return;
-          }
-          //contantly update user and destination distance
-          const desD = Math.round(
-            getDistance(
-              latitude,
-              longitude,
-              nextRouteInfo[directionIdxRef.current].end_location.lat,
-              nextRouteInfo[directionIdxRef.current].end_location.lng,
-            ),
-          );
-          setDirDistance(desD);
-          console.log(
-            'lat: ' +
-              latitude +
-              ' long: ' +
-              longitude +
-              ' distance: ' +
-              desD +
-              'm',
-          );
+
           if (
             testD <= 20 &&
             expectedIdxRef.current < expectedCoordRef.current.length - 1
@@ -449,12 +425,40 @@ export default function NewMap({navigation, userId, route}) {
             expectedIdxRef.current++;
             distanceRef.current = null;
           }
+
+          if (distanceRef.current == null || distanceRef.current >= testD)
+            distanceRef.current = testD;
+          else if (distanceRef.current < testD) {
+            isOnTrack.current = false;
+            distanceRef.current = null;
+            return;
+          }
+          //contantly update user and next destination distance
+          //desD = distance to next route
+          const desD = Math.round(
+            getDistance(
+              latitude,
+              longitude,
+              nextRouteInfo[directionIdxRef.current].start_location.lat,
+              nextRouteInfo[directionIdxRef.current].start_location.lng,
+            ),
+          );
+          setDirDistance(desD);
           if (
-            desD <= 20 &&
+            desD <= 10 &&
             directionIdxRef.current < nextRouteInfo.length - 1
           ) {
             directionIdxRef.current++;
             setDirectionIdx(directionIdxRef.current);
+            const desD = Math.round(
+              getDistance(
+                latitude,
+                longitude,
+                nextRouteInfo[directionIdxRef.current].start_location.lat,
+                nextRouteInfo[directionIdxRef.current].start_location.lng,
+              ),
+            );
+            setDirDistance(desD);
           }
         }
         setUserLocation({
@@ -556,8 +560,8 @@ export default function NewMap({navigation, userId, route}) {
     if (runningRoute) {
       if (!isOnTrack.current) {
         setNextRouteInfo(result.legs[0].steps);
-        directionIdxRef.current = 0;
-        setDirectionIdx(0);
+        directionIdxRef.current = 1;
+        setDirectionIdx(1);
         expectedIdxRef.current = 0;
         isOnTrack.current = true;
         expectedCoordRef.current = result.coordinates;
@@ -589,11 +593,11 @@ export default function NewMap({navigation, userId, route}) {
     destinationCoord.current = null;
     isOnTrack.current = false;
     expectedIdxRef.current = 0;
-    directionIdxRef.current = 0;
+    directionIdxRef.current = 1;
     distanceRef.current = null;
     expectedCoordRef.current = null;
     setDestinationDistance(null);
-    setDirectionIdx(0);
+    setDirectionIdx(1);
     setTgNumber(0);
     setNextRouteInfo(null);
     const coordinates = [];
@@ -624,7 +628,7 @@ export default function NewMap({navigation, userId, route}) {
     formdata.append('creatorId', selectedItinerary.creatorId);
     formdata.append('description', selectedItinerary.description);
     formdata.append('imageUrl', selectedItinerary.imageUrl);
-    formdata.append('imageFile',JSON.stringify([]));
+    formdata.append('imageFile', JSON.stringify([]));
     await fetch(`http://${ip.ip}:8000/itinerary/`, {
       credentials: 'include',
       method: 'POST',
@@ -633,7 +637,7 @@ export default function NewMap({navigation, userId, route}) {
       },
       body: formdata,
     })
-    .then(res=>res.json())
+      .then(res => res.json())
       .then(resBody => {
         if (resBody.success) {
           const updated = resBody.result;
