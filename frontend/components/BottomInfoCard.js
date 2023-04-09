@@ -12,7 +12,6 @@ import playIcon from '../assets/play_1.png';
 import pauseIcon from '../assets/pause_1.png';
 import {WebView} from 'react-native-webview';
 import SoundPlayer from 'react-native-sound-player';
-import SeekBar from '../components/SeekBar';
 
 export default function BottomInfoCard(props) {
   const {
@@ -28,7 +27,6 @@ export default function BottomInfoCard(props) {
     setShowDirection,
     setCurrentBottomSheetType,
     currentSpecialScreen,
-    setCurrentSpecialScreen,
     deactivateTravelGuideNav,
     setAudioTime,
   } = props;
@@ -50,6 +48,10 @@ export default function BottomInfoCard(props) {
       setPaused(true);
     }
   }
+
+// useEffect(()=>{
+//   console.log(nextRouteInfo);
+// },[nextRouteInfo])
 
   useEffect(() => {
     if (!showDirection) {
@@ -163,7 +165,7 @@ export default function BottomInfoCard(props) {
               source={{
                 html: `<p style="color:white; font-size:5.8vw; font-weight: 400; margin-left:-3vw;">${
                   showDirection
-                    ? nextRouteInfo[directionIdx].html_instructions
+                    ? nextRouteInfo[directionIdx].html_instructions + ` in ${dirDistance}m`
                     : 'Destination Reached'
                 }</p>`,
               }}
