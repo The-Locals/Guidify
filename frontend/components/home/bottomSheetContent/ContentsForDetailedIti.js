@@ -15,7 +15,8 @@ export default function ContentsForDetailedIti(props) {
     setRunningIds,
     setItiTg,
     handleUpOverScrollModal,
-    activateTravelGuideNav
+    activateTravelGuideNav,
+    userLocation
   } = props;
 
   const [travelGuides, setTravelGuides] = useState(null);
@@ -33,6 +34,7 @@ export default function ContentsForDetailedIti(props) {
       setTravelGuides(tgs);
       const ids = [];
       const coordinates = [];
+      coordinates.push(userLocation);
       tgs.map(tg => {
         ids.push(`place_id:${tg.placeId}`);
         coordinates.push({
