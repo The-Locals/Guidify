@@ -68,6 +68,18 @@ export default function CreateItinerary({navigation, route}) {
   }
 
   const createItinerary = async () => {
+    if (
+      itinerary.title.trim().length == 0 ||
+      itinerary.description.trim().length == 0
+    ) {
+      alert('Please fill in all fields.');
+      return;
+    }
+    if (itinerary.travelGuides.length <= 1) {
+      alert('Please add at least 2 travel guides to your itinerary.');
+      return;
+    }
+    setSubmitting(true);
     const tgId = itinerary.travelGuides.map(tg => tg._id);
     const formdata = new FormData();
     formdata.append('imageFile', itinerary.uploadedImage);
@@ -410,7 +422,6 @@ export default function CreateItinerary({navigation, route}) {
           style={styles.buttonDONEStyle}
           activeOpacity={0.5}
           onPress={() => {
-            setSubmitting(true);
             createItinerary();
           }}>
           {submitting ? (

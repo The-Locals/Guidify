@@ -5,6 +5,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Dimensions,
+  KeyboardAvoidingView,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
@@ -13,7 +16,7 @@ import upArrow from '../assets/uparrow.png';
 import camera from '../assets/camera.png';
 import headphones from '../assets/headphones.png';
 import ip from '../ip';
-import {mapAPIKey} from '../mapAPIKey.json'
+import {{mapAPIKey}} from '../mapAPIKey.json';
 
 export default function CreateTravelGuide({navigation, route}) {
   const homePlace = {
@@ -25,6 +28,7 @@ export default function CreateTravelGuide({navigation, route}) {
     geometry: {location: {lat: 48.8496818, lng: 2.2940881}},
   };
   const [defaultPhotoUrl, setDefaultPhotoUrl] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(true);
   const [location, setLocation] = React.useState({
     placeId: '',
     name: '',
@@ -44,7 +48,17 @@ export default function CreateTravelGuide({navigation, route}) {
   const [uploadAudioButtonText, setUploadAudioButtonText] = useState("Upload Audio");
   const [uploadImageButtonText, setUploadImageButtonText] = useState("Upload Image");
 
-  const createTravelGuide = async() => {
+  const createTravelGuide = async () => {
+    if (
+      !location.placeId ||
+      !location.name ||
+      !location.description ||
+      !location.audio ||
+      !location.locationName
+    ) {
+      alert('Please fill in all fields');
+      return;
+    }
     const formData = new FormData();
     formData.append('placeId', location.placeId);
     formData.append('name', location.name);
@@ -62,10 +76,13 @@ export default function CreateTravelGuide({navigation, route}) {
       formData.append('imageUrl', defaultPhotoUrl);
     }
 
-    formData.append('coordinates', JSON.stringify({
-      lat: region.latitude,
-      lng: region.longitude
-    }));
+    formData.append(
+      'coordinates',
+      JSON.stringify({
+        lat: region.latitude,
+        lng: region.longitude,
+      }),
+    );
 
     await fetch(`http://${ip.ip}:8000/travelGuide`, {
       credentials: 'include',
@@ -80,7 +97,7 @@ export default function CreateTravelGuide({navigation, route}) {
         console.log(resBody);
         if (resBody.statusCode == 200) {
           console.log('success');
-          navigation.navigate('User', {origin: "CreateTravelGuide"});
+          navigation.navigate('User', {origin: 'CreateTravelGuide'});
         } else if (resBody.statusCode == 403) {
           // TODO user entered the wrong credentials. add a UI for this.
           console.log('failed');
@@ -295,7 +312,7 @@ export default function CreateTravelGuide({navigation, route}) {
           onPress={async () => {
             try {
               const result = await DocumentPicker.pick({
-                type: [DocumentPicker.types.allFiles],
+                type: [DocumentPicker.types.audio],
               });
               setUploadAudioButtonText(result[0].name);
               setLocation({
@@ -311,13 +328,14 @@ export default function CreateTravelGuide({navigation, route}) {
           <Image source={headphones} style={styles.buttonImageIconStyle} />
           <Text style={styles.buttonTextStyle}>{uploadAudioButtonText}</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.buttonItiStyle}
           activeOpacity={0.5}
           onPress={async () => {
             try {
               const result = await DocumentPicker.pick({
-                type: [DocumentPicker.types.allFiles],
+                type: [DocumentPicker.types.images],
               });
               setUploadImageButtonText(result[0].name);
               setLocation({
@@ -332,32 +350,36 @@ export default function CreateTravelGuide({navigation, route}) {
           <Text style={styles.buttonTextStyle}>{uploadImageButtonText}</Text>
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: 'auto',
-          marginBottom: 30,
-          padding: 10,
-        }}>
-        <TouchableOpacity
-          style={styles.buttonDONEStyle}
-          activeOpacity={0.5}
-          onPress={() => {
-            createTravelGuide();
+      <KeyboardAvoidingView behavior={'height'} style={{flex: 1}}>
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 10,
+            width: '100%',
           }}>
-          <Text
-            style={{
-              ...styles.buttonTextStyle,
-              fontSize: 18,
-              fontFamily: 'Lexend-Regular',
-              color: 'white',
+          <TouchableOpacity
+            style={styles.buttonDONEStyle}
+            activeOpacity={0.5}
+            // disabled={isSubmitting}
+            onPress={() => {
+              createTravelGuide();
             }}>
-            SUBMIT
-          </Text>
-        </TouchableOpacity>
-      </View>
+            {isSubmitting ? (
+              <ActivityIndicator />
+            ) : (
+              <Text
+                style={{
+                  ...styles.buttonTextStyle,
+                  fontSize: 18,
+                  fontFamily: 'Lexend-Regular',
+                  color: 'white',
+                }}>
+                SUBMIT
+              </Text>
+            )}
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }
@@ -460,6 +482,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
 });
