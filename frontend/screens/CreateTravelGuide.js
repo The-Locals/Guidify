@@ -13,7 +13,7 @@ import upArrow from '../assets/uparrow.png';
 import camera from '../assets/camera.png';
 import headphones from '../assets/headphones.png';
 import ip from '../ip';
-import mapAPIKey from '../mapAPIKey.json'
+import {mapAPIKey} from '../mapAPIKey.json'
 
 export default function CreateTravelGuide({navigation, route}) {
   const homePlace = {
@@ -41,8 +41,10 @@ export default function CreateTravelGuide({navigation, route}) {
     longitudeDelta: 0.0421,
   });
 
+  const [uploadAudioButtonText, setUploadAudioButtonText] = useState("Upload Audio");
+  const [uploadImageButtonText, setUploadImageButtonText] = useState("Upload Image");
+
   const createTravelGuide = async() => {
-    console.log(location);
     const formData = new FormData();
     formData.append('placeId', location.placeId);
     formData.append('name', location.name);
@@ -295,7 +297,7 @@ export default function CreateTravelGuide({navigation, route}) {
               const result = await DocumentPicker.pick({
                 type: [DocumentPicker.types.allFiles],
               });
-              console.log(result[0].uri);
+              setUploadAudioButtonText(result[0].name);
               setLocation({
                 ...location,
                 audio: result[0],
@@ -307,7 +309,7 @@ export default function CreateTravelGuide({navigation, route}) {
           //onPress={getLocation()}
         >
           <Image source={headphones} style={styles.buttonImageIconStyle} />
-          <Text style={styles.buttonTextStyle}>Upload Audio</Text>
+          <Text style={styles.buttonTextStyle}>{uploadAudioButtonText}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.buttonItiStyle}
@@ -317,7 +319,7 @@ export default function CreateTravelGuide({navigation, route}) {
               const result = await DocumentPicker.pick({
                 type: [DocumentPicker.types.allFiles],
               });
-              console.log(result[0]);
+              setUploadImageButtonText(result[0].name);
               setLocation({
                 ...location,
                 uploadedPhoto: result[0],
@@ -327,7 +329,7 @@ export default function CreateTravelGuide({navigation, route}) {
             }
           }}>
           <Image source={camera} style={styles.buttonImageIconStyle} />
-          <Text style={styles.buttonTextStyle}>Upload Image</Text>
+          <Text style={styles.buttonTextStyle}>{uploadImageButtonText}</Text>
         </TouchableOpacity>
       </View>
       <View
@@ -410,16 +412,16 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   buttonItiStyle: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: 'white',
-    height: 60,
+    borderColor: 'black',
+    // height: 60,
     width: '35%',
     borderRadius: 20,
     marginTop: 30,
     display: 'flex',
-    justifyContent: 'space-around',
+    // justifyContent: 'space-around',
     alignItems: 'center',
     padding: 10,
     marginLeft: 'auto',
@@ -434,6 +436,7 @@ const styles = StyleSheet.create({
   buttonTextStyle: {
     color: 'black',
     fontFamily: 'Lexend-Light',
+    textAlign: 'center'
   },
   buttonIconSeparatorStyle: {
     backgroundColor: '#fff',

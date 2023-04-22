@@ -9,6 +9,8 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import MapView, {Marker} from 'react-native-maps';
