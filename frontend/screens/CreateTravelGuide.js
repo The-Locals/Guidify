@@ -16,7 +16,7 @@ import upArrow from '../assets/uparrow.png';
 import camera from '../assets/camera.png';
 import headphones from '../assets/headphones.png';
 import ip from '../ip';
-import {{mapAPIKey}} from '../mapAPIKey.json';
+import {mapAPIKey} from '../mapAPIKey.json';
 
 export default function CreateTravelGuide({navigation, route}) {
   const homePlace = {
@@ -28,7 +28,7 @@ export default function CreateTravelGuide({navigation, route}) {
     geometry: {location: {lat: 48.8496818, lng: 2.2940881}},
   };
   const [defaultPhotoUrl, setDefaultPhotoUrl] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [location, setLocation] = React.useState({
     placeId: '',
     name: '',
@@ -45,8 +45,10 @@ export default function CreateTravelGuide({navigation, route}) {
     longitudeDelta: 0.0421,
   });
 
-  const [uploadAudioButtonText, setUploadAudioButtonText] = useState("Upload Audio");
-  const [uploadImageButtonText, setUploadImageButtonText] = useState("Upload Image");
+  const [uploadAudioButtonText, setUploadAudioButtonText] =
+    useState('Upload Audio');
+  const [uploadImageButtonText, setUploadImageButtonText] =
+    useState('Upload Image');
 
   const createTravelGuide = async () => {
     if (
@@ -57,6 +59,7 @@ export default function CreateTravelGuide({navigation, route}) {
       !location.locationName
     ) {
       alert('Please fill in all fields');
+      setIsSubmitting(false);
       return;
     }
     const formData = new FormData();
@@ -94,8 +97,8 @@ export default function CreateTravelGuide({navigation, route}) {
     })
       .then(res => res.json())
       .then(resBody => {
-        console.log(resBody);
         if (resBody.statusCode == 200) {
+          setIsSubmitting(false);
           console.log('success');
           navigation.navigate('User', {origin: 'CreateTravelGuide'});
         } else if (resBody.statusCode == 403) {
@@ -358,14 +361,18 @@ export default function CreateTravelGuide({navigation, route}) {
             width: '100%',
           }}>
           <TouchableOpacity
-            style={styles.buttonDONEStyle}
+            style={{
+              ...styles.buttonDONEStyle,
+              backgroundColor: isSubmitting ? 'white' : 'black',
+            }}
             activeOpacity={0.5}
-            // disabled={isSubmitting}
+            disabled={isSubmitting}
             onPress={() => {
+              setIsSubmitting(true);
               createTravelGuide();
             }}>
             {isSubmitting ? (
-              <ActivityIndicator />
+              <ActivityIndicator color={'black'} size={'large'} />
             ) : (
               <Text
                 style={{
@@ -458,7 +465,7 @@ const styles = StyleSheet.create({
   buttonTextStyle: {
     color: 'black',
     fontFamily: 'Lexend-Light',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   buttonIconSeparatorStyle: {
     backgroundColor: '#fff',

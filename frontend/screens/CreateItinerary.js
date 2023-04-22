@@ -94,20 +94,19 @@ export default function CreateItinerary({navigation, route}) {
         formdata.append('imageUrl', itinerary.imageUrl);
       }
     }
-    await fetch(`http://${ip.ip}:8000/itinerary`, {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    await axios({
       method: 'POST',
-      body: formdata,
+      url: `http://${ip.ip}:8000/itinerary`,
+      data: formdata,
+      headers: {'Content-Type': 'multipart/form-data'},
     })
-      .then(res => res.json())
-      .then(resBody => {
+      .then(res => {
         console.log('success');
         navigation.navigate('User', {origin: 'CreateItinerary'});
       })
       .catch(err => {
+        alert('Try Again');
+        setSubmitting(false);
         console.log(err);
       });
   };
@@ -276,6 +275,9 @@ export default function CreateItinerary({navigation, route}) {
             setSearch(e);
             handleSearch(e);
           }}
+          onPressOut={() => {
+            isEmpty.current = true;
+          }}
         />
       </View>
       {isEmpty.current == false && (
@@ -362,9 +364,8 @@ export default function CreateItinerary({navigation, route}) {
           onPress={async () => {
             try {
               const result = await DocumentPicker.pick({
-                type: [DocumentPicker.types.allFiles],
+                type: [DocumentPicker.types.images],
               });
-              console.log(result[0]);
               setItinerary({
                 ...itinerary,
                 uploadedImage: result[0],
@@ -421,6 +422,7 @@ export default function CreateItinerary({navigation, route}) {
         <TouchableOpacity
           style={styles.buttonDONEStyle}
           activeOpacity={0.5}
+          disabled={submitting}
           onPress={() => {
             createItinerary();
           }}>
@@ -599,7 +601,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     flexDirection: 'row',
-    height: 50,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',

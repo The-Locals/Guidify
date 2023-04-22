@@ -11,8 +11,6 @@ import {
 } from 'react-native';
 import { LogBox } from 'react-native';
 LogBox.ignoreAllLogs();
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import axios from 'axios';
 import MapView, {Marker} from 'react-native-maps';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
