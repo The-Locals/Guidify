@@ -18,6 +18,8 @@ export default function ContentsForDetailedIti(props) {
     setShowDetailIti,
     setShowDirection,
     sheetRef,
+    mapRef,
+    userLocation,
   } = props;
 
   const styles = StyleSheet.create({
@@ -84,6 +86,16 @@ export default function ContentsForDetailedIti(props) {
           style={styles.startBtn}
           onPress={() => {
             setRunningRoute(true);
+            mapRef.current.animateCamera(
+              {
+                center: {
+                  latitude: userLocation.latitude,
+                  longitude: userLocation.longitude,
+                },
+                zoom: 17,
+              },
+              {duration: 1000},
+            );
           }}>
           <Text
             style={{

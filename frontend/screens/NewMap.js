@@ -9,7 +9,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import { LogBox } from 'react-native';
+import {LogBox} from 'react-native';
 LogBox.ignoreAllLogs();
 import MapView, {Marker} from 'react-native-maps';
 import Animated from 'react-native-reanimated';
@@ -23,6 +23,7 @@ import BottomInfoCard from '../components/BottomInfoCard';
 import TopInfoCard from '../components/TopInfoCard';
 import {useIsFocused} from '@react-navigation/native';
 import SeekBar from '../components/SeekBar';
+import locationIcon from '../assets/target_location.png';
 import {mapAPIKey} from '../mapAPIKey.json';
 
 //bottom sheet header
@@ -36,6 +37,7 @@ import ContentsWithinAreaContent from '../components/home/bottomSheetContent/Con
 import ContentsForLocationContent from '../components/home/bottomSheetContent/ContentsForLocation';
 import ContentsForItineraryContent from '../components/home/bottomSheetContent/ContentsForDetailedIti';
 import ContentsForRatingContent from '../components/home/bottomSheetContent/ContentsForRating';
+import {Button} from 'react-native-paper';
 
 export default function NewMap({navigation, userId, route}) {
   const [region, setRegion] = useState(null);
@@ -67,7 +69,7 @@ export default function NewMap({navigation, userId, route}) {
   const expectedCoordRef = useRef(null);
   const distanceRef = useRef(null);
   const destinationCoord = useRef(null);
-
+  const followUser = useRef(true);
   //for rating screen
   const [ratingValue, setRatingValue] = useState(0);
   const [submitting, setSubmitting] = useState(false);
@@ -224,6 +226,8 @@ export default function NewMap({navigation, userId, route}) {
           setShowDetailIti={setShowDetailIti}
           setShowDirection={setShowDirection}
           sheetRef={sheetRef}
+          mapRef={mapRef}
+          userLocation={userLocation}
         />
       );
     } else if (
@@ -311,27 +315,30 @@ export default function NewMap({navigation, userId, route}) {
     setShowDirection(false);
   };
 
-  //get route params
-  // useEffect(() => {
-  //   navigation.addListener('focus', () => {
-  //     if (route.params) {
-  //       if (route.params.type == BOTTOM_SHEET_TYPE.CONTENTS_FOR_ITINERARY) {
-  //         const {itinerary, type, showIti, showDir} = route.params;
-  //         setSelectedItinerary(itinerary);
-  //         setCurrentBottomSheetType(type);
-  //         setShowDetailIti(showIti);
-  //         setShowDirection(showDir);
-  //         sheetRef.current.snapTo(1);
-  //         return;
-  //       }
-
-  //       if (route.params.type == SPECIAL_SCREEN_TYPE.TRAVEL_GUIDE_NAVIGATION) {
-  //         const {travelGuide, type} = route.params;
-  //         activateTravelGuideNav(travelGuide);
-  //       }
-  //     }
-  //   });
-  // }, [route.params]);
+  const getCurrentPosition = async () => {
+    followUser.current = true;
+    try {
+      Geolocation.getCurrentPosition(
+        position => {
+          const {latitude, longitude} = position.coords;
+          mapRef.current.animateCamera(
+            {
+              center: {
+                latitude: latitude,
+                longitude: longitude,
+              },
+              zoom: 17,
+            },
+            1000,
+          );
+        },
+        error => console.log(error),
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+      );
+    } catch (error) {
+      console.log('Error getting current position:', error);
+    }
+  };
 
   useEffect(() => {
     if (route.params && sheetRef.current) {
@@ -389,6 +396,18 @@ export default function NewMap({navigation, userId, route}) {
     const watchId = Geolocation.watchPosition(
       position => {
         const {latitude, longitude} = position.coords;
+        if (followUser.current) {
+          mapRef.current.animateCamera(
+            {
+              center: {
+                latitude: latitude,
+                longitude: longitude,
+              },
+              zoom: 17,
+            },
+            1000,
+          );
+        }
         if (runningRoute && isOnTrack.current) {
           let range = getDistance(
             latitude,
@@ -799,13 +818,44 @@ export default function NewMap({navigation, userId, route}) {
               </View>
             </View>
           )}
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              width: 40,
+              height: 40,
+              right: 10,
+              top: '18%',
+              zIndex: 2,
+              backgroundColor: 'white',
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 4,
+              },
+              shadowOpacity: 0.3,
+              shadowRadius: 4.65,
+              elevation: 8,
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 5,
+            }}
+            onPress={getCurrentPosition}>
+            <Image
+              source={locationIcon}
+              style={{width: '80%', height: '80%'}}
+            />
+          </TouchableOpacity>
           <MapView
             maxZoomLevel={18.3}
             initialRegion={region}
             // region={region}
             ref={mapRef}
+            onPanDrag={() => {
+              followUser.current = false;
+            }}
             customMapStyle={mapStyle}
             showsUserLocation
+            showsMyLocationButton={false}
             loadingEnabled={true}
             mapPadding={{
               bottom: 80,
