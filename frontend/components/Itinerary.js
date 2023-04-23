@@ -40,6 +40,7 @@ export default function Itinerary({
             setCreatorInfo({
               username: resBody.info.username,
               imageUrl: resBody.info.imageUrl,
+              _id: resBody.info._id,
             });
           }
         });
@@ -74,13 +75,19 @@ export default function Itinerary({
         paddingHorizontal: 15,
         paddingBottom: 15,
       }}>
-      {isDetail&&<View
-        style={{justifyContent: 'center', alignItems: 'center', padding: 5}}>
-        <Text
-          style={{fontFamily: 'Lexend-SemiBold', fontSize: 25, color: 'black'}}>
-          {item.name}
-        </Text>
-      </View>}
+      {isDetail && (
+        <View
+          style={{justifyContent: 'center', alignItems: 'center', padding: 5}}>
+          <Text
+            style={{
+              fontFamily: 'Lexend-SemiBold',
+              fontSize: 25,
+              color: 'black',
+            }}>
+            {item.name}
+          </Text>
+        </View>
+      )}
       {!isUserProfilePage && creatorInfo && (
         <View
           style={{
@@ -88,19 +95,19 @@ export default function Itinerary({
             justifyContent: isDetail ? 'center' : 'flex-start',
           }}>
           <TouchableOpacity
+            disabled={isDetail}
             onPress={() => {
-              navigation.navigate('UserProfile', {
-                origin: 'Home',
-                ownerId: item.creatorId,
+              navigation.navigate('UserProfileFromHome', {
+                ownerId: creatorInfo._id,
               });
             }}>
             <Avatar.Image source={{uri: creatorInfo.imageUrl}} size={40} />
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={isDetail}
             onPress={() => {
-              navigation.navigate('UserProfile', {
-                origin: 'Home',
-                ownerId: item.creatorId,
+              navigation.navigate('UserProfileFromHome', {
+                ownerId: creatorInfo._id,
               });
             }}>
             <Text
@@ -232,6 +239,7 @@ export default function Itinerary({
           fontFamily: 'Lexend-Regular',
           fontSize: 16,
           color: 'black',
+          width: '85%',
         }}>
         {item.description}
       </Text>

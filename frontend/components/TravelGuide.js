@@ -14,7 +14,7 @@ export default function TravelGuide({
     closeCurrentModal,
     activateTravelGuideNav,
     enableTravelGuideNav=true,
-    currentTime
+    isDetail
 }) {
     let secs = Math.floor(travelGuide.audioLength % 60);
     let mins = Math.floor(travelGuide.audioLength / 60);
@@ -88,6 +88,7 @@ export default function TravelGuide({
             onPress={() => {
               navigation.navigate('UserProfileFromHome', {ownerId: creatorInfo._id});
             }}
+            disabled={isDetail}
           >
             <Avatar.Image source={{uri: creatorInfo.imageUrl}} size={40} />
           </TouchableOpacity>
@@ -95,6 +96,7 @@ export default function TravelGuide({
             onPress={() => {
               navigation.navigate('UserProfileFromHome', {ownerId: creatorInfo._id});
             }}
+            disabled={isDetail}
           >
             <Text
               style={{
