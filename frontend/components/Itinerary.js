@@ -232,6 +232,7 @@ export default function Itinerary({
           fontFamily: 'Lexend-Regular',
           fontSize: 16,
           color: 'black',
+          width:'85%'
         }}>
         {item.description}
       </Text>

@@ -58,8 +58,6 @@ export default function User({ownerId, navigation, origin, route}) {
   );
 
   useEffect(() => {
-    console.log('FINISH CREATING TRAVEL GUIDEEE');
-    console.log(route);
     this.bs.current.snapTo(1);
     if (route && route.params && route.params.origin == 'CreateTravelGuide') {
       setCurrentPage(PAGE_TYPE.APPLICATIONS);
@@ -114,9 +112,9 @@ export default function User({ownerId, navigation, origin, route}) {
       });
   }
 
-  const preparePageData = () => {
+  const preparePageData = async() => {
     // Authenticate user.
-    fetch(`http://${ip.ip}:8000/auth/isLoggedIn`, {
+    await fetch(`http://${ip.ip}:8000/auth/isLoggedIn`, {
       credentials: 'include',
       method: 'GET',
     })
@@ -129,7 +127,7 @@ export default function User({ownerId, navigation, origin, route}) {
       });
 
     // Get User info of the owner (fullname, country)
-    fetch(`http://${ip.ip}:8000/user/info?id=${ownerId}`, {
+    await fetch(`http://${ip.ip}:8000/user/info?id=${ownerId}`, {
       credentials: 'include',
       method: 'GET',
     })
@@ -149,7 +147,7 @@ export default function User({ownerId, navigation, origin, route}) {
       });
 
     // Get the travel guides created by the owner.
-    fetch(`http://${ip.ip}:8000/travelGuide/byCreator?creatorId=${ownerId}`, {
+    await fetch(`http://${ip.ip}:8000/travelGuide/byCreator?creatorId=${ownerId}`, {
       credentials: 'include',
       method: 'GET',
     })
@@ -165,7 +163,7 @@ export default function User({ownerId, navigation, origin, route}) {
       });
 
     // Get the itineraries created by the owner.
-    fetch(`http://${ip.ip}:8000/itinerary/byCreator?creatorId=${ownerId}`, {
+    await fetch(`http://${ip.ip}:8000/itinerary/byCreator?creatorId=${ownerId}`, {
       credentials: 'include',
       method: 'GET',
     })
@@ -181,9 +179,9 @@ export default function User({ownerId, navigation, origin, route}) {
     fetchFollowInfo();
   }, [isFollowing]);
 
-  useEffect(() => {
-    preparePageData();
-  }, [isFocused]);
+  // useEffect(() => {
+  //   preparePageData();
+  // }, [isFocused]);
 
   useFocusEffect(
     React.useCallback(() => {

@@ -73,6 +73,7 @@ const Library = ({navigation}) => {
                   navigation.navigate('Create Itinerary', {
                     item: res,
                     isEdit: true,
+                    setItineraries,
                   });
                 } else if (type === TG_STATUS.APPROVED) {
                   navigation.navigate('Create TravelGuide', {

@@ -142,7 +142,6 @@ const UStackNav = passedProps => {
       </Stack.Screen>
       <Stack.Screen name="User" options={{headerShown: false}}>
         {props => {
-          console.log(props);
           return (
             <UserWithNavigation
               {...passedProps}
