@@ -80,6 +80,7 @@ export default function UserSearch({ navigation }) {
             }}
         />
         <FlatList 
+            keyboardShouldPersistTaps='always'
             data={contentList}
             renderItem={renderItem}
             keyExtractor={item => item.id}
