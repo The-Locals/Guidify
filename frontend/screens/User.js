@@ -386,13 +386,17 @@ export default function User({ownerId, navigation, origin, route}) {
       {contentList.length >= 3 && (
         <>
           <View style={styles.userInfoHeader}>
-            {origin == 'Home' && (
+            {(origin == 'Home' || origin == "Search") && (
               <TouchableOpacity
                 style={{
                   flex: 1.5,
                 }}
                 onPress={() => {
-                    navigation.navigate('Map');
+                    if (origin == "Home") {
+                      navigation.navigate('Map');
+                    } else if (origin == "Search") {
+                      navigation.navigate("SearchPlaces");
+                    }
                 }}>
                 <Icon
                   name="keyboard-backspace"
