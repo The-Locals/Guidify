@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {TouchableOpacity, View, TextInput} from 'react-native';
+import {TouchableOpacity, View, TextInput, Text} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -153,8 +153,10 @@ export default function Searchbar({
             debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
             //renderLeftButton={()  => <Image source={require('path/custom/left-icon')} />}
         />)
-    } else {
-      return (<View style={{
+    } else if (type == "searchPage") {
+      return (<TouchableOpacity
+        activeOpacity={0.7}
+        style={{
         height: 44, 
         width: '100%', 
         borderRadius: 30,
@@ -174,12 +176,16 @@ export default function Searchbar({
                 marginTop: 'auto',
                 marginBottom: 'auto'
               }} />
-        <TextInput style={{flex: 1}}>
-
-        </TextInput>
+        <Text style={{
+          flex: 1,
+          fontFamily: 'Lexend-Regular',
+          marginTop: 'auto',
+          marginBottom: 'auto',
+          marginLeft: 5
+        }}>Search other users...</Text>
         <TouchableOpacity activeOpacity={0.5} onPress={() => {
-                
-              }}>
+
+        }}>
                 <Icon 
                   name="close"
                   size={24}
@@ -191,6 +197,6 @@ export default function Searchbar({
                   }}
                 />
         </TouchableOpacity>
-      </View>)
+      </TouchableOpacity>)
     }
 }

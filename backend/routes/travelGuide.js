@@ -345,4 +345,55 @@ router.delete("/", async (req, res) => {
   }
 });
 
+router.get('/byCoordinatesNonLocationOriented', async (req, res) => {
+  const coordinates = {
+    minLat: parseFloat(req.query.minLat),
+    maxLat: parseFloat(req.query.maxLat),
+    minLng: parseFloat(req.query.minLng),
+    maxLng: parseFloat(req.query.maxLng)
+  };
+
+  try {
+    const results = await TravelGuideManager.getTravelGuidesAndItinerariesByCoordinates(coordinates);
+    let data = {
+      travelGuides: [],
+      itineraries: []
+    };
+    let tracker = {
+      travelGuides: new Set(),
+      itineraries: new Set()
+    };
+
+    // results is a collection of travelGuides. however, each travelGuide has an
+    // additional field which is itineraries (list of itineraries).
+    results.forEach(travelGuide => {
+      const itineraries = travelGuide.itineraries;
+      delete travelGuide.itineraries;
+      const placeId = travelGuide.placeId;
+
+      if (!(tracker.travelGuides.has(travelGuide._id))) {
+        data.travelGuides.push(travelGuide);
+        tracker.travelGuides.add(travelGuide._id);
+      }
+
+      itineraries.forEach(itinerary => {
+        if (!(tracker.itineraries.has(itinerary._id))) {
+          data.itineraries.push(itinerary);
+          tracker.itineraries.add(itinerary._id);
+        }
+      });
+    });
+
+    res.send({
+      data: data,
+      statusCode: 200,
+    });
+  } catch (err) {
+    console.log(err);
+    res.send({
+      statusCode: 500
+    });
+  }
+});
+
 module.exports = router;
