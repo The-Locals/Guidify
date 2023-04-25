@@ -77,6 +77,12 @@ router.post("/editInfo", upload.fields([{name: "image"}]), async(req, res) => {
 router.get("/usersWithUsernamesStartingWith", async (req, res) => {
   try {
     const s = req.query.s;
+    if (s === "") {
+      res.send({
+        statusCode: 200,
+        users: []
+      })
+    }
     const users = await UserManager.getUsersWithUsernamesStartingWith(s);
     res.send({
       statusCode: 200,

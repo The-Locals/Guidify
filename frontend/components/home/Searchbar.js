@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useLayoutEffect, useRef} from 'react';
 import {TouchableOpacity, View, TextInput, Text} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,14 +10,23 @@ export default function Searchbar({
     setCurrentBottomSheetType,
     getImageUrlFromPhotoReference,
     mapRef,
-    type='location'
+    type='location',
+    navigation,
+    handleSearch
 }) {
     const placeRef = useRef(null);
+    const textInputRef = useRef(null);
 
     const BOTTOM_SHEET_TYPE = {
         CONTENTS_WITHIN_AREA: 'contentsWithinArea',
         CONTENTS_FOR_LOCATION: 'contentsForLocation'
     };
+
+    useEffect(() => {
+      if (textInputRef.current) {
+        textInputRef.current.focus();
+      }
+    }, [textInputRef.current]);
 
     if (type === 'location') {
       return (
@@ -153,8 +162,9 @@ export default function Searchbar({
             debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
             //renderLeftButton={()  => <Image source={require('path/custom/left-icon')} />}
         />)
-    } else if (type == "searchPage") {
+    } else if (type == "fakeSearch") {
       return (<TouchableOpacity
+        onPress={() => navigation.navigate("UserSearch")}
         activeOpacity={0.7}
         style={{
         height: 44, 
@@ -185,6 +195,57 @@ export default function Searchbar({
         }}>Search other users...</Text>
         <TouchableOpacity activeOpacity={0.5} onPress={() => {
 
+        }}>
+                <Icon 
+                  name="close"
+                  size={24}
+                  color='black'
+                  style={{
+                    marginTop: 'auto',
+                    marginBottom: 'auto',
+                    marginRight: 10
+                  }}
+                />
+        </TouchableOpacity>
+      </TouchableOpacity>)
+    } else if (type == "userSearch") {
+      return (<TouchableOpacity
+        activeOpacity={0.7}
+        style={{
+        height: 44, 
+        flex: 1,
+        borderRadius: 30,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 10,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+      }}>
+        <Icon name="magnify" size={24} color="#000" style={{
+                marginLeft: 10,
+                marginTop: 'auto',
+                marginBottom: 'auto'
+              }} />
+        <TextInput 
+          ref={textInputRef}
+          placeholder="Search other users..." style={{
+            flex: 1,
+            fontFamily: 'Lexend-Regular',
+            marginTop: 'auto',
+            marginBottom: 'auto',
+            marginLeft: 5,
+            fontSize: 15
+          }}
+          onChangeText={(text) => handleSearch(text)}
+        />
+        <TouchableOpacity activeOpacity={0.5} onPress={() => {
+          handleSearch("");
+          textInputRef.current.clear();
         }}>
                 <Icon 
                   name="close"

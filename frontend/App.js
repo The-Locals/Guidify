@@ -16,6 +16,7 @@ import User from './screens/User';
 import EditUser from './screens/EditUser';
 import ip from './ip';
 import {withNavigation} from '@react-navigation/compat';
+import UserSearch from './screens/UserSearch';
 
 navigator.geolocation = require('@react-native-community/geolocation');
 
@@ -174,10 +175,20 @@ const UStackNav = passedProps => {
 
 const SearchStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName='SearchPlaces'>
+      <Stack.Screen name="Map" options={{headerShown: false}}>
+        {props => {
+          return <NewMap {...passedProps} {...props}/>;
+        }}
+      </Stack.Screen>
       <Stack.Screen
         name="SearchPlaces"
         component={Search}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen 
+        name="UserSearch"
+        component={UserSearch}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

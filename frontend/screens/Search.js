@@ -11,13 +11,10 @@ import Itinerary from '../components/Itinerary';
 import SoundPlayer from 'react-native-sound-player';
 import Slider from "react-native-a11y-slider";
 import { Button } from "@react-native-material/core";
+import {useIsFocused} from '@react-navigation/native';
 
 export default function Search({ navigation }) {
-  useEffect(() => {
-    navigation.addListener('beforeRemove', (e) => {
-      e.preventDefault();
-    })
-  }, []);
+  const isFocused = useIsFocused();
   const PAGE_TYPE = {
     GUIDES: 'guides',
     ITINERARIES: 'itineraries',
@@ -77,7 +74,7 @@ export default function Search({ navigation }) {
         enableHighAccuracy: true,
       },
     );
-  }, [radius]);
+  }, [radius, isFocused]);
 
   //////////////////////// For FlatList ///////////////////////////////////////
   const PRIMARY_SECTIONS = [
@@ -129,7 +126,8 @@ export default function Search({ navigation }) {
               position: 'relative',
             }}>
             <Searchbar
-              type="searchPage"
+              type="fakeSearch"
+              navigation={navigation}
             />
           </View>
           <View style={styles.tabsContainer}>
@@ -318,7 +316,7 @@ export default function Search({ navigation }) {
   //////////////////////////////////////////////////////////////////////////////
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       {contentList.length > 0 && <FlatList
         opacity={bottomSheetActive ? 0.5 : 1}
         data={contentList}
@@ -330,7 +328,7 @@ export default function Search({ navigation }) {
         showsVerticalScrollIndicator={false}
         stickyHeaderIndices={[0]}
       />}
-      <BottomSheet
+      {contentList.length > 0 && <BottomSheet
         ref={bs}
         snapPoints={[330, 0]}
         renderContent={renderInner}
@@ -338,7 +336,7 @@ export default function Search({ navigation }) {
         callbackNode={fall}
         enabledGestureInteraction={true}
         onCloseEnd={() => setBottomSheetActive(false)}
-      />
+      />}
       <Animated.View
         style={{
           margin: 0,
