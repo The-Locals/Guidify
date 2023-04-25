@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SignUp from './screens/SignUp';
+import Search from './screens/Search';
 import Login from './screens/Login';
 import Map from './screens/Map';
 import NewMap from './screens/NewMap';
@@ -176,10 +177,9 @@ const SearchStack = () => {
     <Stack.Navigator>
       <Stack.Screen
         name="SearchPlaces"
-        component={PlacesAutoComplete}
+        component={Search}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="CItinerary" component={CreateItinerary} />
     </Stack.Navigator>
   );
 };
