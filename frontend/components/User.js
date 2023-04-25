@@ -11,6 +11,9 @@ export default function User({ navigation, user }) {
             marginLeft: 'auto',
             marginRight: 'auto',
         }}
+        onPress={() => {
+            navigation.navigate("UserProfile", {ownerId: user._id});
+        }}
         activeOpacity={0.7}
     >
         <Avatar.Image source={{ uri: user.imageUrl ? user.imageUrl :  "https://khoinguonsangtao.vn/wp-content/uploads/2022/07/avatar-gau-cute.jpg"}} size={50} />

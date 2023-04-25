@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SignUp from './screens/SignUp';
 import Search from './screens/Search';
 import Login from './screens/Login';
@@ -15,7 +15,7 @@ import CreateTravelGuide from './screens/CreateTravelGuide';
 import User from './screens/User';
 import EditUser from './screens/EditUser';
 import ip from './ip';
-import {withNavigation} from '@react-navigation/compat';
+import { withNavigation } from '@react-navigation/compat';
 import UserSearch from './screens/UserSearch';
 
 navigator.geolocation = require('@react-native-community/geolocation');
@@ -42,7 +42,7 @@ function MyTabs() {
   }, []);
   return (
     <Tab.Navigator
-      initialRouteName="Search"
+      initialRouteName="Home"
       screenOptions={{
         tabBarItemStyle: {
           backgroundColor: '#000',
@@ -102,7 +102,7 @@ function MyTabs() {
           },
         }}>
         {props => {
-          return <UStackNav {...props} 
+          return <UStackNav {...props}
             ownerId={userId}
             origin="Tab"
           />;
@@ -115,15 +115,15 @@ function MyTabs() {
 const HomeScreen = passedProps => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Map" options={{headerShown: false}}>
+      <Stack.Screen name="Map" options={{ headerShown: false }}>
         {props => {
           return <NewMap {...passedProps} {...props} />;
         }}
       </Stack.Screen>
-      <Stack.Screen name="UserProfileFromHome" options={{headerShown: false}}>
+      <Stack.Screen name="UserProfileFromHome" options={{ headerShown: false }}>
         {(props) => {
           return <User
-            {...passedProps} 
+            {...passedProps}
             {...props}
             origin='Home'
             ownerId={props.route.params.ownerId}
@@ -137,12 +137,12 @@ const HomeScreen = passedProps => {
 const UStackNav = passedProps => {
   return (
     <Stack.Navigator initialRouteName="User">
-      <Stack.Screen name="Map" options={{headerShown: false}}>
+      <Stack.Screen name="Map" options={{ headerShown: false }}>
         {props => {
-          return <NewMap {...passedProps} {...props}/>;
+          return <NewMap {...passedProps} {...props} />;
         }}
       </Stack.Screen>
-      <Stack.Screen name="User" options={{headerShown: false}}>
+      <Stack.Screen name="User" options={{ headerShown: false }}>
         {props => {
           return (
             <UserWithNavigation
@@ -156,41 +156,51 @@ const UStackNav = passedProps => {
         name="Edit User"
         component={EditUser}
         options={{
-          headerTitleStyle: {fontFamily: 'Lexend-SemiBold'},
+          headerTitleStyle: { fontFamily: 'Lexend-SemiBold' },
         }}
       />
       <Stack.Screen
         name="Create Itinerary"
         component={CreateItinerary}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Create TravelGuide"
         component={CreateTravelGuide}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
 };
 
-const SearchStack = () => {
+const SearchStack = passedProps => {
   return (
     <Stack.Navigator initialRouteName='SearchPlaces'>
-      <Stack.Screen name="Map" options={{headerShown: false}}>
+      <Stack.Screen name="Map" options={{ headerShown: false }}>
         {props => {
-          return <NewMap {...passedProps} {...props}/>;
+          return <NewMap {...passedProps} {...props} />;
         }}
       </Stack.Screen>
       <Stack.Screen
         name="SearchPlaces"
         component={Search}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
-      <Stack.Screen 
+      <Stack.Screen
         name="UserSearch"
         component={UserSearch}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
+      <Stack.Screen name="UserProfile" options={{ headerShown: false }}>
+        {(props) => {
+          return <User
+            {...passedProps}
+            {...props}
+            origin='Search'
+            ownerId={props.route.params.ownerId}
+          />
+        }}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 };
@@ -214,26 +224,26 @@ const SearchStack = () => {
 const App = props => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="MyTabs">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Home"
           component={Login}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="SignUp"
           component={SignUp}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="MyTabs"
           component={MyTabs}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="User"
           component={User}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -24,6 +24,7 @@ export default function UserSearch({ navigation }) {
     const renderItem = ({item}) => {
         return <User 
             user={item.user}
+            navigation={navigation}
         />
     }
     //////////////////////////////////////////////////////////////////////////////
