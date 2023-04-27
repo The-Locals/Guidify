@@ -386,6 +386,7 @@ const styles = StyleSheet.create({
     margin: 0,
     marginTop: 0,
     backgroundColor: 'white',
+    // position:'absolute'
   },
   pageNameHolder: {
     width: '100%',
@@ -470,7 +471,6 @@ const styles = StyleSheet.create({
     fontFamily: 'monospace',
   },
   buttonDONEStyle: {
-    position: 'absolute',
     backgroundColor: 'black',
     borderColor: 'white',
     height: 55,
@@ -480,8 +480,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 'auto',
-    // marginRight: 'auto',
+    marginRight: 'auto',
     alignSelf: 'center',
-    bottom: 20
+    bottom: '230%'
   },
 });
