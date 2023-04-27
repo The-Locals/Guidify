@@ -470,6 +470,7 @@ const styles = StyleSheet.create({
     fontFamily: 'monospace',
   },
   buttonDONEStyle: {
+    position: 'absolute',
     backgroundColor: 'black',
     borderColor: 'white',
     height: 55,
@@ -479,6 +480,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 'auto',
-    marginRight: 'auto',
+    // marginRight: 'auto',
+    alignSelf: 'center',
+    bottom: 20
   },
 });
