@@ -16,7 +16,8 @@ export default function Itinerary({
   setShowDirection,
   sheetRef,
   isDetail,
-  allowEdit=false
+  allowEdit=false,
+  isSearchPage=false
 }) {
   const [totalTime, setTotalTime] = useState(null);
   const [creatorInfo, setCreatorInfo] = useState(null);
@@ -98,18 +99,30 @@ export default function Itinerary({
           <TouchableOpacity
             disabled={isDetail}
             onPress={() => {
-              navigation.navigate('UserProfileFromHome', {
-                ownerId: creatorInfo._id,
-              });
+              if (isSearchPage) {
+                navigation.navigate('UserProfile', {
+                  ownerId: creatorInfo
+                });
+              } else {
+                navigation.navigate('UserProfileFromHome', {
+                  ownerId: creatorInfo._id,
+                });
+              }
             }}>
             <Avatar.Image source={{uri: creatorInfo.imageUrl}} size={40} />
           </TouchableOpacity>
           <TouchableOpacity
             disabled={isDetail}
             onPress={() => {
-              navigation.navigate('UserProfileFromHome', {
-                ownerId: creatorInfo._id,
-              });
+              if (isSearchPage) {
+                navigation.navigate('UserProfile', {
+                  ownerId: creatorInfo
+                });
+              } else {
+                navigation.navigate('UserProfileFromHome', {
+                  ownerId: creatorInfo._id,
+                });
+              }
             }}>
             <Text
               style={{

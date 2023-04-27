@@ -27,6 +27,7 @@ export default function Search({ navigation }) {
 
   useEffect(() => {
     setCurrentPlayingTG(null);
+    SoundPlayer.stop();
   }, [currentPage]);
 
   useEffect(() => {
@@ -128,6 +129,10 @@ export default function Search({ navigation }) {
             <Searchbar
               type="fakeSearch"
               navigation={navigation}
+              pressCallback={() => {
+                setCurrentPlayingTG(null);
+                SoundPlayer.stop();
+              }}
             />
           </View>
           <View style={styles.tabsContainer}>
@@ -226,6 +231,7 @@ export default function Search({ navigation }) {
           setCurrentPlayingTG={setCurrentPlayingTG}
           isUserProfilePage={false}
           navigation={navigation}
+          isSearchPage={true}
         />
       )
     } else {
@@ -235,6 +241,7 @@ export default function Search({ navigation }) {
           navigation={navigation}
           isUserProfilePage={true}
           isDetail={false}
+          isSearchPage={true}
         />
       )
     }

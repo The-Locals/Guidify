@@ -12,7 +12,8 @@ export default function Searchbar({
     mapRef,
     type='location',
     navigation,
-    handleSearch
+    handleSearch,
+    pressCallback
 }) {
     const placeRef = useRef(null);
     const textInputRef = useRef(null);
@@ -164,7 +165,10 @@ export default function Searchbar({
         />)
     } else if (type == "fakeSearch") {
       return (<TouchableOpacity
-        onPress={() => navigation.navigate("UserSearch")}
+        onPress={() => {
+          pressCallback();
+          navigation.navigate("UserSearch")
+        }}
         activeOpacity={0.7}
         style={{
         height: 44, 

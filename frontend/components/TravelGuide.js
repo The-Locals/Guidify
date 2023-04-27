@@ -14,6 +14,7 @@ export default function TravelGuide({
     closeCurrentModal,
     activateTravelGuideNav,
     enableTravelGuideNav=true,
+    isSearchPage=false,
     isDetail
 }) {
     let secs = Math.floor(travelGuide.audioLength % 60);
@@ -86,7 +87,11 @@ export default function TravelGuide({
         }}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('UserProfileFromHome', {ownerId: creatorInfo._id});
+              if (isSearchPage) {
+                navigation.navigate("UserProfile", {ownerId: creatorInfo._id});
+              } else {
+                navigation.navigate('UserProfileFromHome', {ownerId: creatorInfo._id});
+              }
             }}
             disabled={isDetail}
           >
@@ -94,7 +99,11 @@ export default function TravelGuide({
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('UserProfileFromHome', {ownerId: creatorInfo._id});
+              if (isSearchPage) {
+                navigation.navigate("UserProfile", {ownerId: creatorInfo._id});
+              } else {
+                navigation.navigate('UserProfileFromHome', {ownerId: creatorInfo._id});
+              }
             }}
             disabled={isDetail}
           >
