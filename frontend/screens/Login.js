@@ -55,9 +55,13 @@ const Login = props => {
           props.navigation.navigate('MyTabs');
         } else if (resBody.statusCode == 403) {
           // TODO user entered the wrong credentials. add a UI for this.
+          Alert.alert("Wrong credentials");
+          setLocalSigning(false);
         }
       })
       .catch(err => {
+        Alert.alert("Wrong credentials");
+        setLocalSigning(false);
         console.log(err);
       });
   };
