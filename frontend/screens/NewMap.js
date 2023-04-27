@@ -333,7 +333,7 @@ export default function NewMap({navigation, userId, route}) {
           );
         },
         error => console.log(error),
-        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+        {enableHighAccuracy: true},
       );
     } catch (error) {
       console.log('Error getting current position:', error);
