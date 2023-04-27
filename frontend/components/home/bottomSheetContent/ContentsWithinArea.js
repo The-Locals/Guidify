@@ -38,6 +38,7 @@ export default function ContentsWithinAreaContent({
   const [currentPlayingTG, setCurrentPlayingTG] = useState(null);
 
   const handleCloseModalByOverScrolling = () => {
+    SoundPlayer.stop();
     setCurrentPlayingTG(null);
     handleUpOverScrollModal();
   };
@@ -123,6 +124,11 @@ export default function ContentsWithinAreaContent({
         setIsLoading(false);
       });
   }, [locationsWithinFrame, currentPage]);
+
+  useEffect(() => {
+    SoundPlayer.stop();
+    setCurrentPlayingTG(null);
+  }, [currentPage, ]);
 
   useEffect(() => {
     SoundPlayer.addEventListener('FinishedPlaying', () => {

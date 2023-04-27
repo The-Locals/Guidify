@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import ArrowIcon from '../../../assets/arrow.png';
 import Itinerary from '../../Itinerary';
+import SoundPlayer from 'react-native-sound-player';
 
 export default function ContentsForDetailedIti(props) {
   const {
@@ -85,6 +86,7 @@ export default function ContentsForDetailedIti(props) {
         <TouchableOpacity
           style={styles.startBtn}
           onPress={() => {
+            SoundPlayer.stop();
             setRunningRoute(true);
             mapRef.current.animateCamera(
               {
