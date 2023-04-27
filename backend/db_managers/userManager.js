@@ -21,13 +21,18 @@ class UserManager {
     }
 
     static async editInfo(id, info) {
-        await UserModel.findByIdAndUpdate(id, {
+        let update = {
             username: info.username,
             firstName: info.firstName,
             lastName: info.lastName,
             country: info.country,
-            imageUrl: info.imageUrl
-        })
+        };
+
+        if (info.imageUrl) {
+            update.imageUrl = info.imageUrl;
+        }
+
+        await UserModel.findByIdAndUpdate(id, update);
     }
 
     static async getUsersWithUsernamesStartingWith(s) {

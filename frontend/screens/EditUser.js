@@ -72,7 +72,6 @@ export default function EditUser({navigation, route}) {
 
   const choosePhotoFromLibrary = async () => {
     try {
-      console.log()
       const result = await DocumentPicker.pick({
         type: ["image/jpg", "image/png", "image/jpeg"],
       });
