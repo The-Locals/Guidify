@@ -1006,7 +1006,7 @@ export default function NewMap({navigation, userId, route}) {
               ref={sheetRef}
               snapPoints={[
                 currentBottomSheetType == BOTTOM_SHEET_TYPE.CONTENTS_WITHIN_AREA
-                  ? windowHeight - 140
+                  ? windowHeight - 130
                   : currentBottomSheetType ==
                     BOTTOM_SHEET_TYPE.CONTENTS_FOR_LOCATION
                   ? windowHeight - 190
