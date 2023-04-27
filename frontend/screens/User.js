@@ -311,6 +311,8 @@ export default function User({ownerId, navigation, origin, route}) {
           isUserProfilePage={true}
           isDetail={false}
           allowEdit={true}
+          visitorId={userId}
+          ownerId={ownerId}
         />
       );
     } else if (item.type == 'application') {

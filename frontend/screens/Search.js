@@ -239,7 +239,7 @@ export default function Search({ navigation }) {
         <Itinerary
           item={item.itinerary}
           navigation={navigation}
-          isUserProfilePage={true}
+          isUserProfilePage={false}
           isDetail={false}
           isSearchPage={true}
         />

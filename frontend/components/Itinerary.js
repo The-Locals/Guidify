@@ -17,7 +17,9 @@ export default function Itinerary({
   sheetRef,
   isDetail,
   allowEdit=false,
-  isSearchPage=false
+  isSearchPage=false,
+  visitorId,
+  ownerId
 }) {
   const [totalTime, setTotalTime] = useState(null);
   const [creatorInfo, setCreatorInfo] = useState(null);
@@ -101,7 +103,7 @@ export default function Itinerary({
             onPress={() => {
               if (isSearchPage) {
                 navigation.navigate('UserProfile', {
-                  ownerId: creatorInfo
+                  ownerId: creatorInfo._id
                 });
               } else {
                 navigation.navigate('UserProfileFromHome', {
@@ -116,7 +118,7 @@ export default function Itinerary({
             onPress={() => {
               if (isSearchPage) {
                 navigation.navigate('UserProfile', {
-                  ownerId: creatorInfo
+                  ownerId: creatorInfo._id
                 });
               } else {
                 navigation.navigate('UserProfileFromHome', {
@@ -219,7 +221,7 @@ export default function Itinerary({
             <Icon name="arrow-right-thin" color="black" size={50} />
           </TouchableOpacity>
         )}
-        {(isUserProfilePage && allowEdit) && (
+        {(isUserProfilePage && allowEdit && ownerId == visitorId) && (
           <View
             style={{
               position: 'absolute',
