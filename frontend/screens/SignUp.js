@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {View, StyleSheet, Text, Image, ScrollView} from 'react-native';
+import {View, StyleSheet, Text, Image, ScrollView, ActivityIndicator} from 'react-native';
 
 import Inputs from "../components/Inputs";
 import Submit from "../components/Submit";
@@ -11,10 +11,10 @@ const SignUp = props => {
     const [passwdRepeat, setPasswdRepeat] = useState("");
     const [fullName, setFullName] = useState("");
     const [country, setCountry] = useState("");
+    const [submitting, setSubmitting] = useState(false);
 
    const registerLocal = async () => {
-
-
+        setSubmitting(true);
         fetch(`http://${ip.ip}:8000/auth/register`, {
                     credentials: 'include',
                     method: 'POST',
@@ -50,7 +50,7 @@ const SignUp = props => {
                 <Inputs name="Country" icon="map-pin" onChangeText={(country) => setCountry(country)}/>
                 <Inputs name="Password" icon="lock" pass={true} onChangeText={(passwd) => setPasswd(passwd)}/>
                 <Inputs name="Confirm Password" icon="lock" pass={true} onChangeText={(passwdRepeat) => setPasswdRepeat(passwdRepeat)}/>
-                <Submit color="black" title="Create" handleSubmit={registerLocal}/>
+                {submitting ? <ActivityIndicator color="black" /> : <Submit color="black" title="Create" handleSubmit={registerLocal}/>}
                 <View style={{flexDirection: 'row'}}>
                     <Text style={styles.textBody}>Already have an account?</Text>
                     <Text style={[styles.textBody, {color: 'black', fontFamily: 'Lexend-SemiBold'}]}

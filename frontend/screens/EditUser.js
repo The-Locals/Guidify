@@ -6,7 +6,8 @@ import {
   ImageBackground,
   TextInput,
   StyleSheet,
-  Image
+  Image,
+  ActivityIndicator
 } from 'react-native';
 
 import {useTheme, Avatar} from 'react-native-paper';
@@ -32,8 +33,10 @@ export default function EditUser({navigation, route}) {
   const [fullName, setFullName] = useState(ownerInfo.fullName);
   const [username, setUsername] = useState(ownerInfo.username);
   const [country, setCountry] = useState(ownerInfo.country);
+  const [submitting, setSubmitting] = useState(false);
 
   function handleSubmit() {
+    setSubmitting(true);
     const formData = new FormData();
     if (image.name) {
       formData.append('image', image);
@@ -213,8 +216,12 @@ export default function EditUser({navigation, route}) {
             ]}
           />
         </View>
-        <TouchableOpacity style={styles.commandButton} onPress={() => {handleSubmit()}}>
-          <Text style={styles.panelButtonTitle}>Submit</Text>
+        <TouchableOpacity style={styles.commandButton} onPress={() => {
+          if (!submitting) {
+            handleSubmit();
+          }
+        }}>
+          {submitting ? <ActivityIndicator color="white" /> : <Text style={styles.panelButtonTitle}>Submit</Text>}
         </TouchableOpacity>
       </Animated.View>
     </View>
