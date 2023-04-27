@@ -8,8 +8,8 @@ import {
   Text,
   Alert,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
-import {Button} from '@react-native-material/core';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button } from '@react-native-material/core';
 import axios from 'axios';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,19 +20,19 @@ import Application from '../components/Application';
 import UserInfoSection from '../components/UserInfoSection';
 import ContentFilter from '../components/ContentFilter';
 import SoundPlayer from 'react-native-sound-player';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
 import { useFocusEffect } from '@react-navigation/native';
 
-export default function User({ownerId, navigation, origin, route}) {
+export default function User({ ownerId, navigation, origin, route }) {
   const isFocused = useIsFocused();
   bs = React.createRef();
   fall = new Animated.Value(1);
 
   renderInner = () => (
     <View style={styles.panel}>
-      <View style={{alignItems: 'center'}}>
+      <View style={{ alignItems: 'center' }}>
         <Text style={styles.panelTitle}>Create Content</Text>
       </View>
       <TouchableOpacity
@@ -45,7 +45,7 @@ export default function User({ownerId, navigation, origin, route}) {
       <TouchableOpacity
         style={styles.panelButton}
         onPress={() => {
-          navigation.navigate('Create Itinerary', {item: {}, isEdit: false});
+          navigation.navigate('Create Itinerary', { item: {}, isEdit: false });
         }}>
         <Text style={styles.panelButtonTitle}>Create Itinerary</Text>
       </TouchableOpacity>
@@ -112,7 +112,7 @@ export default function User({ownerId, navigation, origin, route}) {
       });
   }
 
-  const preparePageData = async() => {
+  const preparePageData = async () => {
     // Authenticate user.
     await fetch(`http://${ip.ip}:8000/auth/isLoggedIn`, {
       credentials: 'include',
@@ -255,7 +255,7 @@ export default function User({ownerId, navigation, origin, route}) {
     });
   }, []);
 
-  function renderItem({item}) {
+  function renderItem({ item }) {
     if (item.type == 'userInfoSection') {
       return <UserInfoSection ownerInfo={ownerInfo} followInfo={followInfo} />;
     } else if (item.type == 'profileButton') {
@@ -272,8 +272,8 @@ export default function User({ownerId, navigation, origin, route}) {
               userId === ownerId
                 ? 'Edit Profile'
                 : isFollowing
-                ? 'Unfollow'
-                : 'Follow'
+                  ? 'Unfollow'
+                  : 'Follow'
             }
             variant="contained"
             color="black"
@@ -352,7 +352,7 @@ export default function User({ownerId, navigation, origin, route}) {
 
   async function handlePress() {
     if (ownerId == userId) {
-      navigation.navigate('Edit User', {ownerInfo: ownerInfo});
+      navigation.navigate('Edit User', { ownerInfo: ownerInfo });
     } else {
       let reqBody = {
         followerId: userId,
@@ -395,11 +395,11 @@ export default function User({ownerId, navigation, origin, route}) {
                   flex: 1.5,
                 }}
                 onPress={() => {
-                    if (origin == "Home") {
-                      navigation.navigate('Map');
-                    } else if (origin == "Search") {
-                      navigation.navigate("SearchPlaces");
-                    }
+                  if (origin == "Home") {
+                    navigation.navigate('Map');
+                  } else if (origin == "Search") {
+                    navigation.navigate("SearchPlaces");
+                  }
                 }}>
                 <Icon
                   name="keyboard-backspace"
@@ -412,7 +412,7 @@ export default function User({ownerId, navigation, origin, route}) {
                 />
               </TouchableOpacity>
             )}
-            <View style={{flex: 10}}>
+            <View style={{ flex: 10 }}>
               <Text
                 style={{
                   marginTop: 5,
@@ -425,17 +425,47 @@ export default function User({ownerId, navigation, origin, route}) {
               </Text>
             </View>
             {origin == 'Tab' && (
-              <TouchableOpacity onPress={() => this.bs.current.snapTo(0)}>
-                <Icon
-                  name="plus-box-outline"
-                  color="black"
-                  size={30}
-                  style={{
-                    marginTop: 'auto',
-                    marginBottom: 'auto',
-                  }}
-                />
-              </TouchableOpacity>
+              <>
+                <TouchableOpacity onPress={() => {
+                  fetch(`http://${ip.ip}:8000/auth/logout`, {
+                    credentials: 'include',
+                    method: 'POST',
+                  })
+                  .then(res => res.json())
+                  .then(res => {
+                    if (res.errorCode == 200) {
+                      navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Login' }],
+                      });
+                    } else {
+                      Alert.alert("Failed to logout");
+                    }
+                  })
+                }}>
+                  <Icon
+                    name="logout"
+                    color="black"
+                    size={30}
+                    style={{
+                      marginTop: 'auto',
+                      marginBottom: 'auto',
+                      marginRight: 15
+                    }}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.bs.current.snapTo(0)}>
+                  <Icon
+                    name="plus-box-outline"
+                    color="black"
+                    size={30}
+                    style={{
+                      marginTop: 'auto',
+                      marginBottom: 'auto',
+                    }}
+                  />
+                </TouchableOpacity>
+              </>
             )}
           </View>
           <FlatList
