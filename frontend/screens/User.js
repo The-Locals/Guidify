@@ -310,6 +310,7 @@ export default function User({ownerId, navigation, origin, route}) {
           navigation={navigation}
           isUserProfilePage={true}
           isDetail={false}
+          allowEdit={true}
         />
       );
     } else if (item.type == 'application') {

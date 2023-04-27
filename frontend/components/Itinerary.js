@@ -16,6 +16,7 @@ export default function Itinerary({
   setShowDirection,
   sheetRef,
   isDetail,
+  allowEdit=false
 }) {
   const [totalTime, setTotalTime] = useState(null);
   const [creatorInfo, setCreatorInfo] = useState(null);
@@ -205,7 +206,7 @@ export default function Itinerary({
             <Icon name="arrow-right-thin" color="black" size={50} />
           </TouchableOpacity>
         )}
-        {isUserProfilePage && (
+        {(isUserProfilePage && allowEdit) && (
           <View
             style={{
               position: 'absolute',
