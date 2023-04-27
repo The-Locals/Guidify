@@ -19,14 +19,6 @@ import ip from '../ip';
 import {mapAPIKey} from '../mapAPIKey.json';
 
 export default function CreateTravelGuide({navigation, route}) {
-  const homePlace = {
-    description: 'Home',
-    geometry: {location: {lat: 48.8152937, lng: 2.4597668}},
-  };
-  const workPlace = {
-    description: 'Work',
-    geometry: {location: {lat: 48.8496818, lng: 2.2940881}},
-  };
   const [defaultPhotoUrl, setDefaultPhotoUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [location, setLocation] = React.useState({
@@ -260,8 +252,6 @@ export default function CreateTravelGuide({navigation, route}) {
               opacity: 0,
             },
           }}
-          currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-          currentLocationLabel="Current location"
           nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
           GoogleReverseGeocodingQuery={
             {
@@ -272,7 +262,6 @@ export default function CreateTravelGuide({navigation, route}) {
             'locality',
             'administrative_area_level_3',
           ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-          predefinedPlaces={[homePlace, workPlace]}
           keyboardShouldPersistTaps="handled"
           debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
         />

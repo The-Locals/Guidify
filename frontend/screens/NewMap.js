@@ -1132,21 +1132,21 @@ const mapStyle = [
       },
     ],
   },
-  {
-    featureType: 'landscape.man_made',
-    elementType: 'geometry.stroke',
-    stylers: [
-      {
-        visibility: 'on',
-      },
-      {
-        gamma: '0.00',
-      },
-      {
-        weight: '2.07',
-      },
-    ],
-  },
+  // {
+  //   featureType: 'landscape.man_made',
+  //   elementType: 'geometry.stroke',
+  //   stylers: [
+  //     {
+  //       visibility: 'on',
+  //     },
+  //     {
+  //       gamma: '0.00',
+  //     },
+  //     {
+  //       weight: '2.07',
+  //     },
+  //   ],
+  // },
   {
     featureType: 'road.highway',
     elementType: 'geometry.fill',

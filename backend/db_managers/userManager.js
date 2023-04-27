@@ -29,6 +29,12 @@ class UserManager {
             imageUrl: info.imageUrl
         })
     }
+
+    static async getUsersWithUsernamesStartingWith(s) {
+        const regex = new RegExp(`^${s}`, 'i');
+        const docs = await UserModel.find({ username: { $regex: regex } });
+        return docs;
+    }
 }
 
 module.exports = UserManager;

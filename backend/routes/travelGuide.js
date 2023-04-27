@@ -90,9 +90,9 @@ router.get('/byCoordinates', async (req, res) => {
         }
       }
 
-      if (!(tracker[placeId].travelGuides.has(travelGuide._id))) {
+      if (!(tracker[placeId].travelGuides.has(travelGuide._id.toString()))) {
         data[placeId].travelGuides.push(travelGuide);
-        tracker[placeId].travelGuides.add(travelGuide._id);
+        tracker[placeId].travelGuides.add(travelGuide._id.toString());
 
         if (!data[placeId].name) {
           data[placeId].name = travelGuide.locationName;
@@ -102,9 +102,9 @@ router.get('/byCoordinates', async (req, res) => {
       }
 
       itineraries.forEach(itinerary => {
-        if (!(tracker[placeId].itineraries.has(itinerary._id))) {
+        if (!(tracker[placeId].itineraries.has(itinerary._id.toString()))) {
           data[placeId].itineraries.push(itinerary);
-          tracker[placeId].itineraries.add(itinerary._id);
+          tracker[placeId].itineraries.add(itinerary._id.toString());
         }
       });
     });
@@ -342,6 +342,57 @@ router.delete("/", async (req, res) => {
     await TravelGuideManager.removeTravelGuide(req.query.id);
   } catch (err) {
     console.log(err);
+  }
+});
+
+router.get('/byCoordinatesNonLocationOriented', async (req, res) => {
+  const coordinates = {
+    minLat: parseFloat(req.query.minLat),
+    maxLat: parseFloat(req.query.maxLat),
+    minLng: parseFloat(req.query.minLng),
+    maxLng: parseFloat(req.query.maxLng)
+  };
+
+  try {
+    const results = await TravelGuideManager.getTravelGuidesAndItinerariesByCoordinates(coordinates);
+    let data = {
+      travelGuides: [],
+      itineraries: []
+    };
+    let tracker = {
+      travelGuides: new Set(),
+      itineraries: new Set()
+    };
+
+    // results is a collection of travelGuides. however, each travelGuide has an
+    // additional field which is itineraries (list of itineraries).
+    results.forEach(travelGuide => {
+      const itineraries = travelGuide.itineraries;
+      delete travelGuide.itineraries;
+      const placeId = travelGuide.placeId;
+
+      if (!(tracker.travelGuides.has(travelGuide._id.toString()))) {
+        data.travelGuides.push(travelGuide);
+        tracker.travelGuides.add(travelGuide._id.toString());
+      }
+
+      itineraries.forEach(itinerary => {
+        if (!(tracker.itineraries.has(itinerary._id.toString()))) {
+          data.itineraries.push(itinerary);
+          tracker.itineraries.add(itinerary._id.toString());
+        }
+      });
+    });
+
+    res.send({
+      data: data,
+      statusCode: 200,
+    });
+  } catch (err) {
+    console.log(err);
+    res.send({
+      statusCode: 500
+    });
   }
 });
 

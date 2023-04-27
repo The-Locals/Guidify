@@ -1,245 +1,191 @@
 import React, {useState, useEffect} from "react";
-import {View, Image, Text, FlatList, ActivityIndicator, StatusBar, Pressable, StyleSheet} from 'react-native';
+import {View, 
+  Image, 
+  Text, 
+  FlatList, 
+  ActivityIndicator, 
+  StatusBar, 
+  Pressable, 
+  StyleSheet, 
+  TouchableOpacity, 
+  TextInput,
+} from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import PlayIcon from "../assets/play.png";
 import axios from "axios";
 import mapAPIKey from '../mapAPIKey.json'
-
-const homePlace = { description: 'Home', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
-const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }};
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 const PlacesAutoComplete = ({navigation}) => {
 
-  const [ pin, setPin ] = React.useState({
-		latitude: 53.40140,
-    longitude: -6.226155,
-	})
-	const [ region, setRegion ] = React.useState({
-		latitude: 53.350140,
-    longitude: -6.266155,
-		latitudeDelta: 0.0922,
-		longitudeDelta: 0.0421
-	})
+  const PAGE_TYPE = {
+    GUIDES: 'guides',
+    ITINERARIES: 'itineraries',
+    USERS: 'users',
+  };
 
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const [users, setUsers] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [title, setTitle] = useState('dublin');
+  const [currentPage, setCurrentPage] = useState(PAGE_TYPE.GUIDES);
 
-  const getUsers = () => {
-    setIsLoading(true);
-    axios.get(`https://randomuser.me/api/?page=${currentPage}&results=10`)
-      .then(res => {
-        //setUsers(res.data.results);
-        setUsers([...users, ...res.data.results]);
-        setIsLoading(false);
-      });
-  };
-
-  const renderItem = ({ item }) => {
-    return (
-      <View style={styles.itemWrapperStyle}>
-        <Image style={styles.itemImageStyle} source={{ uri: item.picture.large }} />
-        <View style={styles.contentWrapperStyle}>
-          <Text style={styles.txtNameStyle}>{`${item.name.title} ${item.name.first} ${item.name.last}`}</Text>
-          <Text style={styles.txtEmailStyle}>{item.email}</Text>
-        </View>
-      </View>
-    );
-  };
-
-  const renderLoader = () => {
-    return (
-      isLoading ?
-        <View style={styles.loaderStyle}>
-          <ActivityIndicator size="large" color="#aaa" />
-        </View> : null
-    );
-  };
-
-  const loadMoreItem = () => {
-    setCurrentPage(currentPage + 1);
-  };
-
-  useEffect(() => {
-    getUsers();
-  }, [currentPage]);
-
-
-
+  async function handleSearch(name) {
+    // if (name.trim().length == 0) {
+    //   setAvailableTravelGuides([]);
+    //   isEmpty.current = true;
+    //   return;
+    // }
+    // await fetch(`http://${ip.ip}:8000/travelGuide/startsWith?prefix=${name}`, {
+    //   credentials: 'include',
+    //   method: 'GET',
+    // })
+    //   .then(res => res.json())
+    //   .then(resBody => {
+    //     if (resBody.travelGuides.length > 0) {
+    //       setAvailableTravelGuides(resBody.travelGuides);
+    //     }
+    //     if (availableTravelGuides.length > 0) {
+    //       isEmpty.current = false;
+    //     }
+    //   });
+  }
 
   return (
-    <View style={{
-      flex: 1,
-      backgroundColor: '#C5FAD5'
-    }}>
-    <GooglePlacesAutocomplete
-      placeholder='Search'
-      minLength={2} // minimum length of text to search
-      autoFocus={false}
-      returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
-      listViewDisplayed='auto'    // true/false/undefined
-      fetchDetails={true}
-      GooglePlacesSearchQuery={{
-        rankby: "distance"
-      }}
-      renderDescription={row => row.description} // custom description render
-      onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-        console.log(data, details);
-        setRegion({
-          latitude: details.geometry.location.lat,
-          longitude: details.geometry.location.lng,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421
-        });
-        setTitle(details.name);
-        navigation.navigate('CTravelGuide', {paramKey: title})
-      }}
+    <View>
+      <View style={styles.topView}>
+        
+      <View style={styles.searchBarView}>
       
-      getDefaultValue={() => ''}
-      
-      query={{
-        // available options: https://developers.google.com/places/web-service/autocomplete
-        key: mapAPIKey,
-        language: 'en', // language of the results
-        types: "establishment", // default: 'geocode',
-        location: `${region.latitude}, ${region.longitude}`,
-        radius: 30000
-      }}
-      
-      styles={{
-        textInputContainer: {
-          width: '98%'
-        },
-        description: {
-          fontWeight: 'bold'
-        },
-        predefinedPlacesDescription: {
-          color: '#1faadb'
-        },
-        container: { 
-          flex: 0, 
-          position: "absolute",
-          width: "98%", 
-          zIndex: 1, 
-          marginTop: 15, 
-          alignItems: "center",
-          justifyContent: "center",
-        },
-				listView: { 
-          backgroundColor: "white" 
-        }
-      }}
-      
-      currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-      currentLocationLabel="Current location"
-      nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-      GoogleReverseGeocodingQuery={{
-        // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-      }}
-      filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-      predefinedPlaces={[homePlace, workPlace]}
-      keyboardShouldPersistTaps="handled"
-      debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
-      //renderLeftButton={()  => <Image source={require('path/custom/left-icon')} />}
-      renderRightButton={() => <Text></Text>}
-    />
-    <Pressable >
-          <View style={[styles.widgetContainer, {}]}>
-            <View style={{flexDirection: 'row'}}>
-              <Image
-                resizeMode="cover"
-                source={{uri: 'https://www.bensound.com/bensound-img/happyrock.jpg'}}
-                style={styles.widgetImageStyle}
-              />
-              <View>
-                <Text style={styles.widgetMusicTitle}>
-                Punky
-                </Text>
-                <Text style={styles.widgetArtisteTitle}>
-                  Benjamin Tissot
-                </Text>
-              </View>
-            </View>
-            <Pressable onPress={() => playOrPause()}>
-              <Image
-                source={isPlaying ? PauseIcon : PlayIcon}
-                style={{height: 30, tintColor: '#000', width: 30, marginRight: 10}}
-              />
-            </Pressable>
-          </View>
-        </Pressable>
+          <TextInput
+            style={styles.searchBarStyling}
+            placeholder="Search Screen search bar"
+            placeholderTextColor={'grey'}
+            inlineImageLeft='magnify_glass'
+            inlineImagePadding={10}
+            clearButtonMode ={'always'}
+            value={search}
+            onChangeText={e => {
+              setSearch(e);
+              handleSearch(e);
+            }}
+          />
+        </View>
+          <TouchableOpacity>
+            <Icon name="close" size={24} color="#000" style={{
+                marginLeft: '90%',
+                marginTop: '5%',
+                marginBottom: 'auto',
+                position:'absolute',
+                zIndex: 1,
+              }} />
+          </TouchableOpacity>
+        <View style={styles.buttonListContainer}>
+          <TouchableOpacity 
+          style={[styles.categoryButton, {borderBottomColor: currentPage == PAGE_TYPE.GUIDES ? 'black' : '#878686'}]}
+          onPress={() => {
+            setCurrentPage(PAGE_TYPE.GUIDES)
+          }} 
+          activeOpacity={0.7}
+          >
+            <Text 
+            style={[styles.categoryButtonText, {color: currentPage == PAGE_TYPE.GUIDES ? 'black' : '#878686'}]}>
+              Guides
+            </Text>
+          </TouchableOpacity>
 
-      
-  
+          <TouchableOpacity 
+          style={[styles.categoryButton, {borderBottomColor: currentPage == PAGE_TYPE.ITINERARIES ? 'black' : '#878686'}]}
+          onPress={() => {
+            setCurrentPage(PAGE_TYPE.ITINERARIES)
+          }} 
+          activeOpacity={0.7}
+          >
+            <Text 
+            style={[styles.categoryButtonText, {color: currentPage == PAGE_TYPE.ITINERARIES ? 'black' : '#878686'}]}>
+              Itineraries
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+          style={[styles.categoryButton, {borderBottomColor: currentPage == PAGE_TYPE.USERS ? 'black' : '#878686'}]}
+          onPress={() => {
+            setCurrentPage(PAGE_TYPE.USERS)
+          }} 
+          activeOpacity={0.7}
+          >
+            <Text 
+            style={[styles.categoryButtonText, {color: currentPage == PAGE_TYPE.USERS ? 'black' : '#878686'}]}>
+              Users
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+      </View>
     </View>
   );
 }
 
 export default PlacesAutoComplete;
-
+// return <View style={[styles.container, {backgroundColor: this.state.bg}]}/>
 const styles = StyleSheet.create({ 
-  widgetContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 0,
-    height: 60,
-    width: '100%',
-    backgroundColor: '#fff',
-    marginTop: 650,
-    borderWidth: 2,
-    borderColor: 'black'
-  },
-  widgetMusicTitle: {
+  categoryButtonText:{
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    fontFamily: 'Lexend-SemiBold',
     fontSize: 18,
-    color: '#000',
-    fontWeight: '500',
-    marginTop: 12,
-    marginHorizontal: 10,
-    marginBottom: 1,
+    textAlign:'center',
   },
-  widgetArtisteTitle: {
-    fontSize: 14,
-    color: '#000',
-    opacity: 0.8,
-    marginHorizontal: 10,
-    marginBottom: 12,
-    marginTop: 1,
+  categoryButton:{
+    flex:1,
+    backgroundColor:'white',
+    padding:10,
+    borderStyle: 'solid',
+    borderColor:'white',
+    borderBottomColor: 'red',
+    borderBottomWidth: 3,
   },
-  widgetImageStyle: {
-    width: 55,
-    height: 55,
-    marginTop: 7,
-    marginLeft: 5,
-    borderRadius: 10
+  buttonListContainer:{
+    position:'absolute',
+    width: '100%',
+    marginTop: '15%',
+    flexDirection: 'row',
+    justifyContent:'space-evenly',
+    flexWrap:'wrap',
+    
   },
-  itemWrapperStyle: {
-    flexDirection: "row",
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderColor: "#ddd",
+  topView:{
+    position:"absolute",
+    backgroundColor:'white',
+    height: '36%',
+    width: '100%',
   },
-  itemImageStyle: {
-    width: 50,
-    height: 50,
-    marginRight: 16,
+  searchBarStyling:{
+    width: '95%',
+    borderRadius: 50,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 10,
+    backgroundColor: 'white',
+    fontFamily: 'Lexend-Regular',
+    padding:8,
   },
-  contentWrapperStyle: {
-    justifyContent: "space-around",
+  searchBarView:{
+    position:'absolute',
+    flexDirection: 'row',
+    paddingHorizontal: 50,
+    paddingVertical:8,
   },
-  txtNameStyle: {
-    fontSize: 16,
-  },
-  txtEmailStyle: {
-    color: "#777",
-  },
-  loaderStyle: {
-    marginVertical: 16,
-    alignItems: "center",
+  textInput: {
+    backgroundColor: 'transparent',
+    // borderStyle: 'solid',
+    // borderWidth: 1,
+    marginBottom: 0,
+    color: 'black'
   },
 })
