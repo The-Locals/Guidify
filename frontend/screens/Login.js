@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, Image, ScrollView, Alert} from 'react-native';
+import {View, StyleSheet, Text, Image, ScrollView, Alert, ActivityIndicator} from 'react-native';
 import {
   GoogleSignin,
   statusCodes,
@@ -33,8 +33,11 @@ const Login = props => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState("");
   const [passwd, setPasswd] = useState('');
+  const [googleSigning, setGoogleSigning] = useState(false);
+  const [localSigning, setLocalSigning] = useState(false);
 
   const localSignIn = () => {
+    setLocalSigning(true);
     fetch(`http://${ip.ip}:8000/auth/login`, {
       credentials: 'include',
       method: 'POST',
@@ -61,6 +64,7 @@ const Login = props => {
 
   const signInWithGoogle = async () => {
     try {
+      setGoogleSigning(true);
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
 
@@ -84,6 +88,7 @@ const Login = props => {
           console.log(err);
         });
     } catch (error) {
+      setSubmitting(false);
       console.log(error);
     }
   };
@@ -115,15 +120,15 @@ const Login = props => {
             Forgot Password?
           </Text>
         </View>
-        <Submit title="Login" color="black" handleSubmit={localSignIn} />
+        {localSigning ? <ActivityIndicator color="black" /> : <Submit title="Login" color="black" handleSubmit={localSignIn} />}
         <Text style={{...styles.textBody, marginTop: 20}}>Or login using</Text>
         <View style={{flexDirection: 'row'}}>
-          <Account
+          {googleSigning ? <ActivityIndicator color="black" /> : <Account
             color="black"
             icon="google"
             title="Google"
             signInWithGoogle={signInWithGoogle}
-          />
+          />}
         </View>
         <View style={{flexDirection: 'row', marginVertical: 5}}>
           <Text style={styles.textBody}>Don't have an account?</Text>
