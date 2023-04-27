@@ -90,9 +90,9 @@ router.get('/byCoordinates', async (req, res) => {
         }
       }
 
-      if (!(tracker[placeId].travelGuides.has(travelGuide._id))) {
+      if (!(tracker[placeId].travelGuides.has(travelGuide._id.toString()))) {
         data[placeId].travelGuides.push(travelGuide);
-        tracker[placeId].travelGuides.add(travelGuide._id);
+        tracker[placeId].travelGuides.add(travelGuide._id.toString());
 
         if (!data[placeId].name) {
           data[placeId].name = travelGuide.locationName;
@@ -102,9 +102,9 @@ router.get('/byCoordinates', async (req, res) => {
       }
 
       itineraries.forEach(itinerary => {
-        if (!(tracker[placeId].itineraries.has(itinerary._id))) {
+        if (!(tracker[placeId].itineraries.has(itinerary._id.toString()))) {
           data[placeId].itineraries.push(itinerary);
-          tracker[placeId].itineraries.add(itinerary._id);
+          tracker[placeId].itineraries.add(itinerary._id.toString());
         }
       });
     });
@@ -371,15 +371,15 @@ router.get('/byCoordinatesNonLocationOriented', async (req, res) => {
       delete travelGuide.itineraries;
       const placeId = travelGuide.placeId;
 
-      if (!(tracker.travelGuides.has(travelGuide._id))) {
+      if (!(tracker.travelGuides.has(travelGuide._id.toString()))) {
         data.travelGuides.push(travelGuide);
-        tracker.travelGuides.add(travelGuide._id);
+        tracker.travelGuides.add(travelGuide._id.toString());
       }
 
       itineraries.forEach(itinerary => {
-        if (!(tracker.itineraries.has(itinerary._id))) {
+        if (!(tracker.itineraries.has(itinerary._id.toString()))) {
           data.itineraries.push(itinerary);
-          tracker.itineraries.add(itinerary._id);
+          tracker.itineraries.add(itinerary._id.toString());
         }
       });
     });
