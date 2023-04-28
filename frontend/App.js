@@ -17,6 +17,7 @@ import EditUser from './screens/EditUser';
 import ip from './ip';
 import { withNavigation } from '@react-navigation/compat';
 import UserSearch from './screens/UserSearch';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 navigator.geolocation = require('@react-native-community/geolocation');
 
@@ -58,10 +59,12 @@ function MyTabs() {
         options={{
           headerShown: false,
           tabBarLabel: '',
-          tabBarIcon: tabInfo => {
+          tabBarIcon: ({color, focused}) => {
             return (
-              <Image
-                source={require('./assets/home.png')}
+              <Icon
+                name={focused ? "home" : "home-outline"}
+                color="white"
+                size={33}
                 style={styles.mapicon}
               />
             );
@@ -77,11 +80,13 @@ function MyTabs() {
         options={{
           headerShown: false,
           tabBarLabel: '',
-          tabBarIcon: tabInfo => {
+          tabBarIcon: ({focused}) => {
             return (
-              <Image
-                source={require('./assets/search.png')}
-                style={styles.mapicon}
+              <Icon
+                name={focused ? "magnify-expand" : "magnify"}
+                color="white"
+                size={33}
+                style={styles.mapicon} 
               />
             );
           },
@@ -92,10 +97,12 @@ function MyTabs() {
         options={{
           headerShown: false,
           tabBarLabel: '',
-          tabBarIcon: tabInfo => {
+          tabBarIcon: ({focused}) => {
             return (
-              <Image
-                source={require('./assets/user.png')}
+              <Icon
+                name={focused ? "account" : "account-outline"}
+                color="white"
+                size={33}
                 style={styles.mapicon}
               />
             );
