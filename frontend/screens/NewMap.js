@@ -860,7 +860,7 @@ export default function NewMap({navigation, userId, route}) {
             mapPadding={{
               bottom: 80,
             }}
-            provider="google"
+            provider={undefined}
             onRegionChangeComplete={handleRegionChange}
             style={styles.map}>
             {(showDetailIti ||
