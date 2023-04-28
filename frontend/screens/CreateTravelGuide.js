@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
   KeyboardAvoidingView,
+  Alert,
   ActivityIndicator,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
@@ -92,6 +93,7 @@ export default function CreateTravelGuide({navigation, route}) {
         if (resBody.statusCode == 200) {
           setIsSubmitting(false);
           console.log('success');
+          Alert.alert("Application submitted. The application will now be reviewed by the team.");
           navigation.navigate('User', {origin: 'CreateTravelGuide'});
         } else if (resBody.statusCode == 403) {
           // TODO user entered the wrong credentials. add a UI for this.
