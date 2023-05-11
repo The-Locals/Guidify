@@ -202,7 +202,7 @@ export default function Itinerary({
           <TouchableOpacity
             style={{flex: 1, marginTop: 3, marginLeft: 'auto'}}
             onPress={() => {
-              if (isUserProfilePage) {
+              if (isUserProfilePage || isSearchPage) {
                 navigation.navigate('Map', {
                   itinerary: item,
                   type: 'contentsForItinerary',
