@@ -19,10 +19,12 @@ This is The repository for the application Guidify being developed for the modul
 - [Android Studio Dolphin | 2021.3.1 Patch 1](https://developer.android.com/studio/archive) (to launch the emulator)
 
 
-# Setup
-3. `git clone` the repository
-1. Change the IP address in the code to the IPv4 address in the file `frontend/ip.json`
-2. Start an emulator with an API version 32
+# Android Phone Setup
+1. `git clone https://github.com/The-Locals/Guidify.git`
+1. `cd Guidify`
+1. `cd frontend`
+2. `npm install -f`
+3. [Guide to launch on phone](https://reactnative.dev/docs/running-on-device#running-your-app-on-android-devices)
 4. `cd backend`
 5. `npm i`
 6. `npm start`
@@ -41,7 +43,6 @@ The application should start compiling and then launch onto the emulator device
 
 - [Google Cloud Storage](https://cloud.google.com/storage) Blobstore. A scalable, durable, and highly available object storage service provided by Google Cloud, allowing for data storage and retrieval from anywhere.
 
-![Poster https://imgur.com/uImbwXJ](https://imgur.com/uImbwXJ)
-
 ## Prototype Design: https://www.figma.com/file/JcJeYDHMMXVelcdbKIeU9w/Guidify-Prototype?node-id=0%3A1&t=UqWPkVShNYlVzUr2-0
 
+![Project Poster](https://github.com/TadasGliadkovskis/CA2-Bug-Project/assets/72204358/2236007f-f3cd-4790-b8d2-7eec922ef7e5)

@@ -62,7 +62,3 @@ buck-out/
 # Ruby / CocoaPods
 /ios/Pods/
 /vendor/bundle/
-
-#Custom
-ip.json
-mapAPIKey.json
