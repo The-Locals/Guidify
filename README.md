@@ -1,10 +1,10 @@
 # Guidify
-
-This is The repository for the application Guidify being developed for the module *Collaborative Project* by The Locals consisting of 3 members.
+This is The repository for the Android mobile application Guidify being developed for the module *Collaborative Project* by The Locals consisting of 3 members.
 - Dennis Willie
 - Jeremy Neo
 - Tadas Gliadkovskis
 
+## [Demo](https://www.youtube.com/watch?v=-QB9mWPh6uo)
 
 # Features
 - Real-Time Map Navigation 
@@ -13,26 +13,32 @@ This is The repository for the application Guidify being developed for the modul
 - Custom Stitching of Travel Guides
 - Content Sorting based on User Following
 
-
 ### Requirements
 - [npm](https://nodejs.org/en/download/)
-- [Android Studio Dolphin | 2021.3.1 Patch 1](https://developer.android.com/studio/archive) (to launch the emulator)
+- [Android Studio Dolphin | 2021.3.1 Patch 1](https://developer.android.com/studio/archive) (to launch the emulator) 
 
 
-# Android Phone Setup
+# Setup
+All of the setup is recommended to be done using Android Studio.
+
 1. `git clone https://github.com/The-Locals/Guidify.git`
-1. `cd Guidify`
-1. `cd frontend`
-2. `npm install -f`
-3. [Guide to launch on phone](https://reactnative.dev/docs/running-on-device#running-your-app-on-android-devices)
-4. `cd backend`
-5. `npm i`
-6. `npm start`
-7. In a different console `cd frontend`
-8. `npm i`
-9. `npx react-native run-android`
+2. `cd Guidify`
+3. `cd frontend`
+4. `npm install -f`
+## [Guide to Launch on Android Phone](https://reactnative.dev/docs/running-on-device#running-your-app-on-android-devices)
 
-The application should start compiling and then launch onto the emulator device
+## Launch with phone Emulator
+1. Using Android studio create a virtual device making sure its API version 32 [Guide](https://www.youtube.com/watch?v=GhuiNcOEv1A)
+2. Using the terminal make sure you're in `Guidify/frontend`
+3. run `npx react-native run-android`
+
+## Launch with Local backend
+1. `cd backend`
+2. `npm install`
+3. `npm start`
+4. Before launching the frontend make sure to update the ip in `frontend/ip.json` to the machines IPv4 address which can be found in the console using `ipconfig` making sure it's the correct address u input.
+5. Proceed to launch the app onto an emulator or onto the phone. 
+
 # Built With
 
 - [React Native](https://reactnative.dev/) FrontEnd. An open-source framework for building mobile applications using JavaScript and React, allowing for cross-platform development.
