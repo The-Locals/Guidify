@@ -50,6 +50,8 @@ All of the setup is recommended to be done using Android Studio.
 - [Google Cloud Storage](https://cloud.google.com/storage) Blobstore. A scalable, durable, and highly available object storage service provided by Google Cloud, allowing for data storage and retrieval from anywhere.
 
 ### Filtering AI and Admin dashboard (local)
+# How it works
+When the admin opens the admin dashboard, they can click on `auto-verify` to have the AI model check whether the audio is valid or not. In the background, the audio file is sent to Google Speech-to-Text API to convert the audio format into text format. From here, our frontend will then send the text format to our own AI model (can be seen inside `Guidify/tg_filter_ai/saved_models`) and our AI model will then spits out probability distributions between 3 classes.
 # Running
 1. `cd tg_filter_ai`
 2. install all dependencies needed. (run `python server.py to see which dependencies are missing.`) Once done, run `python server.py`. This acts as the backend for the travel guide filtering AI.
