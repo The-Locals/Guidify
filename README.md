@@ -17,7 +17,7 @@ This is The repository for the Android mobile application Guidify being develope
 - [npm](https://nodejs.org/en/download/)
 - [Android Studio Dolphin | 2021.3.1 Patch 1](https://developer.android.com/studio/archive) (to launch the emulator) 
 
-
+### Phone application
 # Setup
 All of the setup is recommended to be done using Android Studio.
 
@@ -48,6 +48,16 @@ All of the setup is recommended to be done using Android Studio.
 - [MongoDB](https://www.mongodb.com/) Database. A document-oriented NoSQL database that uses JSON-like documents with optional schemas, allowing for a flexible and scalable data model.
 
 - [Google Cloud Storage](https://cloud.google.com/storage) Blobstore. A scalable, durable, and highly available object storage service provided by Google Cloud, allowing for data storage and retrieval from anywhere.
+
+### Filtering AI and Admin dashboard (local)
+# Running
+1. `cd tg_filter_ai`
+2. install all dependencies needed. (run `python server.py to see which dependencies are missing.`) Once done, run `python server.py`. This acts as the backend for the travel guide filtering AI.
+3. `cd ../admin_dashboard`
+4. enable Google Speech-to-Text API in your Google Cloud Developer console and proceed with getting the JSON key (Service Account Key) and place it in the `admin_dashboard/src` directory.
+5. `npm i` to install dependencies
+6. `npm start` to run the frontend.
+7. If you're not automatically directed to the admin dashboard, run go to localhost:3000 on your browser.
 
 ## Prototype Design: https://www.figma.com/file/JcJeYDHMMXVelcdbKIeU9w/Guidify-Prototype?node-id=0%3A1&t=UqWPkVShNYlVzUr2-0
 
